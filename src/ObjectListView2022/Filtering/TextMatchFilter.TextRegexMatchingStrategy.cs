@@ -145,7 +145,5 @@ public partial class TextMatchFilter
                 return ranges;
             }
         }
-
-        #endregion Components
     }
 }
