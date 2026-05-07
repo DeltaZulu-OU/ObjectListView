@@ -53,7 +53,7 @@ namespace BrightIdeasSoftware.Implementation
         /// </summary>
         public OLVListItem(object rowObject)
         {
-            this.RowObject = rowObject;
+            RowObject = rowObject;
         }
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace BrightIdeasSoftware.Implementation
         public OLVListItem(object rowObject, string text, object image)
             : base(text, -1)
         {
-            this.RowObject = rowObject;
+            RowObject = rowObject;
             imageSelector = image;
         }
 
@@ -135,22 +135,13 @@ namespace BrightIdeasSoftware.Implementation
         /// <remarks>.NET's Checked property was not built to handle tri-state checkboxes,
         /// and will return True for both Checked and Indeterminate states.</remarks>
         public CheckState CheckState {
-            get {
-                switch (StateImageIndex)
-                {
-                    case 0:
-                        return CheckState.Unchecked;
-
-                    case 1:
-                        return CheckState.Checked;
-
-                    case 2:
-                        return CheckState.Indeterminate;
-
-                    default:
-                        return CheckState.Unchecked;
-                }
-            }
+            get => StateImageIndex switch
+            {
+                0 => CheckState.Unchecked,
+                1 => CheckState.Checked,
+                2 => CheckState.Indeterminate,
+                _ => CheckState.Unchecked,
+            };
             set {
                 switch (value)
                 {
@@ -203,10 +194,7 @@ namespace BrightIdeasSoftware.Implementation
         /// </summary>
         public IList<IDecoration> Decorations {
             get {
-                if (decorations == null)
-                {
-                    decorations = new List<IDecoration>();
-                }
+                decorations ??= new List<IDecoration>();
 
                 return decorations;
             }

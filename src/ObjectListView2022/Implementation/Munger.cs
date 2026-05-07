@@ -272,10 +272,7 @@ namespace BrightIdeasSoftware.Implementation
         /// </summary>
         private IList<SimpleMunger> Parts {
             get {
-                if (aspectParts == null)
-                {
-                    aspectParts = BuildParts(AspectName);
-                }
+                aspectParts ??= BuildParts(AspectName);
 
                 return aspectParts;
             }
@@ -349,7 +346,7 @@ namespace BrightIdeasSoftware.Implementation
         /// <param name="aspectName"></param>
         public SimpleMunger(string aspectName)
         {
-            this.AspectName = aspectName;
+            AspectName = aspectName;
         }
 
         #endregion Life and death
@@ -566,8 +563,8 @@ namespace BrightIdeasSoftware.Implementation
         public MungerException(SimpleMunger munger, object target, Exception ex)
             : base("Munger failed", ex)
         {
-            this.Munger = munger;
-            this.Target = target;
+            Munger = munger;
+            Target = target;
         }
 
         /// <summary>

@@ -649,25 +649,16 @@ namespace BrightIdeasSoftware.SubControls
             }
 
             var nmhdr = (NativeMethods.NMHDR)m.GetLParam(typeof(NativeMethods.NMHDR));
-            switch (nmhdr.code)
+            return nmhdr.code switch
             {
-                case ToolTipControl.TTN_SHOW:
-                    //System.Diagnostics.Debug.WriteLine("hdr TTN_SHOW");
-                    //System.Diagnostics.Trace.Assert(this.ToolTip.Handle == nmhdr.hwndFrom);
-                    return ToolTip.HandleShow(ref m);
-
-                case ToolTipControl.TTN_POP:
-                    //System.Diagnostics.Debug.WriteLine("hdr TTN_POP");
-                    //System.Diagnostics.Trace.Assert(this.ToolTip.Handle == nmhdr.hwndFrom);
-                    return ToolTip.HandlePop(ref m);
-
-                case ToolTipControl.TTN_GETDISPINFO:
-                    //System.Diagnostics.Debug.WriteLine("hdr TTN_GETDISPINFO");
-                    //System.Diagnostics.Trace.Assert(this.ToolTip.Handle == nmhdr.hwndFrom);
-                    return ToolTip.HandleGetDispInfo(ref m);
-            }
-
-            return false;
+                ToolTipControl.TTN_SHOW => ToolTip.HandleShow(ref m),//System.Diagnostics.Debug.WriteLine("hdr TTN_SHOW");
+                                                                     //System.Diagnostics.Trace.Assert(this.ToolTip.Handle == nmhdr.hwndFrom);
+                ToolTipControl.TTN_POP => ToolTip.HandlePop(ref m),//System.Diagnostics.Debug.WriteLine("hdr TTN_POP");
+                                                                   //System.Diagnostics.Trace.Assert(this.ToolTip.Handle == nmhdr.hwndFrom);
+                ToolTipControl.TTN_GETDISPINFO => ToolTip.HandleGetDispInfo(ref m),//System.Diagnostics.Debug.WriteLine("hdr TTN_GETDISPINFO");
+                                                                                   //System.Diagnostics.Trace.Assert(this.ToolTip.Handle == nmhdr.hwndFrom);
+                _ => false,
+            };
         }
 
         /// <summary>
@@ -990,63 +981,43 @@ namespace BrightIdeasSoftware.SubControls
             // Should the checkbox be drawn as disabled?
             if (isDisabled)
             {
-                switch (checkState)
+                return checkState switch
                 {
-                    case CheckState.Checked:
-                        return CheckBoxState.CheckedDisabled;
-
-                    case CheckState.Unchecked:
-                        return CheckBoxState.UncheckedDisabled;
-
-                    default:
-                        return CheckBoxState.MixedDisabled;
-                }
+                    CheckState.Checked => CheckBoxState.CheckedDisabled,
+                    CheckState.Unchecked => CheckBoxState.UncheckedDisabled,
+                    _ => CheckBoxState.MixedDisabled,
+                };
             }
 
             // Is the mouse button currently down?
             if (isPressed)
             {
-                switch (checkState)
+                return checkState switch
                 {
-                    case CheckState.Checked:
-                        return CheckBoxState.CheckedPressed;
-
-                    case CheckState.Unchecked:
-                        return CheckBoxState.UncheckedPressed;
-
-                    default:
-                        return CheckBoxState.MixedPressed;
-                }
+                    CheckState.Checked => CheckBoxState.CheckedPressed,
+                    CheckState.Unchecked => CheckBoxState.UncheckedPressed,
+                    _ => CheckBoxState.MixedPressed,
+                };
             }
 
             // Is the cursor currently over this checkbox?
             if (isHot)
             {
-                switch (checkState)
+                return checkState switch
                 {
-                    case CheckState.Checked:
-                        return CheckBoxState.CheckedHot;
-
-                    case CheckState.Unchecked:
-                        return CheckBoxState.UncheckedHot;
-
-                    default:
-                        return CheckBoxState.MixedHot;
-                }
+                    CheckState.Checked => CheckBoxState.CheckedHot,
+                    CheckState.Unchecked => CheckBoxState.UncheckedHot,
+                    _ => CheckBoxState.MixedHot,
+                };
             }
 
             // Not hot and not disabled -- just draw it normally
-            switch (checkState)
+            return checkState switch
             {
-                case CheckState.Checked:
-                    return CheckBoxState.CheckedNormal;
-
-                case CheckState.Unchecked:
-                    return CheckBoxState.UncheckedNormal;
-
-                default:
-                    return CheckBoxState.MixedNormal;
-            }
+                CheckState.Checked => CheckBoxState.CheckedNormal,
+                CheckState.Unchecked => CheckBoxState.UncheckedNormal,
+                _ => CheckBoxState.MixedNormal,
+            };
         }
 
         /// <summary>
@@ -1193,7 +1164,7 @@ namespace BrightIdeasSoftware.SubControls
             }
 
             g.FillPolygon(Brushes.SlateGray, pts);
-            r.Width = r.Width - triangleWidth;
+            r.Width -= triangleWidth;
             return r;
         }
 

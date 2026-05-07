@@ -64,7 +64,7 @@ namespace BrightIdeasSoftware.DragDrop
         public OLVDataObject(ObjectListView olv, IList modelObjects)
         {
             ListView = olv;
-            this.ModelObjects = modelObjects;
+            ModelObjects = modelObjects;
             IncludeHiddenColumns = olv.IncludeHiddenColumnsInDataTransfer;
             IncludeColumnHeaders = olv.IncludeColumnHeadersInCopy;
             CreateTextFormats();

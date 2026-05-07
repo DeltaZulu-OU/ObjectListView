@@ -183,10 +183,12 @@ namespace BrightIdeasSoftware.Utilities
             }
             sbHtml.AppendLine("</table>");
 
-            results = new Dictionary<ExportFormat, string>();
-            results[ExportFormat.TabSeparated] = sbText.ToString();
-            results[ExportFormat.CSV] = sbCsv.ToString();
-            results[ExportFormat.HTML] = sbHtml.ToString();
+            results = new Dictionary<ExportFormat, string>
+            {
+                [ExportFormat.TabSeparated] = sbText.ToString(),
+                [ExportFormat.CSV] = sbCsv.ToString(),
+                [ExportFormat.HTML] = sbHtml.ToString()
+            };
         }
 
         private delegate string StringToString(string str);

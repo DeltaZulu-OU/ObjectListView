@@ -230,7 +230,7 @@ namespace BrightIdeasSoftware
                 BeginUpdate();
 
                 // Uncheck anything that is no longer checked
-                var keys = new Object[CheckStateMap.Count];
+                var keys = new object[CheckStateMap.Count];
                 CheckStateMap.Keys.CopyTo(keys, 0);
                 foreach (var key in keys)
                 {
@@ -248,7 +248,7 @@ namespace BrightIdeasSoftware
 
                 EndUpdate();
 
-                Debug.WriteLine(String.Format("PERF - Setting virtual CheckedObjects on {2} objects took {0}ms / {1} ticks", sw.ElapsedMilliseconds, sw.ElapsedTicks, GetItemCount()));
+                Debug.WriteLine(string.Format("PERF - Setting virtual CheckedObjects on {2} objects took {0}ms / {1} ticks", sw.ElapsedMilliseconds, sw.ElapsedTicks, GetItemCount()));
             }
         }
 
@@ -458,7 +458,7 @@ namespace BrightIdeasSoftware
         /// </summary>
         /// <param name="modelObject">The model object to be found</param>
         /// <returns>The index of the object. -1 means the object was not present</returns>
-        public override int IndexOf(Object modelObject)
+        public override int IndexOf(object modelObject)
         {
             if (VirtualListDataSource == null || modelObject == null)
             {
@@ -960,10 +960,7 @@ namespace BrightIdeasSoftware
         protected void EnableVirtualGroups()
         {
             // We need to implement the IOwnerDataCallback interface
-            if (ownerDataCallbackImpl == null)
-            {
-                ownerDataCallbackImpl = new OwnerDataCallbackImpl(this);
-            }
+            ownerDataCallbackImpl ??= new OwnerDataCallbackImpl(this);
 
             const int LVM_SETOWNERDATACALLBACK = 0x10BB;
             var ptr = Marshal.GetComInterfaceForObject(ownerDataCallbackImpl, typeof(IOwnerDataCallback));

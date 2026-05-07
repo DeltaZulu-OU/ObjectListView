@@ -133,41 +133,20 @@ namespace BrightIdeasSoftware.Rendering
         /// <example>CalculateAlignedPosition(new Point(50, 100), new Size(10, 20), System.Drawing.ContentAlignment.TopLeft) -> Point(50, 100)</example>
         /// <example>CalculateAlignedPosition(new Point(50, 100), new Size(10, 20), System.Drawing.ContentAlignment.MiddleCenter) -> Point(45, 90)</example>
         /// <example>CalculateAlignedPosition(new Point(50, 100), new Size(10, 20), System.Drawing.ContentAlignment.BottomRight) -> Point(40, 80)</example>
-        public virtual Point CalculateAlignedPosition(Point pt, Size size, ContentAlignment corner)
+        public virtual Point CalculateAlignedPosition(Point pt, Size size, ContentAlignment corner) => corner switch
         {
-            switch (corner)
-            {
-                case ContentAlignment.TopLeft:
-                    return pt;
-
-                case ContentAlignment.TopCenter:
-                    return new Point(pt.X - size.Width / 2, pt.Y);
-
-                case ContentAlignment.TopRight:
-                    return new Point(pt.X - size.Width, pt.Y);
-
-                case ContentAlignment.MiddleLeft:
-                    return new Point(pt.X, pt.Y - size.Height / 2);
-
-                case ContentAlignment.MiddleCenter:
-                    return new Point(pt.X - size.Width / 2, pt.Y - size.Height / 2);
-
-                case ContentAlignment.MiddleRight:
-                    return new Point(pt.X - size.Width, pt.Y - size.Height / 2);
-
-                case ContentAlignment.BottomLeft:
-                    return new Point(pt.X, pt.Y - size.Height);
-
-                case ContentAlignment.BottomCenter:
-                    return new Point(pt.X - size.Width / 2, pt.Y - size.Height);
-
-                case ContentAlignment.BottomRight:
-                    return new Point(pt.X - size.Width, pt.Y - size.Height);
-            }
-
+            ContentAlignment.TopLeft => pt,
+            ContentAlignment.TopCenter => new Point(pt.X - size.Width / 2, pt.Y),
+            ContentAlignment.TopRight => new Point(pt.X - size.Width, pt.Y),
+            ContentAlignment.MiddleLeft => new Point(pt.X, pt.Y - size.Height / 2),
+            ContentAlignment.MiddleCenter => new Point(pt.X - size.Width / 2, pt.Y - size.Height / 2),
+            ContentAlignment.MiddleRight => new Point(pt.X - size.Width, pt.Y - size.Height / 2),
+            ContentAlignment.BottomLeft => new Point(pt.X, pt.Y - size.Height),
+            ContentAlignment.BottomCenter => new Point(pt.X - size.Width / 2, pt.Y - size.Height),
+            ContentAlignment.BottomRight => new Point(pt.X - size.Width, pt.Y - size.Height),
             // Should never reach here
-            return pt;
-        }
+            _ => pt,
+        };
 
         /// <summary>
         /// Calculate a rectangle that has the given size which is positioned so that
@@ -212,41 +191,20 @@ namespace BrightIdeasSoftware.Rendering
         /// <example>CalculateReferenceLocation(new Rectangle(0, 0, 50, 100), System.Drawing.ContentAlignment.TopLeft) -> Point(0, 0)</example>
         /// <example>CalculateReferenceLocation(new Rectangle(0, 0, 50, 100), System.Drawing.ContentAlignment.MiddleCenter) -> Point(25, 50)</example>
         /// <example>CalculateReferenceLocation(new Rectangle(0, 0, 50, 100), System.Drawing.ContentAlignment.BottomRight) -> Point(50, 100)</example>
-        public virtual Point CalculateCorner(Rectangle r, ContentAlignment corner)
+        public virtual Point CalculateCorner(Rectangle r, ContentAlignment corner) => corner switch
         {
-            switch (corner)
-            {
-                case ContentAlignment.TopLeft:
-                    return new Point(r.Left, r.Top);
-
-                case ContentAlignment.TopCenter:
-                    return new Point(r.X + r.Width / 2, r.Top);
-
-                case ContentAlignment.TopRight:
-                    return new Point(r.Right, r.Top);
-
-                case ContentAlignment.MiddleLeft:
-                    return new Point(r.Left, r.Top + r.Height / 2);
-
-                case ContentAlignment.MiddleCenter:
-                    return new Point(r.X + r.Width / 2, r.Top + r.Height / 2);
-
-                case ContentAlignment.MiddleRight:
-                    return new Point(r.Right, r.Top + r.Height / 2);
-
-                case ContentAlignment.BottomLeft:
-                    return new Point(r.Left, r.Bottom);
-
-                case ContentAlignment.BottomCenter:
-                    return new Point(r.X + r.Width / 2, r.Bottom);
-
-                case ContentAlignment.BottomRight:
-                    return new Point(r.Right, r.Bottom);
-            }
-
+            ContentAlignment.TopLeft => new Point(r.Left, r.Top),
+            ContentAlignment.TopCenter => new Point(r.X + r.Width / 2, r.Top),
+            ContentAlignment.TopRight => new Point(r.Right, r.Top),
+            ContentAlignment.MiddleLeft => new Point(r.Left, r.Top + r.Height / 2),
+            ContentAlignment.MiddleCenter => new Point(r.X + r.Width / 2, r.Top + r.Height / 2),
+            ContentAlignment.MiddleRight => new Point(r.Right, r.Top + r.Height / 2),
+            ContentAlignment.BottomLeft => new Point(r.Left, r.Bottom),
+            ContentAlignment.BottomCenter => new Point(r.X + r.Width / 2, r.Bottom),
+            ContentAlignment.BottomRight => new Point(r.Right, r.Bottom),
             // Should never reach here
-            return r.Location;
-        }
+            _ => r.Location,
+        };
 
         /// <summary>
         /// Given the item and the subitem, calculate its bounds.

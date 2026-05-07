@@ -452,10 +452,7 @@ namespace BrightIdeasSoftware.Rendering
          DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public object Aspect {
             get {
-                if (aspect == null)
-                {
-                    aspect = Column.GetValue(RowObject);
-                }
+                aspect ??= Column.GetValue(RowObject);
 
                 return aspect;
             }
@@ -673,20 +670,13 @@ namespace BrightIdeasSoftware.Rendering
         protected int AlignHorizontally(Rectangle outer, Rectangle inner)
         {
             var alignment = CellHorizontalAlignment;
-            switch (alignment)
+            return alignment switch
             {
-                case HorizontalAlignment.Left:
-                    return outer.Left + 1;
-
-                case HorizontalAlignment.Center:
-                    return outer.Left + (outer.Width - inner.Width) / 2;
-
-                case HorizontalAlignment.Right:
-                    return outer.Right - inner.Width - 1;
-
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
+                HorizontalAlignment.Left => outer.Left + 1,
+                HorizontalAlignment.Center => outer.Left + (outer.Width - inner.Width) / 2,
+                HorizontalAlignment.Right => outer.Right - inner.Width - 1,
+                _ => throw new ArgumentOutOfRangeException(),
+            };
         }
 
         /// <summary>
@@ -705,23 +695,13 @@ namespace BrightIdeasSoftware.Rendering
         /// <param name="outer"></param>
         /// <param name="innerHeight"></param>
         /// <returns></returns>
-        protected int AlignVertically(Rectangle outer, int innerHeight)
+        protected int AlignVertically(Rectangle outer, int innerHeight) => EffectiveCellVerticalAlignment switch
         {
-            switch (EffectiveCellVerticalAlignment)
-            {
-                case StringAlignment.Near:
-                    return outer.Top + 1;
-
-                case StringAlignment.Center:
-                    return outer.Top + (outer.Height - innerHeight) / 2;
-
-                case StringAlignment.Far:
-                    return outer.Bottom - innerHeight - 1;
-
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-        }
+            StringAlignment.Near => outer.Top + 1,
+            StringAlignment.Center => outer.Top + (outer.Height - innerHeight) / 2,
+            StringAlignment.Far => outer.Bottom - innerHeight - 1,
+            _ => throw new ArgumentOutOfRangeException(),
+        };
 
         /// <summary>
         /// Calculate the space that our rendering will occupy and then align that space
@@ -1333,7 +1313,7 @@ namespace BrightIdeasSoftware.Rendering
             var r = alignedContentRectangle;
 
             // Match tweaking from renderer
-            if (ColumnIsPrimary && CellHorizontalAlignment == HorizontalAlignment.Left && !(this is TreeListView.TreeRenderer))
+            if (ColumnIsPrimary && CellHorizontalAlignment == HorizontalAlignment.Left && this is not TreeListView.TreeRenderer)
             {
                 r.X += 3;
                 r.Width -= 1;
@@ -1563,47 +1543,32 @@ namespace BrightIdeasSoftware.Rendering
             // Should the checkbox be drawn as disabled?
             if (IsCheckBoxDisabled)
             {
-                switch (checkState)
+                return checkState switch
                 {
-                    case CheckState.Checked:
-                        return CheckBoxState.CheckedDisabled;
-
-                    case CheckState.Unchecked:
-                        return CheckBoxState.UncheckedDisabled;
-
-                    default:
-                        return CheckBoxState.MixedDisabled;
-                }
+                    CheckState.Checked => CheckBoxState.CheckedDisabled,
+                    CheckState.Unchecked => CheckBoxState.UncheckedDisabled,
+                    _ => CheckBoxState.MixedDisabled,
+                };
             }
 
             // Is the cursor currently over this checkbox?
             if (IsCheckboxHot)
             {
-                switch (checkState)
+                return checkState switch
                 {
-                    case CheckState.Checked:
-                        return CheckBoxState.CheckedHot;
-
-                    case CheckState.Unchecked:
-                        return CheckBoxState.UncheckedHot;
-
-                    default:
-                        return CheckBoxState.MixedHot;
-                }
+                    CheckState.Checked => CheckBoxState.CheckedHot,
+                    CheckState.Unchecked => CheckBoxState.UncheckedHot,
+                    _ => CheckBoxState.MixedHot,
+                };
             }
 
             // Not hot and not disabled -- just draw it normally
-            switch (checkState)
+            return checkState switch
             {
-                case CheckState.Checked:
-                    return CheckBoxState.CheckedNormal;
-
-                case CheckState.Unchecked:
-                    return CheckBoxState.UncheckedNormal;
-
-                default:
-                    return CheckBoxState.MixedNormal;
-            }
+                CheckState.Checked => CheckBoxState.CheckedNormal,
+                CheckState.Unchecked => CheckBoxState.UncheckedNormal,
+                _ => CheckBoxState.MixedNormal,
+            };
         }
 
         /// <summary>
@@ -1861,20 +1826,13 @@ namespace BrightIdeasSoftware.Rendering
         /// <exception cref="ArgumentOutOfRangeException"></exception>
         protected TextFormatFlags CellVerticalAlignmentAsTextFormatFlag {
             get {
-                switch (EffectiveCellVerticalAlignment)
+                return EffectiveCellVerticalAlignment switch
                 {
-                    case StringAlignment.Near:
-                        return TextFormatFlags.Top;
-
-                    case StringAlignment.Center:
-                        return TextFormatFlags.VerticalCenter;
-
-                    case StringAlignment.Far:
-                        return TextFormatFlags.Bottom;
-
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
+                    StringAlignment.Near => TextFormatFlags.Top,
+                    StringAlignment.Center => TextFormatFlags.VerticalCenter,
+                    StringAlignment.Far => TextFormatFlags.Bottom,
+                    _ => throw new ArgumentOutOfRangeException(),
+                };
             }
         }
 
@@ -2622,10 +2580,7 @@ namespace BrightIdeasSoftware.Rendering
         /// </summary>
         protected Timer Tickler {
             get {
-                if (tickler == null)
-                {
-                    tickler = new Timer(new TimerCallback(OnTimer), null, Timeout.Infinite, Timeout.Infinite);
-                }
+                tickler ??= new Timer(new TimerCallback(OnTimer), null, Timeout.Infinite, Timeout.Infinite);
 
                 return tickler;
             }
@@ -3783,10 +3738,7 @@ namespace BrightIdeasSoftware.Rendering
                 return string.Empty;
             }
 
-            if (descriptionGetter == null)
-            {
-                descriptionGetter = new Munger(DescriptionAspectName);
-            }
+            descriptionGetter ??= new Munger(DescriptionAspectName);
 
             return descriptionGetter.GetValue(model) as string;
         }

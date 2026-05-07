@@ -97,7 +97,7 @@ namespace BrightIdeasSoftware
         /// </remarks>
         [Category("Data"),
         TypeConverter("System.Windows.Forms.Design.DataSourceConverter, System.Design")]
-        public virtual Object DataSource {
+        public virtual object DataSource {
             get => Adapter.DataSource; set => Adapter.DataSource = value;
         }
 
@@ -122,10 +122,7 @@ namespace BrightIdeasSoftware
         /// </summary>
         protected DataSourceAdapter Adapter {
             get {
-                if (adapter == null)
-                {
-                    adapter = CreateDataSourceAdapter();
-                }
+                adapter ??= CreateDataSourceAdapter();
 
                 return adapter;
             }

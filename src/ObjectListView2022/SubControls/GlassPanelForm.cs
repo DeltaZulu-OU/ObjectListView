@@ -138,10 +138,7 @@ namespace BrightIdeasSoftware.SubControls
             objectListView.ParentChanged += new EventHandler(objectListView_ParentChanged);
 
             // Collect our ancestors in the widget hierachy
-            if (ancestors == null)
-            {
-                ancestors = new List<Control>();
-            }
+            ancestors ??= new List<Control>();
 
             var parent = objectListView.Parent;
             while (parent != null)

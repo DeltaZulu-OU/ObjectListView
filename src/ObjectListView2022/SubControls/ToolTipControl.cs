@@ -415,17 +415,19 @@ namespace BrightIdeasSoftware.SubControls
                 return;
             }
 
-            settings = new Hashtable();
-            settings["IsBalloon"] = IsBalloon;
-            settings["HasBorder"] = HasBorder;
-            settings["BackColor"] = BackColor;
-            settings["ForeColor"] = ForeColor;
-            settings["Title"] = Title;
-            settings["StandardIcon"] = StandardIcon;
-            settings["AutoPopDelay"] = AutoPopDelay;
-            settings["InitialDelay"] = InitialDelay;
-            settings["ReshowDelay"] = ReshowDelay;
-            settings["Font"] = Font;
+            settings = new Hashtable
+            {
+                ["IsBalloon"] = IsBalloon,
+                ["HasBorder"] = HasBorder,
+                ["BackColor"] = BackColor,
+                ["ForeColor"] = ForeColor,
+                ["Title"] = Title,
+                ["StandardIcon"] = StandardIcon,
+                ["AutoPopDelay"] = AutoPopDelay,
+                ["InitialDelay"] = InitialDelay,
+                ["ReshowDelay"] = ReshowDelay,
+                ["Font"] = Font
+            };
         }
 
         private Hashtable settings;

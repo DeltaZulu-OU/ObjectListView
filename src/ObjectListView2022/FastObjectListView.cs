@@ -421,7 +421,7 @@ namespace BrightIdeasSoftware
             }
         }
 
-        private readonly Dictionary<Object, int> objectsToIndexMap = new Dictionary<Object, int>();
+        private readonly Dictionary<object, int> objectsToIndexMap = new Dictionary<object, int>();
 
         /// <summary>
         /// Build our filtered list from our full list.

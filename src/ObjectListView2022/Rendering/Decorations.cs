@@ -534,10 +534,7 @@ namespace BrightIdeasSoftware.Rendering
                 useLightbox = value;
                 if (useLightbox)
                 {
-                    if (FillBrush == null)
-                    {
-                        FillBrush = new SolidBrush(Color.FromArgb(64, Color.Black));
-                    }
+                    FillBrush ??= new SolidBrush(Color.FromArgb(64, Color.Black));
                 }
             }
         }

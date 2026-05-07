@@ -54,7 +54,7 @@ namespace BrightIdeasSoftware.CellEditing
         /// <param name="description"></param>
         public ComboBoxItem(object key, string description)
         {
-            this.Key = key;
+            Key = key;
             this.description = description;
         }
 
@@ -200,9 +200,11 @@ namespace BrightIdeasSoftware.CellEditing
             DropDownStyle = ComboBoxStyle.DropDownList;
             ValueMember = "Key";
 
-            var values = new ArrayList();
-            values.Add(new ComboBoxItem(false, "False"));
-            values.Add(new ComboBoxItem(true, "True"));
+            var values = new ArrayList
+            {
+                new ComboBoxItem(false, "False"),
+                new ComboBoxItem(true, "True")
+            };
 
             DataSource = values;
         }
@@ -218,15 +220,12 @@ namespace BrightIdeasSoftware.CellEditing
         /// Gets or sets the value shown by this editor
         /// </summary>
         public bool? Value {
-            get {
-                switch (CheckState)
-                {
-                    case CheckState.Checked: return true;
-                    case CheckState.Indeterminate: return null;
-                    case CheckState.Unchecked:
-                    default: return false;
-                }
-            }
+            get => CheckState switch
+            {
+                CheckState.Checked => true,
+                CheckState.Indeterminate => null,
+                _ => false,
+            };
             set {
                 if (value.HasValue)
                 {
@@ -243,15 +242,12 @@ namespace BrightIdeasSoftware.CellEditing
         /// Gets or sets how the checkbox will be aligned
         /// </summary>
         public new HorizontalAlignment TextAlign {
-            get {
-                switch (CheckAlign)
-                {
-                    case ContentAlignment.MiddleRight: return HorizontalAlignment.Right;
-                    case ContentAlignment.MiddleCenter: return HorizontalAlignment.Center;
-                    case ContentAlignment.MiddleLeft:
-                    default: return HorizontalAlignment.Left;
-                }
-            }
+            get => CheckAlign switch
+            {
+                ContentAlignment.MiddleRight => HorizontalAlignment.Right,
+                ContentAlignment.MiddleCenter => HorizontalAlignment.Center,
+                _ => HorizontalAlignment.Left,
+            };
             set {
                 switch (value)
                 {

@@ -310,7 +310,7 @@ namespace BrightIdeasSoftware
             get {
                 // We want to change the first action list so it only has the commands we want
                 var actionLists = listViewDesigner.ActionLists;
-                if (actionLists.Count > 0 && !(actionLists[0] is ListViewActionListAdapter))
+                if (actionLists.Count > 0 && actionLists[0] is not ListViewActionListAdapter)
                 {
                     actionLists[0] = new ListViewActionListAdapter(this, actionLists[0]);
                 }

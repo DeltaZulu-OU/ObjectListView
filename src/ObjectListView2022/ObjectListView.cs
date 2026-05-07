@@ -895,13 +895,10 @@ namespace BrightIdeasSoftware
         /// </summary>
         public static SimpleItemStyle DefaultDisabledItemStyle {
             get {
-                if (sDefaultDisabledItemStyle == null)
-                {
-                    sDefaultDisabledItemStyle = new SimpleItemStyle
+                sDefaultDisabledItemStyle ??= new SimpleItemStyle
                     {
                         ForeColor = Color.DarkGray
                     };
-                }
                 return sDefaultDisabledItemStyle;
             }
         }
@@ -913,13 +910,10 @@ namespace BrightIdeasSoftware
         /// </summary>
         public static HotItemStyle DefaultHotItemStyle {
             get {
-                if (sDefaultHotItemStyle == null)
-                {
-                    sDefaultHotItemStyle = new HotItemStyle
+                sDefaultHotItemStyle ??= new HotItemStyle
                     {
                         BackColor = Color.FromArgb(224, 235, 253)
                     };
-                }
                 return sDefaultHotItemStyle;
             }
         }
@@ -1078,7 +1072,7 @@ namespace BrightIdeasSoftware
         [Browsable(false),
          DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public CellEditKeyEngine CellEditKeyEngine {
-            get => cellEditKeyEngine ?? (cellEditKeyEngine = new CellEditKeyEngine()); set => cellEditKeyEngine = value;
+            get => cellEditKeyEngine ??= new CellEditKeyEngine(); set => cellEditKeyEngine = value;
         }
 
         private CellEditKeyEngine cellEditKeyEngine;
@@ -1249,13 +1243,13 @@ namespace BrightIdeasSoftware
         /// </summary>
         [Browsable(false),
         DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public virtual Object CheckedObject {
+        public virtual object CheckedObject {
             get {
                 var checkedObjects = CheckedObjects;
                 return checkedObjects.Count == 1 ? checkedObjects[0] : null;
             }
 
-            set => CheckedObjects = new ArrayList(new Object[] { value });
+            set => CheckedObjects = new ArrayList(new object[] { value });
         }
 
         /// <summary>
@@ -1323,7 +1317,7 @@ namespace BrightIdeasSoftware
                 }
                 EndUpdate();
 
-                Debug.WriteLine(String.Format("PERF - Setting CheckedObjects on {2} objects took {0}ms / {1} ticks", sw.ElapsedMilliseconds, sw.ElapsedTicks, GetItemCount()));
+                Debug.WriteLine(string.Format("PERF - Setting CheckedObjects on {2} objects took {0}ms / {1} ticks", sw.ElapsedMilliseconds, sw.ElapsedTicks, GetItemCount()));
             }
         }
 
@@ -1386,7 +1380,7 @@ namespace BrightIdeasSoftware
                     var hdrBounds = new Rectangle();
                     NativeMethods.GetClientRect(HeaderControl.Handle, ref hdrBounds);
                     r.Y = hdrBounds.Height;
-                    r.Height = r.Height - hdrBounds.Height;
+                    r.Height -= hdrBounds.Height;
                 }
 
                 return r;
@@ -1496,8 +1490,10 @@ namespace BrightIdeasSoftware
         /// <param name="model">Must not be null</param>
         public void DisableObject(object model)
         {
-            var list = new ArrayList();
-            list.Add(model);
+            var list = new ArrayList
+            {
+                model
+            };
             DisableObjects(list);
         }
 
@@ -1654,7 +1650,7 @@ namespace BrightIdeasSoftware
          Description("When the list has no items, show this message in the control"),
          DefaultValue(null),
          Localizable(true)]
-        public virtual String EmptyListMsg {
+        public virtual string EmptyListMsg {
             get => EmptyListMsgOverlay is not TextOverlay overlay ? null : overlay.Text;
             set {
                 if (EmptyListMsgOverlay is TextOverlay overlay)
@@ -1755,7 +1751,7 @@ namespace BrightIdeasSoftware
         /// </remarks>
         [Browsable(false),
          DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public virtual Object FocusedObject {
+        public virtual object FocusedObject {
             get => FocusedItem == null ? null : ((OLVListItem)FocusedItem).RowObject;
             set {
                 var item = ModelToItem(value);
@@ -1819,7 +1815,7 @@ namespace BrightIdeasSoftware
         /// Return this.GroupWithItemCountFormat or a reasonable default
         /// </summary>
         [Browsable(false)]
-        public virtual string GroupWithItemCountFormatOrDefault => String.IsNullOrEmpty(GroupWithItemCountFormat) ? "{0} [{1} items]" : GroupWithItemCountFormat;
+        public virtual string GroupWithItemCountFormatOrDefault => string.IsNullOrEmpty(GroupWithItemCountFormat) ? "{0} [{1} items]" : GroupWithItemCountFormat;
 
         /// <summary>
         /// Gets how the group label should be formatted when a group contains only a single item
@@ -1846,7 +1842,7 @@ namespace BrightIdeasSoftware
         /// Gets GroupWithItemCountSingularFormat or a reasonable default
         /// </summary>
         [Browsable(false)]
-        public virtual string GroupWithItemCountSingularFormatOrDefault => String.IsNullOrEmpty(GroupWithItemCountSingularFormat) ? "{0} [{1} item]" : GroupWithItemCountSingularFormat;
+        public virtual string GroupWithItemCountSingularFormatOrDefault => string.IsNullOrEmpty(GroupWithItemCountSingularFormat) ? "{0} [{1} item]" : GroupWithItemCountSingularFormat;
 
         /// <summary>
         /// Gets or sets whether or not the groups in this ObjectListView should be collapsible.
@@ -1864,7 +1860,7 @@ namespace BrightIdeasSoftware
         /// Does this listview have a message that should be drawn when the list is empty?
         /// </summary>
         [Browsable(false)]
-        public virtual bool HasEmptyListMsg => !String.IsNullOrEmpty(EmptyListMsg);
+        public virtual bool HasEmptyListMsg => !string.IsNullOrEmpty(EmptyListMsg);
 
         /// <summary>
         /// Get whether there are any overlays to be drawn
@@ -1872,13 +1868,13 @@ namespace BrightIdeasSoftware
         [Browsable(false)]
         public bool HasOverlays => (Overlays.Count > 2 ||
                     imageOverlay.Image != null ||
-                    !String.IsNullOrEmpty(textOverlay.Text));
+                    !string.IsNullOrEmpty(textOverlay.Text));
 
         /// <summary>
         /// Gets the header control for the ListView
         /// </summary>
         [Browsable(false)]
-        public HeaderControl HeaderControl => headerControl ?? (headerControl = new HeaderControl(this));
+        public HeaderControl HeaderControl => headerControl ??= new HeaderControl(this);
 
         private HeaderControl headerControl;
 
@@ -1897,10 +1893,7 @@ namespace BrightIdeasSoftware
                     return;
                 }
 
-                if (HeaderFormatStyle == null)
-                {
-                    HeaderFormatStyle = new HeaderFormatStyle();
-                }
+                HeaderFormatStyle ??= new HeaderFormatStyle();
 
                 HeaderFormatStyle.SetFont(value);
             }
@@ -2586,11 +2579,11 @@ namespace BrightIdeasSoftware
         /// Gets or sets a dictionary that remembers the check state of model objects
         /// </summary>
         /// <remarks>This is used when PersistentCheckBoxes is true and for virtual lists.</remarks>
-        protected Dictionary<Object, CheckState> CheckStateMap {
-            get => checkStateMap ?? (checkStateMap = new Dictionary<object, CheckState>()); set => checkStateMap = value;
+        protected Dictionary<object, CheckState> CheckStateMap {
+            get => checkStateMap ??= new Dictionary<object, CheckState>(); set => checkStateMap = value;
         }
 
-        private Dictionary<Object, CheckState> checkStateMap;
+        private Dictionary<object, CheckState> checkStateMap;
 
         /// <summary>
         /// Which column did we last sort by
@@ -2908,7 +2901,7 @@ namespace BrightIdeasSoftware
         /// </summary>
         [Browsable(false),
          DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public virtual Object SelectedObject {
+        public virtual object SelectedObject {
             get => SelectedIndices.Count == 1 ? GetModelObject(SelectedIndices[0]) : null;
             set {
                 // If the given model is already selected, don't do anything else (prevents an flicker)
@@ -3745,7 +3738,7 @@ namespace BrightIdeasSoftware
                 }
                 else
                 {
-                    CheckStateGetter = delegate (Object x) {
+                    CheckStateGetter = delegate (object x) {
                         return value(x) ? CheckState.Checked : CheckState.Unchecked;
                     };
                 }
@@ -3772,7 +3765,7 @@ namespace BrightIdeasSoftware
                 }
                 else
                 {
-                    CheckStatePutter = delegate (Object x, CheckState state) {
+                    CheckStatePutter = delegate (object x, CheckState state) {
                         var isChecked = (state == CheckState.Checked);
                         return value(x, isChecked) ? CheckState.Checked : CheckState.Unchecked;
                     };
@@ -3857,7 +3850,7 @@ namespace BrightIdeasSoftware
             get => checkedAspectName;
             set {
                 checkedAspectName = value;
-                if (String.IsNullOrEmpty(checkedAspectName))
+                if (string.IsNullOrEmpty(checkedAspectName))
                 {
                     checkedAspectMunger = null;
                     CheckStateGetter = null;
@@ -3866,7 +3859,7 @@ namespace BrightIdeasSoftware
                 else
                 {
                     checkedAspectMunger = new Munger(checkedAspectName);
-                    CheckStateGetter = delegate (Object modelObject) {
+                    CheckStateGetter = delegate (object modelObject) {
                         var result = checkedAspectMunger.GetValue(modelObject) as bool?;
                         if (result.HasValue)
                         {
@@ -3875,7 +3868,7 @@ namespace BrightIdeasSoftware
 
                         return TriStateCheckBoxes ? CheckState.Indeterminate : CheckState.Unchecked;
                     };
-                    CheckStatePutter = delegate (Object modelObject, CheckState newValue) {
+                    CheckStatePutter = delegate (object modelObject, CheckState newValue) {
                         if (TriStateCheckBoxes && newValue == CheckState.Indeterminate)
                         {
                             checkedAspectMunger.PutValue(modelObject, null);
@@ -4165,10 +4158,10 @@ namespace BrightIdeasSoftware
             // Getting the Count forces any internal cache of the ListView to be flushed. Without
             // this, iterating over the Items will not work correctly if the ListView handle
             // has not yet been created.
-#pragma warning disable 168
             // ReSharper disable once UnusedVariable
+#pragma warning disable IDE0059 // Unnecessary assignment of a value
             var dummy = Items.Count;
-#pragma warning restore 168
+#pragma warning restore IDE0059 // Unnecessary assignment of a value
 
             // Collect all the information that governs the creation of groups
             var parms = CollectGroupingParameters(groupByColumn, groupByOrder,
@@ -4188,10 +4181,7 @@ namespace BrightIdeasSoftware
             }
 
             // If the event didn't create them for us, use our default strategy
-            if (args.Groups == null)
-            {
-                args.Groups = MakeGroups(parms);
-            }
+            args.Groups ??= MakeGroups(parms);
 
             // Give the world a chance to munge the groups before they are created
             OnAboutToCreateGroups(args);
@@ -4278,13 +4268,13 @@ namespace BrightIdeasSoftware
             foreach (var key in map.Keys)
             {
                 var title = parms.GroupByColumn.ConvertGroupKeyToTitle(key);
-                if (!String.IsNullOrEmpty(parms.TitleFormat))
+                if (!string.IsNullOrEmpty(parms.TitleFormat))
                 {
                     var count = map[key].Count;
                     var format = (count == 1 ? parms.TitleSingularFormat : parms.TitleFormat);
                     try
                     {
-                        title = String.Format(format, title, count);
+                        title = string.Format(format, title, count);
                     }
                     catch (FormatException)
                     {
@@ -4347,15 +4337,13 @@ namespace BrightIdeasSoftware
                 return;
             }
 
-            var sw = Stopwatch.StartNew();
-
             ApplyExtendedStyles();
             ClearHotItem();
             var previousTopIndex = TopItemIndex;
             var currentScrollPosition = LowLevelScrollPosition;
 
             IList previousSelection = new ArrayList();
-            Object previousFocus = null;
+            object previousFocus = null;
             if (shouldPreserveState && objects != null)
             {
                 previousSelection = SelectedObjects;
@@ -4613,7 +4601,7 @@ namespace BrightIdeasSoftware
         {
             if (objectsToConvert.Count == 0)
             {
-                return String.Empty;
+                return string.Empty;
             }
 
             var exporter = new OLVExporter(this, objectsToConvert);
@@ -6941,7 +6929,7 @@ namespace BrightIdeasSoftware
                 if (MouseMoveHitTest.Item.Enabled || MouseMoveHitTest.Column.EnableButtonWhenItemIsDisabled)
                 {
                     var buttonText = MouseMoveHitTest.Column.GetStringValue(MouseMoveHitTest.RowObject);
-                    if (!String.IsNullOrEmpty(buttonText))
+                    if (!string.IsNullOrEmpty(buttonText))
                     {
                         Invalidate();
                         var args = new CellClickEventArgs();
@@ -7186,8 +7174,8 @@ namespace BrightIdeasSoftware
                         {
                             // Remove the state indicies so that we don't trigger the OnItemChecked method
                             // when we call our base method after exiting this method
-                            nmlistviewPtr2.uOldState = (nmlistviewPtr2.uOldState & 0x0FFF);
-                            nmlistviewPtr2.uNewState = (nmlistviewPtr2.uNewState & 0x0FFF);
+                            nmlistviewPtr2.uOldState &= 0x0FFF;
+                            nmlistviewPtr2.uNewState &= 0x0FFF;
                             Marshal.StructureToPtr(nmlistviewPtr2, m.LParam, false);
                         }
                         else
@@ -7212,7 +7200,7 @@ namespace BrightIdeasSoftware
                                             NativeMethods.DeselectOneItem(this, modelIndex);
                                         }
                                     }
-                                    System.Diagnostics.Debug.WriteLine(String.Format("PERF - Deselecting took {0}ms / {1} ticks", sw.ElapsedMilliseconds, sw.ElapsedTicks));
+                                    System.Diagnostics.Debug.WriteLine(string.Format("PERF - Deselecting took {0}ms / {1} ticks", sw.ElapsedMilliseconds, sw.ElapsedTicks));
                                 }
                                 else
                                 {
@@ -7267,23 +7255,13 @@ namespace BrightIdeasSoftware
 
         private bool skipNextHitTest;
 
-        private CheckState CalculateCheckState(int state)
+        private CheckState CalculateCheckState(int state) => ((state & 0xf000) >> 12) switch
         {
-            switch ((state & 0xf000) >> 12)
-            {
-                case 1:
-                    return CheckState.Unchecked;
-
-                case 2:
-                    return CheckState.Checked;
-
-                case 3:
-                    return CheckState.Indeterminate;
-
-                default:
-                    return CheckState.Checked;
-            }
-        }
+            1 => CheckState.Unchecked,
+            2 => CheckState.Checked,
+            3 => CheckState.Indeterminate,
+            _ => CheckState.Checked,
+        };
 
         /// <summary>
         /// In the notification messages, we handle attempts to change the width of our columns
@@ -7742,15 +7720,15 @@ namespace BrightIdeasSoftware
                 strip.Items.Add(new ToolStripSeparator());
             }
 
-            var label = String.Format(MenuLabelSortAscending, column.Text);
-            if (column.Sortable && !String.IsNullOrEmpty(label))
+            var label = string.Format(MenuLabelSortAscending, column.Text);
+            if (column.Sortable && !string.IsNullOrEmpty(label))
             {
                 strip.Items.Add(label, ObjectListView.SortAscendingImage, (EventHandler)delegate (object sender, EventArgs args) {
                     Sort(column, SortOrder.Ascending);
                 });
             }
-            label = String.Format(MenuLabelSortDescending, column.Text);
-            if (column.Sortable && !String.IsNullOrEmpty(label))
+            label = string.Format(MenuLabelSortDescending, column.Text);
+            if (column.Sortable && !string.IsNullOrEmpty(label))
             {
                 strip.Items.Add(label, ObjectListView.SortDescendingImage, (EventHandler)delegate (object sender, EventArgs args) {
                     Sort(column, SortOrder.Descending);
@@ -7758,8 +7736,8 @@ namespace BrightIdeasSoftware
             }
             if (CanShowGroups)
             {
-                label = String.Format(MenuLabelGroupBy, column.Text);
-                if (column.Groupable && !String.IsNullOrEmpty(label))
+                label = string.Format(MenuLabelGroupBy, column.Text);
+                if (column.Groupable && !string.IsNullOrEmpty(label))
                 {
                     strip.Items.Add(label, null, (EventHandler)delegate (object sender, EventArgs args) {
                         ShowGroups = true;
@@ -7773,8 +7751,8 @@ namespace BrightIdeasSoftware
             {
                 if (AlwaysGroupByColumn == column)
                 {
-                    label = String.Format(MenuLabelUnlockGroupingOn, column.Text);
-                    if (!String.IsNullOrEmpty(label))
+                    label = string.Format(MenuLabelUnlockGroupingOn, column.Text);
+                    if (!string.IsNullOrEmpty(label))
                     {
                         strip.Items.Add(label, null, (EventHandler)delegate (object sender, EventArgs args) {
                             AlwaysGroupByColumn = null;
@@ -7785,8 +7763,8 @@ namespace BrightIdeasSoftware
                 }
                 else
                 {
-                    label = String.Format(MenuLabelLockGroupingOn, column.Text);
-                    if (column.Groupable && !String.IsNullOrEmpty(label))
+                    label = string.Format(MenuLabelLockGroupingOn, column.Text);
+                    if (column.Groupable && !string.IsNullOrEmpty(label))
                     {
                         strip.Items.Add(label, null, (EventHandler)delegate (object sender, EventArgs args) {
                             ShowGroups = true;
@@ -7796,8 +7774,8 @@ namespace BrightIdeasSoftware
                         });
                     }
                 }
-                label = String.Format(MenuLabelTurnOffGroups, column.Text);
-                if (!String.IsNullOrEmpty(label))
+                label = string.Format(MenuLabelTurnOffGroups, column.Text);
+                if (!string.IsNullOrEmpty(label))
                 {
                     strip.Items.Add(label, null, (EventHandler)delegate (object sender, EventArgs args) {
                         ShowGroups = false;
@@ -7807,8 +7785,8 @@ namespace BrightIdeasSoftware
             }
             else
             {
-                label = String.Format(MenuLabelUnsort, column.Text);
-                if (column.Sortable && !String.IsNullOrEmpty(label) && PrimarySortOrder != SortOrder.None)
+                label = string.Format(MenuLabelUnsort, column.Text);
+                if (column.Sortable && !string.IsNullOrEmpty(label) && PrimarySortOrder != SortOrder.None)
                 {
                     strip.Items.Add(label, null, (EventHandler)delegate (object sender, EventArgs args) {
                         Unsort();
@@ -7829,7 +7807,7 @@ namespace BrightIdeasSoftware
             System.Diagnostics.Debug.Assert(SelectColumnsOnRightClickBehaviour != ColumnSelectBehaviour.None);
 
             // Append a separator if the menu isn't empty and the last item isn't already a separator
-            if (strip.Items.Count > 0 && (!(strip.Items[strip.Items.Count - 1] is ToolStripSeparator)))
+            if (strip.Items.Count > 0 && (strip.Items[strip.Items.Count - 1] is not ToolStripSeparator))
             {
                 strip.Items.Add(new ToolStripSeparator());
             }
@@ -8232,7 +8210,7 @@ namespace BrightIdeasSoftware
         /// </summary>
         /// <param name="modelObject"></param>
         /// <returns></returns>
-        protected virtual CheckState? GetCheckState(Object modelObject)
+        protected virtual CheckState? GetCheckState(object modelObject)
         {
             if (CheckStateGetter != null)
             {
@@ -8250,7 +8228,7 @@ namespace BrightIdeasSoftware
         /// <param name="state"></param>
         /// <returns>The check state that was recorded and that should be used to update
         /// the control.</returns>
-        protected virtual CheckState PutCheckState(Object modelObject, CheckState state)
+        protected virtual CheckState PutCheckState(object modelObject, CheckState state)
         {
             if (CheckStatePutter != null)
             {
@@ -8380,7 +8358,7 @@ namespace BrightIdeasSoftware
                 }
             }
 
-            Debug.WriteLine(String.Format("PERF - Changing row checkboxes on {2} objects took {0}ms / {1} ticks", sw.ElapsedMilliseconds, sw.ElapsedTicks, GetItemCount()));
+            Debug.WriteLine(string.Format("PERF - Changing row checkboxes on {2} objects took {0}ms / {1} ticks", sw.ElapsedMilliseconds, sw.ElapsedTicks, GetItemCount()));
         }
 
         private void UpdateAllPrimaryCheckBoxes(OLVColumn column)
@@ -8666,7 +8644,7 @@ namespace BrightIdeasSoftware
         /// Ensure that the given model object is visible
         /// </summary>
         /// <param name="modelObject">The model object to be revealed</param>
-        public virtual void EnsureModelVisible(Object modelObject)
+        public virtual void EnsureModelVisible(object modelObject)
         {
             var index = IndexOf(modelObject);
             if (index >= 0)
@@ -8710,7 +8688,7 @@ namespace BrightIdeasSoftware
         /// </summary>
         /// <param name="modelObject">The model object to be found</param>
         /// <returns>The index of the object. -1 means the object was not present</returns>
-        public virtual int IndexOf(Object modelObject)
+        public virtual int IndexOf(object modelObject)
         {
             for (var i = 0; i < GetItemCount(); i++)
             {
@@ -9069,7 +9047,7 @@ namespace BrightIdeasSoftware
             // Fill in default values, if the parameters don't make sense
             if (ShowGroups)
             {
-                columnToSort = columnToSort ?? GetColumn(0);
+                columnToSort ??= GetColumn(0);
                 if (order == SortOrder.None)
                 {
                     order = Sorting;
@@ -9212,14 +9190,11 @@ namespace BrightIdeasSoftware
             }
 
             var il = SmallImageList;
-            if (il == null)
-            {
-                il = new ImageList
+            il ??= new ImageList
                 {
                     ImageSize = new Size(16, 16),
                     ColorDepth = ColorDepth.Depth32Bit
                 };
-            }
 
             // This arrangement of points works well with (16,16) images, and OK with others
             var midX = il.ImageSize.Width / 2;
@@ -9276,12 +9251,12 @@ namespace BrightIdeasSoftware
                 return currentState;
             }
 
-            switch (currentState)
+            return currentState switch
             {
-                case CheckState.Checked: return isTriState ? CheckState.Indeterminate : CheckState.Unchecked;
-                case CheckState.Indeterminate: return CheckState.Unchecked;
-                default: return CheckState.Checked;
-            }
+                CheckState.Checked => isTriState ? CheckState.Indeterminate : CheckState.Unchecked,
+                CheckState.Indeterminate => CheckState.Unchecked,
+                _ => CheckState.Checked,
+            };
         }
 
         /// <summary>
@@ -9413,7 +9388,7 @@ namespace BrightIdeasSoftware
                 }
 
                 var column = GetColumn(i);
-                if (column.Hyperlink && !String.IsNullOrEmpty(subItem.Url))
+                if (column.Hyperlink && !string.IsNullOrEmpty(subItem.Url))
                 {
                     ApplyCellStyle(olvi, i, IsUrlVisited(subItem.Url) ? HyperlinkStyle.Visited : HyperlinkStyle.Normal);
                 }
@@ -9440,19 +9415,19 @@ namespace BrightIdeasSoftware
         /// </summary>
         /// <param name="imageSelector"></param>
         /// <returns>Index of the image in the imageList, or -1</returns>
-        protected virtual int GetActualImageIndex(Object imageSelector)
+        protected virtual int GetActualImageIndex(object imageSelector)
         {
             if (imageSelector == null)
             {
                 return -1;
             }
 
-            if (imageSelector is Int32)
+            if (imageSelector is int imgSelector)
             {
-                return (int)imageSelector;
+                return imgSelector;
             }
 
-            if (imageSelector is String imageSelectorAsString && SmallImageList != null)
+            if (imageSelector is string imageSelectorAsString && SmallImageList != null)
             {
                 return SmallImageList.Images.IndexOfKey(imageSelectorAsString);
             }
@@ -9465,7 +9440,7 @@ namespace BrightIdeasSoftware
         /// </summary>
         /// <param name="columnIndex">The column index whose tool tip is to be fetched</param>
         /// <returns>A string or null if no tool tip is to be shown</returns>
-        public virtual String GetHeaderToolTip(int columnIndex)
+        public virtual string GetHeaderToolTip(int columnIndex)
         {
             var column = GetColumn(columnIndex);
             if (column == null)
@@ -9488,7 +9463,7 @@ namespace BrightIdeasSoftware
         /// <param name="columnIndex">The column index whose tool tip is to be fetched</param>
         /// <param name="rowIndex">The row index whose tool tip is to be fetched</param>
         /// <returns>A string or null if no tool tip is to be shown</returns>
-        public virtual String GetCellToolTip(int columnIndex, int rowIndex)
+        public virtual string GetCellToolTip(int columnIndex, int rowIndex)
         {
             if (CellToolTipGetter != null)
             {
@@ -9499,7 +9474,7 @@ namespace BrightIdeasSoftware
             if (columnIndex >= 0)
             {
                 var subItem = GetSubItem(rowIndex, columnIndex);
-                if (subItem != null && !String.IsNullOrEmpty(subItem.Url) && subItem.Url != subItem.Text &&
+                if (subItem != null && !string.IsNullOrEmpty(subItem.Url) && subItem.Url != subItem.Text &&
                     HotCellHitLocation == HitTestLocation.Text)
                 {
                     return subItem.Url;
@@ -9539,11 +9514,10 @@ namespace BrightIdeasSoftware
         {
             // If this method is called during a BeginUpdate/EndUpdate pair, changes to the
             // Items collection are cached. Getting the Count flushes that cache.
-#pragma warning disable 168
             // ReSharper disable once UnusedVariable
+#pragma warning disable IDE0059 // Unnecessary assignment of a value
             var count = Items.Count;
-#pragma warning restore 168
-
+#pragma warning restore IDE0059 // Unnecessary assignment of a value
             var i = 0;
             if (ShowGroups)
             {
@@ -9912,14 +9886,11 @@ namespace BrightIdeasSoftware
                 return;
             }
 
-            if (StateImageList == null)
-            {
-                StateImageList = new ImageList
+            StateImageList ??= new ImageList
                 {
                     ImageSize = new Size(16, RowHeight == -1 ? 16 : RowHeight),
                     ColorDepth = ColorDepth.Depth32Bit
                 };
-            }
 
             if (RowHeight != -1 &&
                 View == View.Details &&
@@ -10012,14 +9983,11 @@ namespace BrightIdeasSoftware
             }
 
             var il = SmallImageList;
-            if (il == null)
-            {
-                il = new ImageList
+            il ??= new ImageList
                 {
                     ImageSize = new Size(16, 16),
                     ColorDepth = ColorDepth.Depth32Bit
                 };
-            }
 
             AddCheckStateBitmap(il, CHECKED_KEY, CheckBoxState.CheckedNormal);
             AddCheckStateBitmap(il, UNCHECKED_KEY, CheckBoxState.UncheckedNormal);
@@ -10244,7 +10212,7 @@ namespace BrightIdeasSoftware
             if (UseHyperlinks &&
                 args.HitTest.HitTestLocation == HitTestLocation.Text &&
                 args.SubItem != null &&
-                !String.IsNullOrEmpty(args.SubItem.Url))
+                !string.IsNullOrEmpty(args.SubItem.Url))
             {
                 // We have to delay the running of this process otherwise we can generate
                 // a series of MouseUp events (don't ask me why)
@@ -10736,7 +10704,7 @@ namespace BrightIdeasSoftware
         /// <param name="control">A control</param>
         /// <param name="value">The value to be given to the control</param>
         /// <param name="stringValue">The string to be given if the value doesn't work</param>
-        protected virtual void SetControlValue(Control control, Object value, String stringValue)
+        protected virtual void SetControlValue(Control control, object value, string stringValue)
         {
             // Handle combobox explicitly
             if (control is ComboBox cb)
@@ -10763,7 +10731,7 @@ namespace BrightIdeasSoftware
             // There wasn't a Value property, or we couldn't set it, so set the text instead
             try
             {
-                var valueAsString = value as String;
+                var valueAsString = value as string;
                 control.Text = valueAsString ?? stringValue;
             }
             catch (ArgumentOutOfRangeException)
@@ -10786,7 +10754,7 @@ namespace BrightIdeasSoftware
         /// </summary>
         /// <param name="control"></param>
         /// <returns></returns>
-        protected virtual Object GetControlValue(Control control)
+        protected virtual object GetControlValue(Control control)
         {
             if (control == null)
             {
@@ -11042,7 +11010,7 @@ namespace BrightIdeasSoftware
             for (var i = 0; i < maxRows; i++)
             {
                 var valueAsString = column.GetStringValue(GetModelObject(i));
-                if (!String.IsNullOrEmpty(valueAsString) && !alreadySeen.ContainsKey(valueAsString))
+                if (!string.IsNullOrEmpty(valueAsString) && !alreadySeen.ContainsKey(valueAsString))
                 {
                     values.Add(valueAsString);
                     alreadySeen[valueAsString] = true;
@@ -11177,8 +11145,8 @@ namespace BrightIdeasSoftware
             // has a chance to grab the focus. Without this, the ListView gains focus
             // momentarily (after the cell editor is remove and before the new one is created)
             // causing the list's selection to flash momentarily.
-            EventHandler toBeRun = null;
-            toBeRun = delegate (object sender, EventArgs e) {
+            void toBeRun(object sender, EventArgs e)
+            {
                 Application.Idle -= toBeRun;
                 Controls.Remove(soonToBeOldCellEditor);
                 if (disposeOfCellEditor)
@@ -11197,7 +11165,7 @@ namespace BrightIdeasSoftware
 
                     PauseAnimations(false);
                 }
-            };
+            }
 
             // We only want to delay the removal of the control if we are expecting another cell
             // to be edited. Otherwise, we remove the control immediately.
@@ -11364,7 +11332,7 @@ namespace BrightIdeasSoftware
             {
                 var column = GetColumn(columnIndex);
                 var subItem = olvi.GetSubItem(columnIndex);
-                if (column.Hyperlink && hitLocation == HitTestLocation.Text && !String.IsNullOrEmpty(subItem.Url))
+                if (column.Hyperlink && hitLocation == HitTestLocation.Text && !string.IsNullOrEmpty(subItem.Url))
                 {
                     ApplyCellStyle(olvi, columnIndex, HyperlinkStyle.Over);
                     Cursor = HyperlinkStyle.OverCursor ?? Cursors.Default;
@@ -11939,7 +11907,7 @@ namespace BrightIdeasSoftware
         protected virtual IEnumerable FilterObjects(IEnumerable originalObjects, IModelFilter aModelFilter, IListFilter aListFilter)
         {
             // Being cautious
-            originalObjects = originalObjects ?? new ArrayList();
+            originalObjects ??= new ArrayList();
 
             // Tell the world to filter the objects. If they do so, don't do anything else
             // ReSharper disable PossibleMultipleEnumeration
@@ -12013,9 +11981,11 @@ namespace BrightIdeasSoftware
                 }
                 else
                 {
-                    var filters = new List<IModelFilter>();
-                    filters.Add(columnFilter);
-                    filters.Add(AdditionalFilter);
+                    var filters = new List<IModelFilter>
+                    {
+                        columnFilter,
+                        AdditionalFilter
+                    };
                     ModelFilter = new CompositeAllFilter(filters);
                 }
             }
@@ -12057,8 +12027,7 @@ namespace BrightIdeasSoftware
         /// <returns>The checkedness of the model. Defaults to unchecked.</returns>
         protected virtual CheckState GetPersistentCheckState(object model)
         {
-            CheckState state;
-            if (model != null && CheckStateMap.TryGetValue(model, out state))
+            if (model != null && CheckStateMap.TryGetValue(model, out var state))
             {
                 return state;
             }

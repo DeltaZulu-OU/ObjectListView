@@ -217,7 +217,7 @@ namespace BrightIdeasSoftware.Implementation
         public OlvListViewHitTestInfo(OLVListItem olvListItem, OLVListSubItem subItem, int flags, OLVGroup group, int iColumn)
         {
             Item = olvListItem;
-            this.SubItem = subItem;
+            SubItem = subItem;
             Location = ConvertNativeFlagsToDotNetLocation(olvListItem, flags);
             HitTestLocationEx = (HitTestLocationEx)flags;
             Group = group;

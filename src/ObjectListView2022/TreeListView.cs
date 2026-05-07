@@ -454,7 +454,7 @@ namespace BrightIdeasSoftware
         [Browsable(false),
         DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public virtual TreeRenderer TreeColumnRenderer {
-            get => treeRenderer ?? (treeRenderer = new TreeRenderer());
+            get => treeRenderer ??= new TreeRenderer();
             set {
                 treeRenderer = value ?? new TreeRenderer();
                 EnsureTreeRendererPresent(treeRenderer);
@@ -510,7 +510,7 @@ namespace BrightIdeasSoftware
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public virtual bool IsExpanded(Object model)
+        public virtual bool IsExpanded(object model)
         {
             var br = TreeModel.GetBranch(model);
             return (br != null && br.IsExpanded);
@@ -523,7 +523,7 @@ namespace BrightIdeasSoftware
         /// Collapse the subtree underneath the given model
         /// </summary>
         /// <param name="model"></param>
-        public virtual void Collapse(Object model)
+        public virtual void Collapse(object model)
         {
             if (GetItemCount() == 0)
             {
@@ -615,7 +615,7 @@ namespace BrightIdeasSoftware
         /// Expand the subtree underneath the given model object
         /// </summary>
         /// <param name="model"></param>
-        public virtual void Expand(Object model)
+        public virtual void Expand(object model)
         {
             if (GetItemCount() == 0)
             {
@@ -881,7 +881,7 @@ namespace BrightIdeasSoftware
             }
 
             // Refresh each object, remembering where the first update occurred
-            var firstChange = Int32.MaxValue;
+            var firstChange = int.MaxValue;
             foreach (var model in modelsAndParents.Keys)
             {
                 if (model != null)
@@ -945,14 +945,16 @@ namespace BrightIdeasSoftware
                 SetObjectCheckedness(child, checkedness.Value);
             }
 
-            var args = new ArrayList();
-            args.Add(modelObject);
+            var args = new ArrayList
+            {
+                modelObject
+            };
             RecalculateHierarchicalCheckBoxGraph(args);
 
             return true;
         }
 
-        private IEnumerable GetChildrenWithoutExpanding(Object model)
+        private IEnumerable GetChildrenWithoutExpanding(object model)
         {
             var br = TreeModel.GetBranch(model);
             if (br == null || !br.CanExpand)
@@ -967,7 +969,7 @@ namespace BrightIdeasSoftware
         /// Toggle the expanded state of the branch at the given model object
         /// </summary>
         /// <param name="model"></param>
-        public virtual void ToggleExpansion(Object model)
+        public virtual void ToggleExpansion(object model)
         {
             if (IsExpanded(model))
             {
@@ -987,7 +989,7 @@ namespace BrightIdeasSoftware
         /// </summary>
         /// <param name="model"></param>
         /// <remarks>The given model must have already been seen in the tree</remarks>
-        public virtual bool CanExpand(Object model)
+        public virtual bool CanExpand(object model)
         {
             var br = TreeModel.GetBranch(model);
             return (br != null && br.CanExpand);
@@ -999,7 +1001,7 @@ namespace BrightIdeasSoftware
         /// <param name="model"></param>
         /// <returns></returns>
         /// <remarks>The given model must have already been seen in the tree.</remarks>
-        public virtual Object GetParent(Object model)
+        public virtual object GetParent(object model)
         {
             var br = TreeModel.GetBranch(model);
             return br == null || br.ParentBranch == null ? null : br.ParentBranch.Model;
@@ -1024,7 +1026,7 @@ namespace BrightIdeasSoftware
         /// if it is not expandable, an empty collection will be returned.
         /// </para>
         /// </remarks>
-        public virtual IEnumerable GetChildren(Object model)
+        public virtual IEnumerable GetChildren(object model)
         {
             var br = TreeModel.GetBranch(model);
             if (br == null || !br.CanExpand)
@@ -1045,21 +1047,21 @@ namespace BrightIdeasSoftware
         /// </summary>
         /// <param name="model">The model under consideration</param>
         /// <returns>Can the given model be expanded?</returns>
-        public delegate bool CanExpandGetterDelegate(Object model);
+        public delegate bool CanExpandGetterDelegate(object model);
 
         /// <summary>
         /// Delegates of this type are used to fetch the children of the given model object
         /// </summary>
         /// <param name="model">The parent whose children should be fetched</param>
         /// <returns>An enumerable over the children</returns>
-        public delegate IEnumerable ChildrenGetterDelegate(Object model);
+        public delegate IEnumerable ChildrenGetterDelegate(object model);
 
         /// <summary>
         /// Delegates of this type are used to fetch the parent of the given model object.
         /// </summary>
         /// <param name="model">The child whose parent should be fetched</param>
         /// <returns>The parent of the child or null if the child is a root</returns>
-        public delegate Object ParentGetterDelegate(Object model);
+        public delegate object ParentGetterDelegate(object model);
 
         /// <summary>
         /// Delegates of this type are used to create a new underlying Tree structure.
@@ -1430,7 +1432,7 @@ namespace BrightIdeasSoftware
             /// <param name="treeView"></param>
             public Tree(TreeListView treeView)
             {
-                this.TreeView = treeView;
+                TreeView = treeView;
                 trunk = new Branch(null, this, null)
                 {
                     IsExpanded = true
@@ -1482,7 +1484,7 @@ namespace BrightIdeasSoftware
             /// <param name="model">The model to be collapsed. If the model isn't in the tree,
             /// or if it is already collapsed, the command does nothing.</param>
             /// <returns>The index of the model in flat list version of the tree</returns>
-            public virtual int Collapse(Object model)
+            public virtual int Collapse(object model)
             {
                 var br = GetBranch(model);
                 if (br == null || !br.IsExpanded)
@@ -1527,7 +1529,7 @@ namespace BrightIdeasSoftware
             /// If the model isn't in the tree,
             /// if it cannot be expanded or if it is already expanded, the command does nothing.
             /// </remarks>
-            public virtual int Expand(Object model)
+            public virtual int Expand(object model)
             {
                 var br = GetBranch(model);
                 if (br == null || !br.CanExpand || br.IsExpanded)
@@ -1592,7 +1594,7 @@ namespace BrightIdeasSoftware
             /// </summary>
             /// <param name="model"></param>
             /// <returns>The index of the model in flat list version of the tree</returns>
-            public virtual int RebuildChildren(Object model)
+            public virtual int RebuildChildren(object model)
             {
                 var br = GetBranch(model);
                 if (br == null || !br.Visible)
@@ -1941,12 +1943,12 @@ namespace BrightIdeasSoftware
 
             private OLVColumn lastSortColumn;
             private SortOrder lastSortOrder;
-            private readonly Dictionary<Object, Branch> mapObjectToBranch = new Dictionary<object, Branch>();
+            private readonly Dictionary<object, Branch> mapObjectToBranch = new Dictionary<object, Branch>();
 
             // ReSharper disable once InconsistentNaming
-            internal Dictionary<Object, bool> mapObjectToExpanded = new Dictionary<object, bool>();
+            internal Dictionary<object, bool> mapObjectToExpanded = new Dictionary<object, bool>();
 
-            private readonly Dictionary<Object, int> mapObjectToIndex = new Dictionary<object, int>();
+            private readonly Dictionary<object, int> mapObjectToIndex = new Dictionary<object, int>();
             private ArrayList objectList = new ArrayList();
             private readonly Branch trunk;
 
@@ -1998,7 +2000,7 @@ namespace BrightIdeasSoftware
             /// <param name="parent"></param>
             /// <param name="tree"></param>
             /// <param name="model"></param>
-            public Branch(Branch parent, Tree tree, Object model)
+            public Branch(Branch parent, Tree tree, object model)
             {
                 ParentBranch = parent;
                 Tree = tree;
@@ -2216,7 +2218,7 @@ namespace BrightIdeasSoftware
             /// <summary>
             /// Gets or sets which model is represented by this branch
             /// </summary>
-            public Object Model { get; set; }
+            public object Model { get; set; }
 
             /// <summary>
             /// Return the number of descendents of this branch that are currently visible

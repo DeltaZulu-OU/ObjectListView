@@ -765,11 +765,11 @@ namespace BrightIdeasSoftware
         public CellEditEventArgs(OLVColumn column, Control control, Rectangle cellBounds, OLVListItem item, int subItemIndex)
         {
             Control = control;
-            this.Column = column;
+            Column = column;
             this.cellBounds = cellBounds;
             ListViewItem = item;
             RowObject = item.RowObject;
-            this.SubItemIndex = subItemIndex;
+            SubItemIndex = subItemIndex;
             Value = column.GetValue(item.RowObject);
         }
 
@@ -802,7 +802,7 @@ namespace BrightIdeasSoftware
         /// <summary>
         /// The model object of the row of the cell that is going to be or has been edited.
         /// </summary>
-        public Object RowObject { get; }
+        public object RowObject { get; }
 
         /// <summary>
         /// The listview item of the cell that is going to be or has been edited.
@@ -813,7 +813,7 @@ namespace BrightIdeasSoftware
         /// The data value of the cell as it stands in the control.
         /// </summary>
         /// <remarks>Only validate during Validating and Finishing events.</remarks>
-        public Object NewValue { get; set; }
+        public object NewValue { get; set; }
 
         /// <summary>
         /// The index of the cell that is going to be or has been edited.
@@ -823,7 +823,7 @@ namespace BrightIdeasSoftware
         /// <summary>
         /// The data value of the cell before the edit operation began.
         /// </summary>
-        public Object Value { get; }
+        public object Value { get; }
 
         /// <summary>
         /// The bounds of the cell that is going to be or has been edited.
@@ -1044,8 +1044,8 @@ namespace BrightIdeasSoftware
         /// <param name="newObjectCount"></param>
         public ItemsChangedEventArgs(int oldObjectCount, int newObjectCount)
         {
-            this.OldObjectCount = oldObjectCount;
-            this.NewObjectCount = newObjectCount;
+            OldObjectCount = oldObjectCount;
+            NewObjectCount = newObjectCount;
         }
 
         /// <summary>
@@ -1110,7 +1110,7 @@ namespace BrightIdeasSoftware
         /// <param name="newObjects"></param>
         public ItemsChangingEventArgs(IEnumerable oldObjects, IEnumerable newObjects)
         {
-            this.OldObjects = oldObjects;
+            OldObjects = oldObjects;
             NewObjects = newObjects;
         }
 
@@ -1158,8 +1158,8 @@ namespace BrightIdeasSoftware
         /// <param name="indexSelected"></param>
         public AfterSearchingEventArgs(string stringToFind, int indexSelected)
         {
-            this.StringToFind = stringToFind;
-            this.IndexSelected = indexSelected;
+            StringToFind = stringToFind;
+            IndexSelected = indexSelected;
         }
 
         /// <summary>
@@ -1679,11 +1679,11 @@ namespace BrightIdeasSoftware
         /// <param name="newValue"></param>
         public SubItemCheckingEventArgs(OLVColumn column, OLVListItem item, int subItemIndex, CheckState currentValue, CheckState newValue)
         {
-            this.Column = column;
+            Column = column;
             ListViewItem = item;
-            this.SubItemIndex = subItemIndex;
-            this.CurrentValue = currentValue;
-            this.NewValue = newValue;
+            SubItemIndex = subItemIndex;
+            CurrentValue = currentValue;
+            NewValue = newValue;
         }
 
         /// <summary>
@@ -1694,7 +1694,7 @@ namespace BrightIdeasSoftware
         /// <summary>
         /// The model object of the row of the cell that is having its checkbox changed.
         /// </summary>
-        public Object RowObject => ListViewItem.RowObject;
+        public object RowObject => ListViewItem.RowObject;
 
         /// <summary>
         /// The listview item of the cell that is having its checkbox changed.
@@ -1758,7 +1758,7 @@ namespace BrightIdeasSoftware
         /// <param name="group"></param>
         public GroupTaskClickedEventArgs(OLVGroup group)
         {
-            this.Group = group;
+            Group = group;
         }
 
         /// <summary>
@@ -1806,9 +1806,9 @@ namespace BrightIdeasSoftware
         /// <param name="newState"> </param>
         public GroupStateChangedEventArgs(OLVGroup group, GroupState oldState, GroupState newState)
         {
-            this.Group = group;
-            this.OldState = oldState;
-            this.NewState = newState;
+            Group = group;
+            OldState = oldState;
+            NewState = newState;
         }
 
         /// <summary>

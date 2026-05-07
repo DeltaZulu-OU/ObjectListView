@@ -108,10 +108,7 @@ namespace BrightIdeasSoftware.Implementation
         /// </summary>
         public IList<IDecoration> Decorations {
             get {
-                if (decorations == null)
-                {
-                    decorations = new List<IDecoration>();
-                }
+                decorations ??= new List<IDecoration>();
 
                 return decorations;
             }

@@ -336,10 +336,7 @@ namespace BrightIdeasSoftware
                 checkBoxes = value;
                 if (checkBoxes)
                 {
-                    if (Renderer == null)
-                    {
-                        Renderer = new CheckStateRenderer();
-                    }
+                    Renderer ??= new CheckStateRenderer();
                 }
                 else
                 {
@@ -528,7 +525,7 @@ namespace BrightIdeasSoftware
         [Browsable(false)]
         public string GroupWithItemCountFormatOrDefault {
             get {
-                if (!String.IsNullOrEmpty(GroupWithItemCountFormat))
+                if (!string.IsNullOrEmpty(GroupWithItemCountFormat))
                 {
                     return GroupWithItemCountFormat;
                 }
@@ -575,7 +572,7 @@ namespace BrightIdeasSoftware
         [Browsable(false)]
         public string GroupWithItemCountSingularFormatOrDefault {
             get {
-                if (!String.IsNullOrEmpty(GroupWithItemCountSingularFormat))
+                if (!string.IsNullOrEmpty(GroupWithItemCountSingularFormat))
                 {
                     return GroupWithItemCountSingularFormat;
                 }
@@ -633,10 +630,7 @@ namespace BrightIdeasSoftware
                     return;
                 }
 
-                if (HeaderFormatStyle == null)
-                {
-                    HeaderFormatStyle = new HeaderFormatStyle();
-                }
+                HeaderFormatStyle ??= new HeaderFormatStyle();
 
                 HeaderFormatStyle.SetFont(value);
             }
@@ -658,10 +652,7 @@ namespace BrightIdeasSoftware
                     return;
                 }
 
-                if (HeaderFormatStyle == null)
-                {
-                    HeaderFormatStyle = new HeaderFormatStyle();
-                }
+                HeaderFormatStyle ??= new HeaderFormatStyle();
 
                 HeaderFormatStyle.SetForeColor(value);
             }
@@ -700,13 +691,13 @@ namespace BrightIdeasSoftware
         [Browsable(false)]
         public StringAlignment HeaderTextAlignAsStringAlignment {
             get {
-                switch (HeaderTextAlignOrDefault)
+                return HeaderTextAlignOrDefault switch
                 {
-                    case HorizontalAlignment.Left: return StringAlignment.Near;
-                    case HorizontalAlignment.Center: return StringAlignment.Center;
-                    case HorizontalAlignment.Right: return StringAlignment.Far;
-                    default: return StringAlignment.Near;
-                }
+                    HorizontalAlignment.Left => StringAlignment.Near,
+                    HorizontalAlignment.Center => StringAlignment.Center,
+                    HorizontalAlignment.Right => StringAlignment.Far,
+                    _ => StringAlignment.Near,
+                };
             }
         }
 
@@ -1165,20 +1156,13 @@ namespace BrightIdeasSoftware
         [Browsable(false)]
         public StringAlignment TextStringAlign {
             get {
-                switch (TextAlign)
+                return TextAlign switch
                 {
-                    case HorizontalAlignment.Center:
-                        return StringAlignment.Center;
-
-                    case HorizontalAlignment.Left:
-                        return StringAlignment.Near;
-
-                    case HorizontalAlignment.Right:
-                        return StringAlignment.Far;
-
-                    default:
-                        return StringAlignment.Near;
-                }
+                    HorizontalAlignment.Center => StringAlignment.Center,
+                    HorizontalAlignment.Left => StringAlignment.Near,
+                    HorizontalAlignment.Right => StringAlignment.Far,
+                    _ => StringAlignment.Near,
+                };
             }
         }
 
@@ -1189,9 +1173,9 @@ namespace BrightIdeasSoftware
         /// value will be ignored.</remarks>
         [Category("ObjectListView"),
          Description("The tooltip to show when the mouse is hovered over the header of this column"),
-         DefaultValue((String)null),
+         DefaultValue((string)null),
          Localizable(true)]
-        public String ToolTipText { get; set; }
+        public string ToolTipText { get; set; }
 
         /// <summary>
         /// Should this column have a tri-state checkbox?
@@ -1321,10 +1305,7 @@ namespace BrightIdeasSoftware
                 }
 
                 // All other cases require a renderer of some sort
-                if (Renderer == null)
-                {
-                    Renderer = new HighlightTextRenderer();
-                }
+                Renderer ??= new HighlightTextRenderer();
 
                 // If there is a custom renderer (not descended from BaseRenderer),
                 // we leave it up to them to implement wrapping
@@ -1418,10 +1399,7 @@ namespace BrightIdeasSoftware
         /// <returns>An object, which is the aspect named by AspectName</returns>
         public object GetAspectByName(object rowObject)
         {
-            if (aspectMunger == null)
-            {
-                aspectMunger = new Munger(AspectName);
-            }
+            aspectMunger ??= new Munger(AspectName);
 
             return aspectMunger.GetValue(rowObject);
         }
@@ -1444,8 +1422,8 @@ namespace BrightIdeasSoftware
 
             if (UseInitialLetterForGroup)
             {
-                var keyAsString = key as String;
-                if (!String.IsNullOrEmpty(keyAsString))
+                var keyAsString = key as string;
+                if (!string.IsNullOrEmpty(keyAsString))
                 {
                     return keyAsString.Substring(0, 1).ToUpper();
                 }
@@ -1459,7 +1437,7 @@ namespace BrightIdeasSoftware
         /// </summary>
         /// <param name="rowObject">The row object that is being displayed</param>
         /// <returns>int or string or Image. int or string will be used as index into image list. null or -1 means no image</returns>
-        public Object GetImage(object rowObject)
+        public object GetImage(object rowObject)
         {
             if (CheckBoxes)
             {
@@ -1471,18 +1449,15 @@ namespace BrightIdeasSoftware
                 return ImageGetter(rowObject);
             }
 
-            if (!String.IsNullOrEmpty(ImageAspectName))
+            if (!string.IsNullOrEmpty(ImageAspectName))
             {
-                if (imageAspectMunger == null)
-                {
-                    imageAspectMunger = new Munger(ImageAspectName);
-                }
+                imageAspectMunger ??= new Munger(ImageAspectName);
 
                 return imageAspectMunger.GetValue(rowObject);
             }
 
             // I think this is wrong. ImageKey is meant for the image in the header, not in the rows
-            if (!String.IsNullOrEmpty(ImageKey))
+            if (!string.IsNullOrEmpty(ImageKey))
             {
                 return ImageKey;
             }
@@ -1497,7 +1472,7 @@ namespace BrightIdeasSoftware
         /// </summary>
         /// <param name="rowObject"></param>
         /// <returns></returns>
-        public string GetCheckStateImage(Object rowObject)
+        public string GetCheckStateImage(object rowObject)
         {
             var checkState = GetCheckState(rowObject);
 
@@ -1575,12 +1550,9 @@ namespace BrightIdeasSoftware
         /// </summary>
         /// <param name="rowObject">The model object to be updated</param>
         /// <param name="newValue">The value to be put into the model</param>
-        public void PutAspectByName(Object rowObject, Object newValue)
+        public void PutAspectByName(object rowObject, object newValue)
         {
-            if (aspectMunger == null)
-            {
-                aspectMunger = new Munger(AspectName);
-            }
+            aspectMunger ??= new Munger(AspectName);
 
             aspectMunger.PutValue(rowObject, newValue);
         }
@@ -1590,7 +1562,7 @@ namespace BrightIdeasSoftware
         /// </summary>
         /// <param name="rowObject">The model object to be updated</param>
         /// <param name="newValue">The value to be put into the model</param>
-        public void PutValue(Object rowObject, Object newValue)
+        public void PutValue(object rowObject, object newValue)
         {
             if (AspectPutter == null)
             {
@@ -1618,23 +1590,23 @@ namespace BrightIdeasSoftware
             // Give the installed converter a chance to work (even if the value is null)
             if (AspectToStringConverter != null)
             {
-                return AspectToStringConverter(value) ?? String.Empty;
+                return AspectToStringConverter(value) ?? string.Empty;
             }
 
             // Without a converter, nulls become simple empty strings
             if (value == null)
             {
-                return String.Empty;
+                return string.Empty;
             }
 
             var fmt = AspectToStringFormat;
-            if (String.IsNullOrEmpty(fmt))
+            if (string.IsNullOrEmpty(fmt))
             {
                 return value.ToString();
             }
             else
             {
-                return String.Format(fmt, value);
+                return string.Format(fmt, value);
             }
         }
 

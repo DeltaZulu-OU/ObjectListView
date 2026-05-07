@@ -100,7 +100,7 @@ namespace BrightIdeasSoftware.Utilities
         /// <remarks>If you subclass the standard generator or implement IGenerator yourself,
         /// you should install an instance of your subclass/implementation here.</remarks>
         public static IGenerator Instance {
-            get => instance ?? (instance = new Generator()); set => instance = value;
+            get => instance ??= new Generator(); set => instance = value;
         }
 
         private static IGenerator instance;

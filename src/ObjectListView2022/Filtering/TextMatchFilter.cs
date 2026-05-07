@@ -218,30 +218,14 @@ namespace BrightIdeasSoftware.Filtering
             get {
                 if (!regexOptions.HasValue)
                 {
-                    switch (StringComparison)
+                    regexOptions = StringComparison switch
                     {
-                        case StringComparison.CurrentCulture:
-                            regexOptions = RegexOptions.None;
-                            break;
-
-                        case StringComparison.CurrentCultureIgnoreCase:
-                            regexOptions = RegexOptions.IgnoreCase;
-                            break;
-
-                        case StringComparison.Ordinal:
-                        case StringComparison.InvariantCulture:
-                            regexOptions = RegexOptions.CultureInvariant;
-                            break;
-
-                        case StringComparison.OrdinalIgnoreCase:
-                        case StringComparison.InvariantCultureIgnoreCase:
-                            regexOptions = RegexOptions.CultureInvariant | RegexOptions.IgnoreCase;
-                            break;
-
-                        default:
-                            regexOptions = RegexOptions.None;
-                            break;
-                    }
+                        StringComparison.CurrentCulture => (RegexOptions?)RegexOptions.None,
+                        StringComparison.CurrentCultureIgnoreCase => (RegexOptions?)RegexOptions.IgnoreCase,
+                        StringComparison.Ordinal or StringComparison.InvariantCulture => (RegexOptions?)RegexOptions.CultureInvariant,
+                        StringComparison.OrdinalIgnoreCase or StringComparison.InvariantCultureIgnoreCase => (RegexOptions?)(RegexOptions.CultureInvariant | RegexOptions.IgnoreCase),
+                        _ => (RegexOptions?)RegexOptions.None,
+                    };
                 }
                 return regexOptions.Value;
             }

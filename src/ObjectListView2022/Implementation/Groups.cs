@@ -518,10 +518,7 @@ namespace BrightIdeasSoftware.Implementation
             ListView = olv;
 
             // Create/update the associated ListViewGroup
-            if (ListViewGroup == null)
-            {
-                ListViewGroup = new ListViewGroup();
-            }
+            ListViewGroup ??= new ListViewGroup();
 
             ListViewGroup.Header = Header;
             ListViewGroup.HeaderAlignment = HeaderAlignment;

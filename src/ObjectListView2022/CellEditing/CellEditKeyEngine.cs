@@ -307,24 +307,28 @@ namespace BrightIdeasSoftware.CellEditing
         /// </summary>
         protected virtual void InitializeCellEditKeyMaps()
         {
-            cellEditKeyMap = new Dictionary<Keys, CellEditCharacterBehaviour>();
-            cellEditKeyMap[Keys.Escape] = CellEditCharacterBehaviour.CancelEdit;
-            cellEditKeyMap[Keys.Return] = CellEditCharacterBehaviour.EndEdit;
-            cellEditKeyMap[Keys.Enter] = CellEditCharacterBehaviour.EndEdit;
-            cellEditKeyMap[Keys.Tab] = CellEditCharacterBehaviour.ChangeColumnRight;
-            cellEditKeyMap[Keys.Tab | Keys.Shift] = CellEditCharacterBehaviour.ChangeColumnLeft;
-            cellEditKeyMap[Keys.Left | Keys.Alt] = CellEditCharacterBehaviour.ChangeColumnLeft;
-            cellEditKeyMap[Keys.Right | Keys.Alt] = CellEditCharacterBehaviour.ChangeColumnRight;
-            cellEditKeyMap[Keys.Up | Keys.Alt] = CellEditCharacterBehaviour.ChangeRowUp;
-            cellEditKeyMap[Keys.Down | Keys.Alt] = CellEditCharacterBehaviour.ChangeRowDown;
+            cellEditKeyMap = new Dictionary<Keys, CellEditCharacterBehaviour>
+            {
+                [Keys.Escape] = CellEditCharacterBehaviour.CancelEdit,
+                [Keys.Return] = CellEditCharacterBehaviour.EndEdit,
+                [Keys.Enter] = CellEditCharacterBehaviour.EndEdit,
+                [Keys.Tab] = CellEditCharacterBehaviour.ChangeColumnRight,
+                [Keys.Tab | Keys.Shift] = CellEditCharacterBehaviour.ChangeColumnLeft,
+                [Keys.Left | Keys.Alt] = CellEditCharacterBehaviour.ChangeColumnLeft,
+                [Keys.Right | Keys.Alt] = CellEditCharacterBehaviour.ChangeColumnRight,
+                [Keys.Up | Keys.Alt] = CellEditCharacterBehaviour.ChangeRowUp,
+                [Keys.Down | Keys.Alt] = CellEditCharacterBehaviour.ChangeRowDown
+            };
 
-            cellEditKeyAtEdgeBehaviourMap = new Dictionary<Keys, CellEditAtEdgeBehaviour>();
-            cellEditKeyAtEdgeBehaviourMap[Keys.Tab] = CellEditAtEdgeBehaviour.Wrap;
-            cellEditKeyAtEdgeBehaviourMap[Keys.Tab | Keys.Shift] = CellEditAtEdgeBehaviour.Wrap;
-            cellEditKeyAtEdgeBehaviourMap[Keys.Left | Keys.Alt] = CellEditAtEdgeBehaviour.Wrap;
-            cellEditKeyAtEdgeBehaviourMap[Keys.Right | Keys.Alt] = CellEditAtEdgeBehaviour.Wrap;
-            cellEditKeyAtEdgeBehaviourMap[Keys.Up | Keys.Alt] = CellEditAtEdgeBehaviour.ChangeColumn;
-            cellEditKeyAtEdgeBehaviourMap[Keys.Down | Keys.Alt] = CellEditAtEdgeBehaviour.ChangeColumn;
+            cellEditKeyAtEdgeBehaviourMap = new Dictionary<Keys, CellEditAtEdgeBehaviour>
+            {
+                [Keys.Tab] = CellEditAtEdgeBehaviour.Wrap,
+                [Keys.Tab | Keys.Shift] = CellEditAtEdgeBehaviour.Wrap,
+                [Keys.Left | Keys.Alt] = CellEditAtEdgeBehaviour.Wrap,
+                [Keys.Right | Keys.Alt] = CellEditAtEdgeBehaviour.Wrap,
+                [Keys.Up | Keys.Alt] = CellEditAtEdgeBehaviour.ChangeColumn,
+                [Keys.Down | Keys.Alt] = CellEditAtEdgeBehaviour.ChangeColumn
+            };
         }
 
         #endregion Initialization
