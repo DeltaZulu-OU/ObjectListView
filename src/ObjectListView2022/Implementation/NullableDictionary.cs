@@ -28,7 +28,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace BrightIdeasSoftware
+namespace BrightIdeasSoftware.Implementation
 {
     /// <summary>
     /// A simple-minded implementation of a Dictionary that can handle null as a key.
@@ -45,43 +45,52 @@ namespace BrightIdeasSoftware
         public new TValue this[TKey key] {
             get {
                 if (key != null)
+                {
                     return base[key];
+                }
 
-                if (this.hasNullKey)
-                    return this.nullValue;
+                if (hasNullKey)
+                {
+                    return nullValue;
+                }
 
                 throw new KeyNotFoundException();
             }
             set {
                 if (key == null)
                 {
-                    this.hasNullKey = true;
-                    this.nullValue = value;
+                    hasNullKey = true;
+                    nullValue = value;
                 }
                 else
+                {
                     base[key] = value;
+                }
             }
         }
 
-        public new bool ContainsKey(TKey key)
-        {
-            return key == null ? this.hasNullKey : base.ContainsKey(key);
-        }
+        public new bool ContainsKey(TKey key) => key == null ? hasNullKey : base.ContainsKey(key);
 
         public new IList Keys {
             get {
-                ArrayList list = new ArrayList(base.Keys);
-                if (this.hasNullKey)
+                var list = new ArrayList(base.Keys);
+                if (hasNullKey)
+                {
                     list.Add(null);
+                }
+
                 return list;
             }
         }
 
         public new IList<TValue> Values {
             get {
-                List<TValue> list = new List<TValue>(base.Values);
-                if (this.hasNullKey)
-                    list.Add(this.nullValue);
+                var list = new List<TValue>(base.Values);
+                if (hasNullKey)
+                {
+                    list.Add(nullValue);
+                }
+
                 return list;
             }
         }

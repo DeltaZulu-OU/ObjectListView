@@ -27,7 +27,7 @@
 
 using System;
 
-namespace BrightIdeasSoftware
+namespace BrightIdeasSoftware.Filtering
 {
     /// <summary>
     /// Concrete implementation of the ICluster interface.
@@ -42,8 +42,8 @@ namespace BrightIdeasSoftware
         /// <param name="key">The key for the cluster</param>
         public Cluster(object key)
         {
-            this.Count = 1;
-            this.ClusterKey = key;
+            Count = 1;
+            ClusterKey = key;
         }
 
         #endregion Life and death
@@ -54,10 +54,7 @@ namespace BrightIdeasSoftware
         /// Return a string representation of this cluster
         /// </summary>
         /// <returns></returns>
-        public override string ToString()
-        {
-            return this.DisplayLabel ?? "[empty]";
-        }
+        public override string ToString() => DisplayLabel ?? "[empty]";
 
         #endregion Public overrides
 
@@ -66,34 +63,19 @@ namespace BrightIdeasSoftware
         /// <summary>
         /// Gets or sets how many items belong to this cluster
         /// </summary>
-        public int Count {
-            get { return count; }
-            set { count = value; }
-        }
-
-        private int count;
+        public int Count { get; set; }
 
         /// <summary>
         /// Gets or sets the label that will be shown to the user to represent
         /// this cluster
         /// </summary>
-        public string DisplayLabel {
-            get { return displayLabel; }
-            set { displayLabel = value; }
-        }
-
-        private string displayLabel;
+        public string DisplayLabel { get; set; }
 
         /// <summary>
         /// Gets or sets the actual data object that all members of this cluster
         /// have commonly returned.
         /// </summary>
-        public object ClusterKey {
-            get { return clusterKey; }
-            set { clusterKey = value; }
-        }
-
-        private object clusterKey;
+        public object ClusterKey { get; set; }
 
         #endregion Implementation of ICluster
 
@@ -106,20 +88,25 @@ namespace BrightIdeasSoftware
         /// <returns></returns>
         public int CompareTo(object other)
         {
-            if (other == null || other == System.DBNull.Value)
+            if (other == null || other == DBNull.Value)
+            {
                 return 1;
+            }
 
-            ICluster otherCluster = other as ICluster;
-            if (otherCluster == null)
+            if (other is not ICluster otherCluster)
+            {
                 return 1;
+            }
 
-            string keyAsString = this.ClusterKey as string;
-            if (keyAsString != null)
-                return String.Compare(keyAsString, otherCluster.ClusterKey as string, StringComparison.CurrentCultureIgnoreCase);
+            if (ClusterKey is string keyAsString)
+            {
+                return string.Compare(keyAsString, otherCluster.ClusterKey as string, StringComparison.CurrentCultureIgnoreCase);
+            }
 
-            IComparable keyAsComparable = this.ClusterKey as IComparable;
-            if (keyAsComparable != null)
+            if (ClusterKey is IComparable keyAsComparable)
+            {
                 return keyAsComparable.CompareTo(otherCluster.ClusterKey);
+            }
 
             return -1;
         }

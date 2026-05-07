@@ -31,7 +31,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 
-namespace BrightIdeasSoftware
+namespace BrightIdeasSoftware.Utilities
 {
     /// <summary>
     /// An OLVExporter converts a collection of rows from an ObjectListView
@@ -86,11 +86,13 @@ namespace BrightIdeasSoftware
         /// <param name="objectsToExport"></param>
         public OLVExporter(ObjectListView olv, IEnumerable objectsToExport)
         {
-            if (olv == null) throw new ArgumentNullException("olv");
-            if (objectsToExport == null) throw new ArgumentNullException("objectsToExport");
+            if (objectsToExport == null)
+            {
+                throw new ArgumentNullException("objectsToExport");
+            }
 
-            this.ListView = olv;
-            this.ModelObjects = ObjectListView.EnumerableToArray(objectsToExport, true);
+            ListView = olv ?? throw new ArgumentNullException("olv");
+            ModelObjects = ObjectListView.EnumerableToArray(objectsToExport, true);
         }
 
         #endregion Life and death
@@ -102,44 +104,24 @@ namespace BrightIdeasSoftware
         /// representation. If this is false (the default), only visible columns will
         /// be included.
         /// </summary>
-        public bool IncludeHiddenColumns {
-            get { return includeHiddenColumns; }
-            set { includeHiddenColumns = value; }
-        }
-
-        private bool includeHiddenColumns;
+        public bool IncludeHiddenColumns { get; set; }
 
         /// <summary>
         /// Gets or sets whether column headers will also be included in the text
         /// and HTML representation. Default is true.
         /// </summary>
-        public bool IncludeColumnHeaders {
-            get { return includeColumnHeaders; }
-            set { includeColumnHeaders = value; }
-        }
-
-        private bool includeColumnHeaders = true;
+        public bool IncludeColumnHeaders { get; set; } = true;
 
         /// <summary>
         /// Gets the ObjectListView that is being used as the source of the data
         /// to be exported
         /// </summary>
-        public ObjectListView ListView {
-            get { return objectListView; }
-            set { objectListView = value; }
-        }
-
-        private ObjectListView objectListView;
+        public ObjectListView ListView { get; set; }
 
         /// <summary>
         /// Gets the model objects that are to be placed in the data object
         /// </summary>
-        public IList ModelObjects {
-            get { return modelObjects; }
-            set { modelObjects = value; }
-        }
-
-        private IList modelObjects = new ArrayList();
+        public IList ModelObjects { get; set; } = new ArrayList();
 
         #endregion Properties
 
@@ -155,7 +137,9 @@ namespace BrightIdeasSoftware
         public string ExportTo(ExportFormat format)
         {
             if (results == null)
-                this.Convert();
+            {
+                Convert();
+            }
 
             return results[format];
         }
@@ -165,29 +149,33 @@ namespace BrightIdeasSoftware
         /// </summary>
         public void Convert()
         {
-            IList<OLVColumn> columns = this.IncludeHiddenColumns ? this.ListView.AllColumns : this.ListView.ColumnsInDisplayOrder;
+            IList<OLVColumn> columns = IncludeHiddenColumns ? ListView.AllColumns : ListView.ColumnsInDisplayOrder;
 
-            StringBuilder sbText = new StringBuilder();
-            StringBuilder sbCsv = new StringBuilder();
-            StringBuilder sbHtml = new StringBuilder("<table>");
+            var sbText = new StringBuilder();
+            var sbCsv = new StringBuilder();
+            var sbHtml = new StringBuilder("<table>");
 
             // Include column headers
-            if (this.IncludeColumnHeaders)
+            if (IncludeColumnHeaders)
             {
-                List<string> strings = new List<string>();
-                foreach (OLVColumn col in columns)
+                var strings = new List<string>();
+                foreach (var col in columns)
+                {
                     strings.Add(col.Text);
+                }
 
                 WriteOneRow(sbText, strings, "", "\t", "", null);
                 WriteOneRow(sbHtml, strings, "<tr><td>", "</td><td>", "</td></tr>", HtmlEncode);
                 WriteOneRow(sbCsv, strings, "", ",", "", CsvEncode);
             }
 
-            foreach (object modelObject in this.ModelObjects)
+            foreach (var modelObject in ModelObjects)
             {
-                List<string> strings = new List<string>();
-                foreach (OLVColumn col in columns)
+                var strings = new List<string>();
+                foreach (var col in columns)
+                {
                     strings.Add(col.GetStringValue(modelObject));
+                }
 
                 WriteOneRow(sbText, strings, "", "\t", "", null);
                 WriteOneRow(sbHtml, strings, "<tr><td>", "</td><td>", "</td></tr>", HtmlEncode);
@@ -206,11 +194,14 @@ namespace BrightIdeasSoftware
         private void WriteOneRow(StringBuilder sb, IEnumerable<string> strings, string startRow, string betweenCells, string endRow, StringToString encoder)
         {
             sb.Append(startRow);
-            bool first = true;
-            foreach (string s in strings)
+            var first = true;
+            foreach (var s in strings)
             {
                 if (!first)
+                {
                     sb.Append(betweenCells);
+                }
+
                 sb.Append(encoder == null ? s : encoder(s));
                 first = false;
             }
@@ -233,12 +224,14 @@ namespace BrightIdeasSoftware
         private static string CsvEncode(string text)
         {
             if (text == null)
+            {
                 return null;
+            }
 
             const string DOUBLEQUOTE = @""""; // one double quote
             const string TWODOUBEQUOTES = @""""""; // two double quotes
 
-            StringBuilder sb = new StringBuilder(DOUBLEQUOTE);
+            var sb = new StringBuilder(DOUBLEQUOTE);
             sb.Append(text.Replace(DOUBLEQUOTE, TWODOUBEQUOTES));
             sb.Append(DOUBLEQUOTE);
 
@@ -254,12 +247,14 @@ namespace BrightIdeasSoftware
         private static string HtmlEncode(string text)
         {
             if (text == null)
+            {
                 return null;
+            }
 
-            StringBuilder sb = new StringBuilder(text.Length);
+            var sb = new StringBuilder(text.Length);
 
-            int len = text.Length;
-            for (int i = 0; i < len; i++)
+            var len = text.Length;
+            for (var i = 0; i < len; i++)
             {
                 switch (text[i])
                 {
@@ -288,7 +283,10 @@ namespace BrightIdeasSoftware
                             sb.Append(";");
                         }
                         else
+                        {
                             sb.Append(text[i]);
+                        }
+
                         break;
                 }
             }

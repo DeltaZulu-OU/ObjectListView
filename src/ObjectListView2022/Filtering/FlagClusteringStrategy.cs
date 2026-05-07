@@ -31,7 +31,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 
-namespace BrightIdeasSoftware
+namespace BrightIdeasSoftware.Filtering
 {
     /// <summary>
     /// Instances of this class cluster model objects on the basis of a
@@ -47,19 +47,34 @@ namespace BrightIdeasSoftware
         /// <param name="enumType"></param>
         public FlagClusteringStrategy(Type enumType)
         {
-            if (enumType == null) throw new ArgumentNullException("enumType");
-            if (!enumType.IsEnum) throw new ArgumentException("Type must be enum", "enumType");
-            if (enumType.GetCustomAttributes(typeof(FlagsAttribute), false) == null) throw new ArgumentException("Type must have [Flags] attribute", "enumType");
+            if (enumType == null)
+            {
+                throw new ArgumentNullException("enumType");
+            }
 
-            List<long> flags = new List<long>();
-            foreach (object x in Enum.GetValues(enumType))
+            if (!enumType.IsEnum)
+            {
+                throw new ArgumentException("Type must be enum", "enumType");
+            }
+
+            if (enumType.GetCustomAttributes(typeof(FlagsAttribute), false) == null)
+            {
+                throw new ArgumentException("Type must have [Flags] attribute", "enumType");
+            }
+
+            var flags = new List<long>();
+            foreach (var x in Enum.GetValues(enumType))
+            {
                 flags.Add(Convert.ToInt64(x));
+            }
 
-            List<string> flagLabels = new List<string>();
-            foreach (string x in Enum.GetNames(enumType))
+            var flagLabels = new List<string>();
+            foreach (var x in Enum.GetNames(enumType))
+            {
                 flagLabels.Add(x);
+            }
 
-            this.SetValues(flags.ToArray(), flagLabels.ToArray());
+            SetValues(flags.ToArray(), flagLabels.ToArray());
         }
 
         /// <summary>
@@ -70,7 +85,7 @@ namespace BrightIdeasSoftware
         /// <param name="labels"></param>
         public FlagClusteringStrategy(long[] values, string[] labels)
         {
-            this.SetValues(values, labels);
+            SetValues(values, labels);
         }
 
         #endregion Life and death
@@ -80,31 +95,32 @@ namespace BrightIdeasSoftware
         /// <summary>
         /// Gets the value that will be xor-ed to test for the presence of a particular value.
         /// </summary>
-        public long[] Values {
-            get { return this.values; }
-            private set { this.values = value; }
-        }
-
-        private long[] values;
+        public long[] Values { get; private set; }
 
         /// <summary>
         /// Gets the labels that will be used when the corresponding Value is XOR present in the data.
         /// </summary>
-        public string[] Labels {
-            get { return this.labels; }
-            private set { this.labels = value; }
-        }
-
-        private string[] labels;
+        public string[] Labels { get; private set; }
 
         private void SetValues(long[] flags, string[] flagLabels)
         {
-            if (flags == null || flags.Length == 0) throw new ArgumentNullException("flags");
-            if (flagLabels == null || flagLabels.Length == 0) throw new ArgumentNullException("flagLabels");
-            if (flags.Length != flagLabels.Length) throw new ArgumentException("values and labels must have the same number of entries", "flags");
+            if (flags == null || flags.Length == 0)
+            {
+                throw new ArgumentNullException("flags");
+            }
 
-            this.Values = flags;
-            this.Labels = flagLabels;
+            if (flagLabels == null || flagLabels.Length == 0)
+            {
+                throw new ArgumentNullException("flagLabels");
+            }
+
+            if (flags.Length != flagLabels.Length)
+            {
+                throw new ArgumentException("values and labels must have the same number of entries", "flags");
+            }
+
+            Values = flags;
+            Labels = flagLabels;
         }
 
         #endregion Implementation
@@ -118,14 +134,16 @@ namespace BrightIdeasSoftware
         /// <returns></returns>
         public override object GetClusterKey(object model)
         {
-            List<long> flags = new List<long>();
+            var flags = new List<long>();
             try
             {
-                long modelValue = Convert.ToInt64(this.Column.GetValue(model));
-                foreach (long x in this.Values)
+                var modelValue = Convert.ToInt64(Column.GetValue(model));
+                foreach (var x in Values)
                 {
                     if ((x & modelValue) == x)
+                    {
                         flags.Add(x);
+                    }
                 }
                 return flags;
             }
@@ -148,13 +166,15 @@ namespace BrightIdeasSoftware
         /// <returns></returns>
         public override string GetClusterDisplayLabel(ICluster cluster)
         {
-            long clusterKeyAsUlong = Convert.ToInt64(cluster.ClusterKey);
-            for (int i = 0; i < this.Values.Length; i++)
+            var clusterKeyAsUlong = Convert.ToInt64(cluster.ClusterKey);
+            for (var i = 0; i < Values.Length; i++)
             {
-                if (clusterKeyAsUlong == this.Values[i])
-                    return this.ApplyDisplayFormat(cluster, this.Labels[i]);
+                if (clusterKeyAsUlong == Values[i])
+                {
+                    return ApplyDisplayFormat(cluster, Labels[i]);
+                }
             }
-            return this.ApplyDisplayFormat(cluster, clusterKeyAsUlong.ToString(CultureInfo.CurrentUICulture));
+            return ApplyDisplayFormat(cluster, clusterKeyAsUlong.ToString(CultureInfo.CurrentUICulture));
         }
 
         /// <summary>
@@ -163,10 +183,7 @@ namespace BrightIdeasSoftware
         /// </summary>
         /// <param name="valuesChosenForFiltering"></param>
         /// <returns></returns>
-        public override IModelFilter CreateFilter(IList valuesChosenForFiltering)
-        {
-            return new FlagBitSetFilter(this.GetClusterKey, valuesChosenForFiltering);
-        }
+        public override IModelFilter CreateFilter(IList valuesChosenForFiltering) => new FlagBitSetFilter(GetClusterKey, valuesChosenForFiltering);
 
         #endregion Implementation of IClusteringStrategy
     }

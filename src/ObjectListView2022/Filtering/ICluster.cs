@@ -27,7 +27,7 @@
 
 using System;
 
-namespace BrightIdeasSoftware
+namespace BrightIdeasSoftware.Filtering
 {
     /// <summary>
     /// A cluster is a like collection of objects that can be usefully filtered

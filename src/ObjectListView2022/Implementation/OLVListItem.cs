@@ -35,8 +35,9 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using BrightIdeasSoftware.Rendering;
 
-namespace BrightIdeasSoftware
+namespace BrightIdeasSoftware.Implementation
 {
     /// <summary>
     /// OLVListItems are specialized ListViewItems that know which row object they came from,
@@ -52,17 +53,17 @@ namespace BrightIdeasSoftware
         /// </summary>
         public OLVListItem(object rowObject)
         {
-            this.rowObject = rowObject;
+            this.RowObject = rowObject;
         }
 
         /// <summary>
         /// Create a OLVListItem for the given row object, represented by the given string and image
         /// </summary>
-        public OLVListItem(object rowObject, string text, Object image)
+        public OLVListItem(object rowObject, string text, object image)
             : base(text, -1)
         {
-            this.rowObject = rowObject;
-            this.imageSelector = image;
+            this.RowObject = rowObject;
+            imageSelector = image;
         }
 
         #endregion Constructors
@@ -78,7 +79,7 @@ namespace BrightIdeasSoftware
                 {
                     return base.Bounds;
                 }
-                catch (System.ArgumentException)
+                catch (ArgumentException)
                 {
                     // If the item is part of a collapsed group, Bounds will throw an exception
                     return Rectangle.Empty;
@@ -90,9 +91,7 @@ namespace BrightIdeasSoftware
         /// Gets or sets how many pixels will be left blank around each cell of this item
         /// </summary>
         /// <remarks>This setting only takes effect when the control is owner drawn.</remarks>
-        public Rectangle? CellPadding {
-            get { return this.cellPadding; }
-            set { this.cellPadding = value; }
+        public Rectangle? CellPadding { get => cellPadding; set => cellPadding = value;
         }
 
         private Rectangle? cellPadding;
@@ -101,12 +100,7 @@ namespace BrightIdeasSoftware
         /// Gets or sets how the cells of this item will be vertically aligned
         /// </summary>
         /// <remarks>This setting only takes effect when the control is owner drawn.</remarks>
-        public StringAlignment? CellVerticalAlignment {
-            get { return this.cellVerticalAlignment; }
-            set { this.cellVerticalAlignment = value; }
-        }
-
-        private StringAlignment? cellVerticalAlignment;
+        public StringAlignment? CellVerticalAlignment { get; set; }
 
         /// <summary>
         /// Gets or sets the checkedness of this item.
@@ -118,16 +112,18 @@ namespace BrightIdeasSoftware
         /// the property is not declared as virtual.
         /// </remarks>
         public new bool Checked {
-            get {
-                return base.Checked;
-            }
+            get => base.Checked;
             set {
-                if (this.Checked != value)
+                if (Checked != value)
                 {
                     if (value)
-                        ((ObjectListView)this.ListView).CheckObject(this.RowObject);
+                    {
+                        ((ObjectListView)ListView).CheckObject(RowObject);
+                    }
                     else
-                        ((ObjectListView)this.ListView).UncheckObject(this.RowObject);
+                    {
+                        ((ObjectListView)ListView).UncheckObject(RowObject);
+                    }
                 }
             }
         }
@@ -139,34 +135,34 @@ namespace BrightIdeasSoftware
         /// and will return True for both Checked and Indeterminate states.</remarks>
         public CheckState CheckState {
             get {
-                switch (this.StateImageIndex)
+                switch (StateImageIndex)
                 {
                     case 0:
-                        return System.Windows.Forms.CheckState.Unchecked;
+                        return CheckState.Unchecked;
 
                     case 1:
-                        return System.Windows.Forms.CheckState.Checked;
+                        return CheckState.Checked;
 
                     case 2:
-                        return System.Windows.Forms.CheckState.Indeterminate;
+                        return CheckState.Indeterminate;
 
                     default:
-                        return System.Windows.Forms.CheckState.Unchecked;
+                        return CheckState.Unchecked;
                 }
             }
             set {
                 switch (value)
                 {
-                    case System.Windows.Forms.CheckState.Unchecked:
-                        this.StateImageIndex = 0;
+                    case CheckState.Unchecked:
+                        StateImageIndex = 0;
                         break;
 
-                    case System.Windows.Forms.CheckState.Checked:
-                        this.StateImageIndex = 1;
+                    case CheckState.Checked:
+                        StateImageIndex = 1;
                         break;
 
-                    case System.Windows.Forms.CheckState.Indeterminate:
-                        this.StateImageIndex = 2;
+                    case CheckState.Indeterminate:
+                        StateImageIndex = 2;
                         break;
                 }
             }
@@ -175,11 +171,7 @@ namespace BrightIdeasSoftware
         /// <summary>
         /// Gets if this item has any decorations set for it.
         /// </summary>
-        public bool HasDecoration {
-            get {
-                return this.decorations != null && this.decorations.Count > 0;
-            }
-        }
+        public bool HasDecoration => decorations != null && decorations.Count > 0;
 
         /// <summary>
         /// Gets or sets the decoration that will be drawn over this item
@@ -187,15 +179,21 @@ namespace BrightIdeasSoftware
         /// <remarks>Setting this replaces all other decorations</remarks>
         public IDecoration Decoration {
             get {
-                if (this.HasDecoration)
-                    return this.Decorations[0];
+                if (HasDecoration)
+                {
+                    return Decorations[0];
+                }
                 else
+                {
                     return null;
+                }
             }
             set {
-                this.Decorations.Clear();
+                Decorations.Clear();
                 if (value != null)
-                    this.Decorations.Add(value);
+                {
+                    Decorations.Add(value);
+                }
             }
         }
 
@@ -204,9 +202,12 @@ namespace BrightIdeasSoftware
         /// </summary>
         public IList<IDecoration> Decorations {
             get {
-                if (this.decorations == null)
-                    this.decorations = new List<IDecoration>();
-                return this.decorations;
+                if (decorations == null)
+                {
+                    decorations = new List<IDecoration>();
+                }
+
+                return decorations;
             }
         }
 
@@ -215,22 +216,19 @@ namespace BrightIdeasSoftware
         /// <summary>
         /// Gets whether or not this row can be selected and activated
         /// </summary>
-        public bool Enabled {
-            get { return this.enabled; }
-            internal set { this.enabled = value; }
-        }
-
-        private bool enabled;
+        public bool Enabled { get; internal set; }
 
         /// <summary>
         /// Gets whether any cell on this item is showing a hyperlink
         /// </summary>
         public bool HasAnyHyperlinks {
             get {
-                foreach (OLVListSubItem subItem in this.SubItems)
+                foreach (OLVListSubItem subItem in SubItems)
                 {
-                    if (!String.IsNullOrEmpty(subItem.Url))
+                    if (!string.IsNullOrEmpty(subItem.Url))
+                    {
                         return true;
+                    }
                 }
                 return false;
             }
@@ -241,30 +239,31 @@ namespace BrightIdeasSoftware
         /// </summary>
         /// <remarks><para>This can be an Image, a string or an int. A string or an int will
         /// be used as an index into the small image list.</para></remarks>
-        public Object ImageSelector {
-            get { return imageSelector; }
+        public object ImageSelector {
+            get => imageSelector;
             set {
                 imageSelector = value;
-                if (value is Int32)
-                    this.ImageIndex = (Int32)value;
-                else if (value is String)
-                    this.ImageKey = (String)value;
+                if (value is int)
+                {
+                    ImageIndex = (int)value;
+                }
+                else if (value is string)
+                {
+                    ImageKey = (string)value;
+                }
                 else
-                    this.ImageIndex = -1;
+                {
+                    ImageIndex = -1;
+                }
             }
         }
 
-        private Object imageSelector;
+        private object imageSelector;
 
         /// <summary>
         /// Gets or sets the the model object that is source of the data for this list item.
         /// </summary>
-        public object RowObject {
-            get { return rowObject; }
-            set { rowObject = value; }
-        }
-
-        private object rowObject;
+        public object RowObject { get; set; }
 
         /// <summary>
         /// Gets or sets the color that will be used for this row's background when it is selected and
@@ -276,12 +275,7 @@ namespace BrightIdeasSoftware
         /// If this is not set, the normal selection BackColor will be used.
         /// </para>
         /// </remarks>
-        public Color? SelectedBackColor {
-            get { return this.selectedBackColor; }
-            set { this.selectedBackColor = value; }
-        }
-
-        private Color? selectedBackColor;
+        public Color? SelectedBackColor { get; set; }
 
         /// <summary>
         /// Gets or sets the color that will be used for this row's foreground when it is selected and
@@ -293,12 +287,7 @@ namespace BrightIdeasSoftware
         /// If this is not set, the normal selection ForeColor will be used.
         /// </para>
         /// </remarks>
-        public Color? SelectedForeColor {
-            get { return this.selectedForeColor; }
-            set { this.selectedForeColor = value; }
-        }
-
-        private Color? selectedForeColor;
+        public Color? SelectedForeColor { get; set; }
 
         #endregion Properties
 
@@ -311,8 +300,10 @@ namespace BrightIdeasSoftware
         /// <returns>An OLVListSubItem</returns>
         public virtual OLVListSubItem GetSubItem(int index)
         {
-            if (index >= 0 && index < this.SubItems.Count)
-                return (OLVListSubItem)this.SubItems[index];
+            if (index >= 0 && index < SubItems.Count)
+            {
+                return (OLVListSubItem)SubItems[index];
+            }
 
             return null;
         }
@@ -325,14 +316,14 @@ namespace BrightIdeasSoftware
         {
             if (subItemIndex == 0)
             {
-                Rectangle r = this.Bounds;
-                Point sides = NativeMethods.GetScrolledColumnSides(this.ListView, subItemIndex);
+                var r = Bounds;
+                var sides = NativeMethods.GetScrolledColumnSides(ListView, subItemIndex);
                 r.X = sides.X + 1;
                 r.Width = sides.Y - sides.X;
                 return r;
             }
 
-            OLVListSubItem subItem = this.GetSubItem(subItemIndex);
+            var subItem = GetSubItem(subItemIndex);
             return subItem == null ? new Rectangle() : subItem.Bounds;
         }
 

@@ -42,6 +42,7 @@ using System.Data;
 using System.Diagnostics;
 using System.Drawing.Design;
 using System.Windows.Forms;
+using BrightIdeasSoftware.Implementation;
 
 namespace BrightIdeasSoftware
 {
@@ -70,12 +71,12 @@ namespace BrightIdeasSoftware
         /// </summary>
         public DataListView()
         {
-            this.Adapter = new DataSourceAdapter(this);
+            Adapter = new DataSourceAdapter(this);
         }
 
         protected override void Dispose(bool disposing)
         {
-            this.Adapter.Dispose();
+            Adapter.Dispose();
             base.Dispose(disposing);
         }
 
@@ -91,9 +92,7 @@ namespace BrightIdeasSoftware
         [Category("Data"),
          Description("Should the control automatically generate columns from the DataSource"),
          DefaultValue(true)]
-        public bool AutoGenerateColumns {
-            get { return this.Adapter.AutoGenerateColumns; }
-            set { this.Adapter.AutoGenerateColumns = value; }
+        public bool AutoGenerateColumns { get => Adapter.AutoGenerateColumns; set => Adapter.AutoGenerateColumns = value;
         }
 
         /// <summary>
@@ -123,9 +122,7 @@ namespace BrightIdeasSoftware
         /// </remarks>
         [Category("Data"),
         TypeConverter("System.Windows.Forms.Design.DataSourceConverter, System.Design")]
-        public virtual Object DataSource {
-            get { return this.Adapter.DataSource; }
-            set { this.Adapter.DataSource = value; }
+        public virtual Object DataSource { get => Adapter.DataSource; set => Adapter.DataSource = value;
         }
 
         /// <summary>
@@ -135,9 +132,7 @@ namespace BrightIdeasSoftware
         [Category("Data"),
          Editor("System.Windows.Forms.Design.DataMemberListEditor, System.Design", typeof(UITypeEditor)),
          DefaultValue("")]
-        public virtual string DataMember {
-            get { return this.Adapter.DataMember; }
-            set { this.Adapter.DataMember = value; }
+        public virtual string DataMember { get => Adapter.DataMember; set => Adapter.DataMember = value;
         }
 
         #endregion Public Properties
@@ -156,7 +151,8 @@ namespace BrightIdeasSoftware
                 Debug.Assert(adapter != null, "Data adapter should not be null");
                 return adapter;
             }
-            set { adapter = value; }
+
+            set => adapter = value;
         }
 
         private DataSourceAdapter adapter;
@@ -209,8 +205,8 @@ namespace BrightIdeasSoftware
         {
             // Copied from base method, but we don't need to BuildList() since we know that our
             // data adaptor is going to do that immediately after this method exits.
-            this.EndUpdate();
-            this.ResizeFreeSpaceFillingColumns();
+            EndUpdate();
+            ResizeFreeSpaceFillingColumns();
             // this.BuildList();
         }
 
@@ -218,18 +214,7 @@ namespace BrightIdeasSoftware
         /// Handles parent binding context changes
         /// </summary>
         /// <param name="e">Unused EventArgs.</param>
-        protected override void OnParentBindingContextChanged(EventArgs e)
-        {
-            base.OnParentBindingContextChanged(e);
-
-            // BindingContext is an ambient property - by default it simply picks
-            // up the parent control's context (unless something has explicitly
-            // given us our own). So we must respond to changes in our parent's
-            // binding context in the same way we would changes to our own
-            // binding context.
-
-            // THINK: Do we need to forward this to the adapter?
-        }
+        protected override void OnParentBindingContextChanged(EventArgs e) => base.OnParentBindingContextChanged(e);// BindingContext is an ambient property - by default it simply picks// up the parent control's context (unless something has explicitly// given us our own). So we must respond to changes in our parent's// binding context in the same way we would changes to our own// binding context.// THINK: Do we need to forward this to the adapter?
 
         #endregion Event Handlers
     }

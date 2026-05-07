@@ -27,7 +27,7 @@
 
 using System;
 
-namespace BrightIdeasSoftware
+namespace BrightIdeasSoftware.Filtering
 {
     /// <summary>
     /// This class calculates clusters from the groups that the column uses.
@@ -49,10 +49,7 @@ namespace BrightIdeasSoftware
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public override object GetClusterKey(object model)
-        {
-            return this.Column.GetGroupKey(model);
-        }
+        public override object GetClusterKey(object model) => Column.GetGroupKey(model);
 
         /// <summary>
         /// Gets the display label that the given cluster should use
@@ -61,10 +58,13 @@ namespace BrightIdeasSoftware
         /// <returns></returns>
         public override string GetClusterDisplayLabel(ICluster cluster)
         {
-            string s = this.Column.ConvertGroupKeyToTitle(cluster.ClusterKey);
-            if (String.IsNullOrEmpty(s))
+            var s = Column.ConvertGroupKeyToTitle(cluster.ClusterKey);
+            if (string.IsNullOrEmpty(s))
+            {
                 s = EMPTY_LABEL;
-            return this.ApplyDisplayFormat(cluster, s);
+            }
+
+            return ApplyDisplayFormat(cluster, s);
         }
     }
 }

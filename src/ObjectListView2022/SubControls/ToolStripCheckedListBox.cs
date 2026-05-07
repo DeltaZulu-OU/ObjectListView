@@ -28,7 +28,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace BrightIdeasSoftware
+namespace BrightIdeasSoftware.SubControls
 {
     /// <summary>
     /// Instances of this class put a CheckedListBox into a tool strip menu item.
@@ -41,50 +41,32 @@ namespace BrightIdeasSoftware
         public ToolStripCheckedListBox()
             : base(new CheckedListBox())
         {
-            this.CheckedListBoxControl.MaximumSize = new Size(400, 700);
-            this.CheckedListBoxControl.ThreeDCheckBoxes = true;
-            this.CheckedListBoxControl.CheckOnClick = true;
-            this.CheckedListBoxControl.SelectionMode = SelectionMode.One;
+            CheckedListBoxControl.MaximumSize = new Size(400, 700);
+            CheckedListBoxControl.ThreeDCheckBoxes = true;
+            CheckedListBoxControl.CheckOnClick = true;
+            CheckedListBoxControl.SelectionMode = SelectionMode.One;
         }
 
         /// <summary>
         /// Gets the control embedded in the menu
         /// </summary>
-        public CheckedListBox CheckedListBoxControl {
-            get {
-                return Control as CheckedListBox;
-            }
-        }
+        public CheckedListBox CheckedListBoxControl => Control as CheckedListBox;
 
         /// <summary>
         /// Gets the items shown in the checkedlistbox
         /// </summary>
-        public CheckedListBox.ObjectCollection Items {
-            get {
-                return this.CheckedListBoxControl.Items;
-            }
-        }
+        public CheckedListBox.ObjectCollection Items => CheckedListBoxControl.Items;
 
         /// <summary>
         /// Gets or sets whether an item should be checked when it is clicked
         /// </summary>
-        public bool CheckedOnClick {
-            get {
-                return this.CheckedListBoxControl.CheckOnClick;
-            }
-            set {
-                this.CheckedListBoxControl.CheckOnClick = value;
-            }
+        public bool CheckedOnClick { get => CheckedListBoxControl.CheckOnClick; set => CheckedListBoxControl.CheckOnClick = value;
         }
 
         /// <summary>
         /// Gets a collection of the checked items
         /// </summary>
-        public CheckedListBox.CheckedItemCollection CheckedItems {
-            get {
-                return this.CheckedListBoxControl.CheckedItems;
-            }
-        }
+        public CheckedListBox.CheckedItemCollection CheckedItems => CheckedListBoxControl.CheckedItems;
 
         /// <summary>
         /// Add a possibly checked item to the control
@@ -93,9 +75,11 @@ namespace BrightIdeasSoftware
         /// <param name="isChecked"></param>
         public void AddItem(object item, bool isChecked)
         {
-            this.Items.Add(item);
+            Items.Add(item);
             if (isChecked)
-                this.CheckedListBoxControl.SetItemChecked(this.Items.Count - 1, true);
+            {
+                CheckedListBoxControl.SetItemChecked(Items.Count - 1, true);
+            }
         }
 
         /// <summary>
@@ -105,8 +89,8 @@ namespace BrightIdeasSoftware
         /// <param name="state"></param>
         public void AddItem(object item, CheckState state)
         {
-            this.Items.Add(item);
-            this.CheckedListBoxControl.SetItemCheckState(this.Items.Count - 1, state);
+            Items.Add(item);
+            CheckedListBoxControl.SetItemCheckState(Items.Count - 1, state);
         }
 
         /// <summary>
@@ -114,10 +98,7 @@ namespace BrightIdeasSoftware
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
-        public CheckState GetItemCheckState(int i)
-        {
-            return this.CheckedListBoxControl.GetItemCheckState(i);
-        }
+        public CheckState GetItemCheckState(int i) => CheckedListBoxControl.GetItemCheckState(i);
 
         /// <summary>
         /// Set the checkedness of the i'th item
@@ -126,8 +107,10 @@ namespace BrightIdeasSoftware
         /// <param name="checkState"></param>
         public void SetItemState(int i, CheckState checkState)
         {
-            if (i >= 0 && i < this.Items.Count)
-                this.CheckedListBoxControl.SetItemCheckState(i, checkState);
+            if (i >= 0 && i < Items.Count)
+            {
+                CheckedListBoxControl.SetItemCheckState(i, checkState);
+            }
         }
 
         /// <summary>
@@ -135,8 +118,10 @@ namespace BrightIdeasSoftware
         /// </summary>
         public void CheckAll()
         {
-            for (int i = 0; i < this.Items.Count; i++)
-                this.CheckedListBoxControl.SetItemChecked(i, true);
+            for (var i = 0; i < Items.Count; i++)
+            {
+                CheckedListBoxControl.SetItemChecked(i, true);
+            }
         }
 
         /// <summary>
@@ -144,8 +129,10 @@ namespace BrightIdeasSoftware
         /// </summary>
         public void UncheckAll()
         {
-            for (int i = 0; i < this.Items.Count; i++)
-                this.CheckedListBoxControl.SetItemChecked(i, false);
+            for (var i = 0; i < Items.Count; i++)
+            {
+                CheckedListBoxControl.SetItemChecked(i, false);
+            }
         }
 
         #region Events
@@ -158,7 +145,7 @@ namespace BrightIdeasSoftware
         {
             base.OnSubscribeControlEvents(c);
 
-            CheckedListBox control = (CheckedListBox)c;
+            var control = (CheckedListBox)c;
             control.ItemCheck += new ItemCheckEventHandler(OnItemCheck);
         }
 
@@ -170,7 +157,7 @@ namespace BrightIdeasSoftware
         {
             base.OnUnsubscribeControlEvents(c);
 
-            CheckedListBox control = (CheckedListBox)c;
+            var control = (CheckedListBox)c;
             control.ItemCheck -= new ItemCheckEventHandler(OnItemCheck);
         }
 
@@ -184,13 +171,7 @@ namespace BrightIdeasSoftware
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OnItemCheck(object sender, ItemCheckEventArgs e)
-        {
-            if (ItemCheck != null)
-            {
-                ItemCheck(this, e);
-            }
-        }
+        private void OnItemCheck(object sender, ItemCheckEventArgs e) => ItemCheck?.Invoke(this, e);
 
         #endregion Events
     }

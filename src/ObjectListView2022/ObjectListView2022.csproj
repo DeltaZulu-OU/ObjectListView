@@ -61,7 +61,6 @@
 
   <!-- File Globbing Fixes (Excluding items that shouldn't be compiled/packed) -->
   <ItemGroup>
-    <None Include="FullClassDiagram.cd" />
     <None Include="CustomDictionary.xml" />
   </ItemGroup>
 

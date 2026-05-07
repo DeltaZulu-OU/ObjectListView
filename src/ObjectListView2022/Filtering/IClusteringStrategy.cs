@@ -30,7 +30,7 @@
 
 using System.Collections;
 
-namespace BrightIdeasSoftware
+namespace BrightIdeasSoftware.Filtering
 {
     /// <summary>
     /// Implementation of this interface control the selecting of cluster keys

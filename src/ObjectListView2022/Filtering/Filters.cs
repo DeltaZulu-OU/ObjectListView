@@ -34,8 +34,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using BrightIdeasSoftware.Implementation;
 
-namespace BrightIdeasSoftware
+namespace BrightIdeasSoftware.Filtering
 {
     /// <summary>
     /// Interface for model-by-model filtering
@@ -74,10 +75,7 @@ namespace BrightIdeasSoftware
         /// </summary>
         /// <param name="modelObject">The model object to consider</param>
         /// <returns>Returns true if the model will be included by the filter</returns>
-        public virtual bool Filter(object modelObject)
-        {
-            return true;
-        }
+        public virtual bool Filter(object modelObject) => true;
     }
 
     /// <summary>
@@ -91,28 +89,20 @@ namespace BrightIdeasSoftware
         /// <param name="predicate">The function that will filter objects</param>
         public ModelFilter(Predicate<object> predicate)
         {
-            this.Predicate = predicate;
+            Predicate = predicate;
         }
 
         /// <summary>
         /// Gets or sets the predicate used to filter model objects
         /// </summary>
-        protected Predicate<object> Predicate {
-            get { return predicate; }
-            set { predicate = value; }
-        }
-
-        private Predicate<object> predicate;
+        protected Predicate<object> Predicate { get; set; }
 
         /// <summary>
         /// Should the given model object be included?
         /// </summary>
         /// <param name="modelObject"></param>
         /// <returns></returns>
-        public virtual bool Filter(object modelObject)
-        {
-            return this.Predicate == null ? true : this.Predicate(modelObject);
-        }
+        public virtual bool Filter(object modelObject) => Predicate == null ? true : Predicate(modelObject);
     }
 
     /// <summary>
@@ -134,33 +124,31 @@ namespace BrightIdeasSoftware
         /// <param name="filters">A list of filters</param>
         public CompositeFilter(IEnumerable<IModelFilter> filters)
         {
-            foreach (IModelFilter filter in filters)
+            foreach (var filter in filters)
             {
                 if (filter != null)
+                {
                     Filters.Add(filter);
+                }
             }
         }
 
         /// <summary>
         /// Gets or sets the filters used by this composite
         /// </summary>
-        public IList<IModelFilter> Filters {
-            get { return filters; }
-            set { filters = value; }
-        }
-
-        private IList<IModelFilter> filters = new List<IModelFilter>();
+        public IList<IModelFilter> Filters { get; set; } = new List<IModelFilter>();
 
         /// <summary>
         /// Get the sub filters that are text match filters
         /// </summary>
         public IEnumerable<TextMatchFilter> TextFilters {
             get {
-                foreach (IModelFilter filter in this.Filters)
+                foreach (var filter in Filters)
                 {
-                    TextMatchFilter textFilter = filter as TextMatchFilter;
-                    if (textFilter != null)
+                    if (filter is TextMatchFilter textFilter)
+                    {
                         yield return textFilter;
+                    }
                 }
             }
         }
@@ -172,10 +160,12 @@ namespace BrightIdeasSoftware
         /// <returns>True if the object is included by the filter</returns>
         public virtual bool Filter(object modelObject)
         {
-            if (this.Filters == null || this.Filters.Count == 0)
+            if (Filters == null || Filters.Count == 0)
+            {
                 return true;
+            }
 
-            return this.FilterObject(modelObject);
+            return FilterObject(modelObject);
         }
 
         /// <summary>
@@ -211,9 +201,13 @@ namespace BrightIdeasSoftware
         /// <returns>True if the object is included by the filter</returns>
         public override bool FilterObject(object modelObject)
         {
-            foreach (IModelFilter filter in this.Filters)
+            foreach (var filter in Filters)
+            {
                 if (!filter.Filter(modelObject))
+                {
                     return false;
+                }
+            }
 
             return true;
         }
@@ -243,9 +237,13 @@ namespace BrightIdeasSoftware
         /// <returns>True if the object is included by the filter</returns>
         public override bool FilterObject(object modelObject)
         {
-            foreach (IModelFilter filter in this.Filters)
+            foreach (var filter in Filters)
+            {
                 if (filter.Filter(modelObject))
+                {
                     return true;
+                }
+            }
 
             return false;
         }
@@ -277,17 +275,15 @@ namespace BrightIdeasSoftware
         /// <param name="possibleValues"></param>
         public OneOfFilter(AspectGetterDelegate valueGetter, ICollection possibleValues)
         {
-            this.ValueGetter = valueGetter;
-            this.PossibleValues = new ArrayList(possibleValues);
+            ValueGetter = valueGetter;
+            PossibleValues = new ArrayList(possibleValues);
         }
 
         /// <summary>
         /// Gets or sets the delegate that will be used to extract values
         /// from model objects
         /// </summary>
-        public virtual AspectGetterDelegate ValueGetter {
-            get { return valueGetter; }
-            set { valueGetter = value; }
+        public virtual AspectGetterDelegate ValueGetter { get => valueGetter; set => valueGetter = value;
         }
 
         private AspectGetterDelegate valueGetter;
@@ -296,9 +292,7 @@ namespace BrightIdeasSoftware
         /// Gets or sets the list of values that the value extracted from
         /// the model object must match in order to be included.
         /// </summary>
-        public virtual IList PossibleValues {
-            get { return possibleValues; }
-            set { possibleValues = value; }
+        public virtual IList PossibleValues { get => possibleValues; set => possibleValues = value;
         }
 
         private IList possibleValues;
@@ -310,18 +304,23 @@ namespace BrightIdeasSoftware
         /// <returns></returns>
         public virtual bool Filter(object modelObject)
         {
-            if (this.ValueGetter == null || this.PossibleValues == null || this.PossibleValues.Count == 0)
-                return false;
-
-            object result = this.ValueGetter(modelObject);
-            IEnumerable enumerable = result as IEnumerable;
-            if (result is string || enumerable == null)
-                return this.DoesValueMatch(result);
-
-            foreach (object x in enumerable)
+            if (ValueGetter == null || PossibleValues == null || PossibleValues.Count == 0)
             {
-                if (this.DoesValueMatch(x))
+                return false;
+            }
+
+            var result = ValueGetter(modelObject);
+            if (result is string || result is not IEnumerable enumerable)
+            {
+                return DoesValueMatch(result);
+            }
+
+            foreach (var x in enumerable)
+            {
+                if (DoesValueMatch(x))
+                {
                     return true;
+                }
             }
             return false;
         }
@@ -331,10 +330,7 @@ namespace BrightIdeasSoftware
         /// </summary>
         /// <param name="result"></param>
         /// <returns></returns>
-        protected virtual bool DoesValueMatch(object result)
-        {
-            return this.PossibleValues.Contains(result);
-        }
+        protected virtual bool DoesValueMatch(object result) => PossibleValues.Contains(result);
     }
 
     /// <summary>
@@ -353,7 +349,7 @@ namespace BrightIdeasSoftware
         /// <param name="possibleValues"></param>
         public FlagBitSetFilter(AspectGetterDelegate valueGetter, ICollection possibleValues) : base(valueGetter, possibleValues)
         {
-            this.ConvertPossibleValues();
+            ConvertPossibleValues();
         }
 
         /// <summary>
@@ -361,18 +357,20 @@ namespace BrightIdeasSoftware
         /// These must be ulongs (or convertible to ulongs).
         /// </summary>
         public override IList PossibleValues {
-            get { return base.PossibleValues; }
+            get => base.PossibleValues;
             set {
                 base.PossibleValues = value;
-                this.ConvertPossibleValues();
+                ConvertPossibleValues();
             }
         }
 
         private void ConvertPossibleValues()
         {
-            this.possibleValuesAsUlongs = new List<UInt64>();
-            foreach (object x in this.PossibleValues)
-                this.possibleValuesAsUlongs.Add(Convert.ToUInt64(x));
+            possibleValuesAsUlongs = new List<ulong>();
+            foreach (var x in PossibleValues)
+            {
+                possibleValuesAsUlongs.Add(Convert.ToUInt64(x));
+            }
         }
 
         /// <summary>
@@ -384,11 +382,13 @@ namespace BrightIdeasSoftware
         {
             try
             {
-                UInt64 value = Convert.ToUInt64(result);
-                foreach (ulong flag in this.possibleValuesAsUlongs)
+                var value = Convert.ToUInt64(result);
+                foreach (var flag in possibleValuesAsUlongs)
                 {
                     if ((value & flag) == flag)
+                    {
                         return true;
+                    }
                 }
                 return false;
             }
@@ -402,7 +402,7 @@ namespace BrightIdeasSoftware
             }
         }
 
-        private List<UInt64> possibleValuesAsUlongs = new List<UInt64>();
+        private List<ulong> possibleValuesAsUlongs = new List<ulong>();
     }
 
     /// <summary>
@@ -416,10 +416,7 @@ namespace BrightIdeasSoftware
         /// </summary>
         /// <param name="modelObjects">The collection of model objects that the list will possibly display</param>
         /// <returns>The filtered collection that holds the model objects that will be displayed.</returns>
-        public virtual IEnumerable Filter(IEnumerable modelObjects)
-        {
-            return modelObjects;
-        }
+        public virtual IEnumerable Filter(IEnumerable modelObjects) => modelObjects;
     }
 
     /// <summary>
@@ -440,18 +437,13 @@ namespace BrightIdeasSoftware
         /// <param name="function"></param>
         public ListFilter(ListFilterDelegate function)
         {
-            this.Function = function;
+            Function = function;
         }
 
         /// <summary>
         /// Gets or sets the delegate that will filter the list
         /// </summary>
-        public ListFilterDelegate Function {
-            get { return function; }
-            set { function = value; }
-        }
-
-        private ListFilterDelegate function;
+        public ListFilterDelegate Function { get; set; }
 
         /// <summary>
         /// Do the actual work of filtering
@@ -460,10 +452,12 @@ namespace BrightIdeasSoftware
         /// <returns></returns>
         public override IEnumerable Filter(IEnumerable modelObjects)
         {
-            if (this.Function == null)
+            if (Function == null)
+            {
                 return modelObjects;
+            }
 
-            return this.Function(modelObjects);
+            return Function(modelObjects);
         }
     }
 
@@ -485,19 +479,14 @@ namespace BrightIdeasSoftware
         /// <param name="numberOfObjects"></param>
         public TailFilter(int numberOfObjects)
         {
-            this.Count = numberOfObjects;
+            Count = numberOfObjects;
         }
 
         /// <summary>
         /// Gets or sets the number of model objects that will be
         /// returned from the tail of the list
         /// </summary>
-        public int Count {
-            get { return count; }
-            set { count = value; }
-        }
-
-        private int count;
+        public int Count { get; set; }
 
         /// <summary>
         /// Return the last N subset of the model objects
@@ -506,16 +495,20 @@ namespace BrightIdeasSoftware
         /// <returns></returns>
         public override IEnumerable Filter(IEnumerable modelObjects)
         {
-            if (this.Count <= 0)
+            if (Count <= 0)
+            {
                 return modelObjects;
+            }
 
-            ArrayList list = ObjectListView.EnumerableToArray(modelObjects, false);
+            var list = ObjectListView.EnumerableToArray(modelObjects, false);
 
-            if (this.Count > list.Count)
+            if (Count > list.Count)
+            {
                 return list;
+            }
 
-            object[] tail = new object[this.Count];
-            list.CopyTo(list.Count - this.Count, tail, 0, this.Count);
+            var tail = new object[Count];
+            list.CopyTo(list.Count - Count, tail, 0, Count);
             return new ArrayList(tail);
         }
     }

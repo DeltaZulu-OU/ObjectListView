@@ -44,8 +44,9 @@ using System.Drawing;
 using System.Reflection;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
+using BrightIdeasSoftware.Rendering;
 
-namespace BrightIdeasSoftware.Design
+namespace BrightIdeasSoftware
 {
     /// <summary>
     /// Designer for <see cref="ObjectListView"/> and its subclasses.
@@ -74,25 +75,28 @@ namespace BrightIdeasSoftware.Design
 
             // Use reflection to bypass the "internal" marker on ListViewDesigner
             // If we can't get the unversioned designer, look specifically for .NET 4.0 version of it.
-            Type tListViewDesigner = Type.GetType("System.Windows.Forms.Design.ListViewDesigner, System.Design") ??
+            var tListViewDesigner = Type.GetType("System.Windows.Forms.Design.ListViewDesigner, System.Design") ??
                                      Type.GetType("System.Windows.Forms.Design.ListViewDesigner, System.Design, " +
                                                   "Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a");
-            if (tListViewDesigner == null) throw new ArgumentException("Could not load ListViewDesigner");
+            if (tListViewDesigner == null)
+            {
+                throw new ArgumentException("Could not load ListViewDesigner");
+            }
 
-            this.listViewDesigner = (ControlDesigner)Activator.CreateInstance(tListViewDesigner, BindingFlags.Instance | BindingFlags.Public, null, null, null);
-            this.designerFilter = this.listViewDesigner;
+            listViewDesigner = (ControlDesigner)Activator.CreateInstance(tListViewDesigner, BindingFlags.Instance | BindingFlags.Public, null, null, null);
+            designerFilter = listViewDesigner;
 
             // Fetch the methods from the ListViewDesigner that we know we want to use
-            this.listViewDesignGetHitTest = tListViewDesigner.GetMethod("GetHitTest", BindingFlags.Instance | BindingFlags.NonPublic);
-            this.listViewDesignWndProc = tListViewDesigner.GetMethod("WndProc", BindingFlags.Instance | BindingFlags.NonPublic);
+            listViewDesignGetHitTest = tListViewDesigner.GetMethod("GetHitTest", BindingFlags.Instance | BindingFlags.NonPublic);
+            listViewDesignWndProc = tListViewDesigner.GetMethod("WndProc", BindingFlags.Instance | BindingFlags.NonPublic);
 
-            Debug.Assert(this.listViewDesignGetHitTest != null, "Required method (GetHitTest) not found on ListViewDesigner");
-            Debug.Assert(this.listViewDesignWndProc != null, "Required method (WndProc) not found on ListViewDesigner");
+            Debug.Assert(listViewDesignGetHitTest != null, "Required method (GetHitTest) not found on ListViewDesigner");
+            Debug.Assert(listViewDesignWndProc != null, "Required method (WndProc) not found on ListViewDesigner");
 
             // Tell the Designer to use properties of default designer as well as the properties of this class (do before base.Initialize)
-            TypeDescriptor.CreateAssociation(component, this.listViewDesigner);
+            TypeDescriptor.CreateAssociation(component, listViewDesigner);
 
-            IServiceContainer site = (IServiceContainer)component.Site;
+            var site = (IServiceContainer)component.Site;
             if (site != null && GetService(typeof(DesignerCommandSet)) == null)
             {
                 site.AddService(typeof(DesignerCommandSet), new CDDesignerCommandSet(this));
@@ -102,7 +106,7 @@ namespace BrightIdeasSoftware.Design
                 Debug.Fail("site != null && GetService(typeof (DesignerCommandSet)) == null");
             }
 
-            this.listViewDesigner.Initialize(component);
+            listViewDesigner.Initialize(component);
             base.Initialize(component);
 
             RemoveDuplicateDockingActionList();
@@ -116,7 +120,7 @@ namespace BrightIdeasSoftware.Design
         {
             // Debug.WriteLine("ObjectListViewDesigner.InitializeNewComponent");
             base.InitializeNewComponent(defaultValues);
-            this.listViewDesigner.InitializeNewComponent(defaultValues);
+            listViewDesigner.InitializeNewComponent(defaultValues);
         }
 
         /// <summary>
@@ -128,12 +132,7 @@ namespace BrightIdeasSoftware.Design
             // Debug.WriteLine("ObjectListViewDesigner.Dispose");
             if (disposing)
             {
-                if (this.listViewDesigner != null)
-                {
-                    this.listViewDesigner.Dispose();
-                    // Normally we would now null out the designer, but this designer
-                    // still has methods called AFTER it is disposed.
-                }
+                listViewDesigner?.Dispose();
             }
 
             base.Dispose(disposing);
@@ -153,17 +152,14 @@ namespace BrightIdeasSoftware.Design
             // remove an action from the designer.
             // In ControlDesigner, there is "private DockingActionList dockingAction;"
             // Don't you just love Reflector?!
-            FieldInfo fi = typeof(ControlDesigner).GetField("dockingAction", BindingFlags.Instance | BindingFlags.NonPublic);
+            var fi = typeof(ControlDesigner).GetField("dockingAction", BindingFlags.Instance | BindingFlags.NonPublic);
             if (fi != null)
             {
-                DesignerActionList dockingAction = (DesignerActionList)fi.GetValue(this);
+                var dockingAction = (DesignerActionList)fi.GetValue(this);
                 if (dockingAction != null)
                 {
-                    DesignerActionService service = (DesignerActionService)GetService(typeof(DesignerActionService));
-                    if (service != null)
-                    {
-                        service.Remove(this.Control, dockingAction);
-                    }
+                    var service = (DesignerActionService)GetService(typeof(DesignerActionService));
+                    service?.Remove(Control, dockingAction);
                 }
             }
         }
@@ -186,7 +182,7 @@ namespace BrightIdeasSoftware.Design
 
             // Give the listviewdesigner a chance to filter the properties
             // (though we already know it's not going to do anything)
-            this.designerFilter.PreFilterProperties(properties);
+            designerFilter.PreFilterProperties(properties);
 
             // I'd like to just remove the redundant properties, but that would
             // break backward compatibility. The deserialiser that handles the XXX.Designer.cs file
@@ -195,7 +191,7 @@ namespace BrightIdeasSoftware.Design
             // So we shadow the unwanted properties, and give the replacement properties
             // non-browsable attributes so that they are hidden from the user
 
-            List<string> unwantedProperties = new List<string>(new string[] {
+            var unwantedProperties = new List<string>(new string[] {
                 "BackgroundImage", "BackgroundImageTiled", "HotTracking", "HoverSelection",
                 "LabelEdit", "VirtualListSize", "VirtualMode" });
 
@@ -211,7 +207,7 @@ namespace BrightIdeasSoftware.Design
 
             // If we are looking at a TreeListView, remove group related properties
             // since TreeListViews can't show groups
-            if (this.Control is TreeListView)
+            if (Control is TreeListView)
             {
                 unwantedProperties.AddRange(new string[] {
                     "GroupImageList", "GroupWithItemCountFormat", "GroupWithItemCountSingularFormat", "HasCollapsibleGroups",
@@ -221,9 +217,9 @@ namespace BrightIdeasSoftware.Design
 
             // Shadow the unwanted properties, and give the replacement properties
             // non-browsable attributes so that they are hidden from the user
-            foreach (string unwantedProperty in unwantedProperties)
+            foreach (var unwantedProperty in unwantedProperties)
             {
-                PropertyDescriptor propertyDesc = TypeDescriptor.CreateProperty(
+                var propertyDesc = TypeDescriptor.CreateProperty(
                     typeof(ObjectListView),
                     (PropertyDescriptor)properties[unwantedProperty],
                     new BrowsableAttribute(false));
@@ -239,11 +235,11 @@ namespace BrightIdeasSoftware.Design
         {
             // Debug.WriteLine("ObjectListViewDesigner.PreFilterEvents");
             base.PreFilterEvents(events);
-            this.designerFilter.PreFilterEvents(events);
+            designerFilter.PreFilterEvents(events);
 
             // Remove the events that don't make sense for an ObjectListView.
             // See PreFilterProperties() for why we do this dance rather than just remove the event.
-            List<string> unwanted = new List<string>(new string[] {
+            var unwanted = new List<string>(new string[] {
                 "AfterLabelEdit",
                 "BeforeLabelEdit",
                 "DrawColumnHeader",
@@ -256,7 +252,7 @@ namespace BrightIdeasSoftware.Design
 
             // If we are looking at a TreeListView, remove group related events
             // since TreeListViews can't show groups
-            if (this.Control is TreeListView)
+            if (Control is TreeListView)
             {
                 unwanted.AddRange(new string[] {
                     "AboutToCreateGroups",
@@ -268,9 +264,9 @@ namespace BrightIdeasSoftware.Design
                 });
             }
 
-            foreach (string unwantedEvent in unwanted)
+            foreach (var unwantedEvent in unwanted)
             {
-                EventDescriptor eventDesc = TypeDescriptor.CreateEvent(
+                var eventDesc = TypeDescriptor.CreateEvent(
                    typeof(ObjectListView),
                     (EventDescriptor)events[unwantedEvent],
                     new BrowsableAttribute(false));
@@ -285,7 +281,7 @@ namespace BrightIdeasSoftware.Design
         protected override void PostFilterAttributes(IDictionary attributes)
         {
             // Debug.WriteLine("ObjectListViewDesigner.PostFilterAttributes");
-            this.designerFilter.PostFilterAttributes(attributes);
+            designerFilter.PostFilterAttributes(attributes);
             base.PostFilterAttributes(attributes);
         }
 
@@ -296,7 +292,7 @@ namespace BrightIdeasSoftware.Design
         protected override void PostFilterEvents(IDictionary events)
         {
             // Debug.WriteLine("ObjectListViewDesigner.PostFilterEvents");
-            this.designerFilter.PostFilterEvents(events);
+            designerFilter.PostFilterEvents(events);
             base.PostFilterEvents(events);
         }
 
@@ -313,7 +309,7 @@ namespace BrightIdeasSoftware.Design
         public override DesignerActionListCollection ActionLists {
             get {
                 // We want to change the first action list so it only has the commands we want
-                DesignerActionListCollection actionLists = this.listViewDesigner.ActionLists;
+                var actionLists = listViewDesigner.ActionLists;
                 if (actionLists.Count > 0 && !(actionLists[0] is ListViewActionListAdapter))
                 {
                     actionLists[0] = new ListViewActionListAdapter(this, actionLists[0]);
@@ -330,8 +326,8 @@ namespace BrightIdeasSoftware.Design
         /// </returns>
         public override ICollection AssociatedComponents {
             get {
-                ArrayList components = new ArrayList(base.AssociatedComponents);
-                components.AddRange(this.listViewDesigner.AssociatedComponents);
+                var components = new ArrayList(base.AssociatedComponents);
+                components.AddRange(listViewDesigner.AssociatedComponents);
                 return components;
             }
         }
@@ -343,11 +339,9 @@ namespace BrightIdeasSoftware.Design
         /// true if a click at the specified point is to be handled by the control; otherwise, false.
         /// </returns>
         /// <param name="point">A <see cref="T:System.Drawing.Point"/> indicating the position at which the mouse was clicked, in screen coordinates. </param>
-        protected override bool GetHitTest(Point point)
-        {
+        protected override bool GetHitTest(Point point) =>
             // The ListViewDesigner wants to allow column dividers to be resized
-            return (bool)this.listViewDesignGetHitTest.Invoke(listViewDesigner, new object[] { point });
-        }
+            (bool)listViewDesignGetHitTest.Invoke(listViewDesigner, new object[] { point });
 
         /// <summary>
         /// Processes Windows messages and optionally routes them to the control.
@@ -360,7 +354,7 @@ namespace BrightIdeasSoftware.Design
                 case 0x4e:
                 case 0x204e:
                     // The listview designer is interested in HDN_ENDTRACK notifications
-                    this.listViewDesignWndProc.Invoke(listViewDesigner, new object[] { m });
+                    listViewDesignWndProc.Invoke(listViewDesigner, new object[] { m });
                     break;
 
                 default:
@@ -405,7 +399,7 @@ namespace BrightIdeasSoftware.Design
 
             public override DesignerActionItemCollection GetSortedActionItems()
             {
-                DesignerActionItemCollection items = wrappedList.GetSortedActionItems();
+                var items = wrappedList.GetSortedActionItems();
                 items.RemoveAt(2); // remove Edit Groups
                 items.RemoveAt(0); // remove Edit Items
                 return items;
@@ -415,19 +409,13 @@ namespace BrightIdeasSoftware.Design
             {
                 // One more complication. The ListViewActionList classes uses an internal class, EditorServiceContext, to
                 // edit the items/columns/groups collections. So, we use reflection to bypass the data hiding.
-                Type tEditorServiceContext = Type.GetType("System.Windows.Forms.Design.EditorServiceContext, System.Design");
+                var tEditorServiceContext = Type.GetType("System.Windows.Forms.Design.EditorServiceContext, System.Design");
                 tEditorServiceContext.InvokeMember("EditValue", BindingFlags.InvokeMethod | BindingFlags.Static, null, null, new object[] { componentDesigner, iComponent, propertyName });
             }
 
-            private void SetValue(object target, string propertyName, object value)
-            {
-                TypeDescriptor.GetProperties(target)[propertyName].SetValue(target, value);
-            }
+            private void SetValue(object target, string propertyName, object value) => TypeDescriptor.GetProperties(target)[propertyName].SetValue(target, value);
 
-            public void InvokeColumnsDialog()
-            {
-                EditValue(this.designer, base.Component, "Columns");
-            }
+            public void InvokeColumnsDialog() => EditValue(designer, Component, "Columns");
 
             // Don't need these since we removed their corresponding actions from the list.
             // Keep the methods just in case.
@@ -440,23 +428,17 @@ namespace BrightIdeasSoftware.Design
             //    EditValue(this.designer, base.Component, "Items");
             //}
 
-            public ImageList LargeImageList {
-                get { return ((ListView)base.Component).LargeImageList; }
-                set { SetValue(base.Component, "LargeImageList", value); }
+            public ImageList LargeImageList { get => ((ListView)Component).LargeImageList; set => SetValue(Component, "LargeImageList", value);
             }
 
-            public ImageList SmallImageList {
-                get { return ((ListView)base.Component).SmallImageList; }
-                set { SetValue(base.Component, "SmallImageList", value); }
+            public ImageList SmallImageList { get => ((ListView)Component).SmallImageList; set => SetValue(Component, "SmallImageList", value);
             }
 
-            public View View {
-                get { return ((ListView)base.Component).View; }
-                set { SetValue(base.Component, "View", value); }
+            public View View { get => ((ListView)Component).View; set => SetValue(Component, "View", value);
             }
 
-            private ObjectListViewDesigner designer;
-            private DesignerActionList wrappedList;
+            private readonly ObjectListViewDesigner designer;
+            private readonly DesignerActionList wrappedList;
         }
 
         #endregion Custom action list
@@ -497,7 +479,7 @@ namespace BrightIdeasSoftware.Design
     /// This class works in conjunction with the OLVColumns property to allow OLVColumns
     /// to be added to the ObjectListView.
     /// </summary>
-    public class OLVColumnCollectionEditor : System.ComponentModel.Design.CollectionEditor
+    public class OLVColumnCollectionEditor : CollectionEditor
     {
         /// <summary>
         /// Create a OLVColumnCollectionEditor
@@ -512,10 +494,7 @@ namespace BrightIdeasSoftware.Design
         /// What type of object does this editor create?
         /// </summary>
         /// <returns></returns>
-        protected override Type CreateCollectionItemType()
-        {
-            return typeof(OLVColumn);
-        }
+        protected override Type CreateCollectionItemType() => typeof(OLVColumn);
 
         /// <summary>
         /// Edit a given value
@@ -527,19 +506,24 @@ namespace BrightIdeasSoftware.Design
         public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
         {
             if (context == null)
+            {
                 throw new ArgumentNullException("context");
+            }
+
             if (provider == null)
+            {
                 throw new ArgumentNullException("provider");
+            }
 
             // Figure out which ObjectListView we are working on. This should be the Instance of the context.
-            ObjectListView olv = context.Instance as ObjectListView;
+            var olv = context.Instance as ObjectListView;
             Debug.Assert(olv != null, "Instance must be an ObjectListView");
 
             // Edit all the columns, not just the ones that are visible
             base.EditValue(context, provider, olv.AllColumns);
 
             // Set the columns on the ListView to just the visible columns
-            List<OLVColumn> newColumns = olv.GetFilteredColumns(View.Details);
+            var newColumns = olv.GetFilteredColumns(View.Details);
             olv.Columns.Clear();
             olv.Columns.AddRange(newColumns.ToArray());
 
@@ -553,11 +537,12 @@ namespace BrightIdeasSoftware.Design
         /// <returns></returns>
         protected override string GetDisplayText(object value)
         {
-            OLVColumn col = value as OLVColumn;
-            if (col == null || String.IsNullOrEmpty(col.AspectName))
+            if (value is not OLVColumn col || string.IsNullOrEmpty(col.AspectName))
+            {
                 return base.GetDisplayText(value);
+            }
 
-            return String.Format("{0} ({1})", base.GetDisplayText(value), col.AspectName);
+            return string.Format("{0} ({1})", base.GetDisplayText(value), col.AspectName);
         }
     }
 
@@ -566,24 +551,19 @@ namespace BrightIdeasSoftware.Design
     /// </summary>
     internal class OverlayConverter : ExpandableObjectConverter
     {
-        public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
-        {
-            return destinationType == typeof(string) || base.CanConvertTo(context, destinationType);
-        }
+        public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType) => destinationType == typeof(string) || base.CanConvertTo(context, destinationType);
 
         public override object ConvertTo(ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value, Type destinationType)
         {
             if (destinationType == typeof(string))
             {
-                ImageOverlay imageOverlay = value as ImageOverlay;
-                if (imageOverlay != null)
+                if (value is ImageOverlay imageOverlay)
                 {
                     return imageOverlay.Image == null ? "(none)" : "(set)";
                 }
-                TextOverlay textOverlay = value as TextOverlay;
-                if (textOverlay != null)
+                if (value is TextOverlay textOverlay)
                 {
-                    return String.IsNullOrEmpty(textOverlay.Text) ? "(none)" : "(set)";
+                    return string.IsNullOrEmpty(textOverlay.Text) ? "(none)" : "(set)";
                 }
             }
 

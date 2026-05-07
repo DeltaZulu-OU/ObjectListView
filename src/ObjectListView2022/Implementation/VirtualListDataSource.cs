@@ -33,8 +33,9 @@
 using System;
 using System.Collections;
 using System.Windows.Forms;
+using BrightIdeasSoftware.Filtering;
 
-namespace BrightIdeasSoftware
+namespace BrightIdeasSoftware.Implementation
 {
     /// <summary>
     /// A VirtualListDataSource is a complete manner to provide functionality to a virtual list.
@@ -50,7 +51,7 @@ namespace BrightIdeasSoftware
         /// </summary>
         /// <param name="n">The index of the row whose object is to be returned.</param>
         /// <returns>The model object at the n'th row, or null if the fetching was unsuccessful.</returns>
-        Object GetNthObject(int n);
+        object GetNthObject(int n);
 
         /// <summary>
         /// Return the number of rows that should be visible in the virtual list
@@ -63,7 +64,7 @@ namespace BrightIdeasSoftware
         /// </summary>
         /// <param name="model">The model object sought</param>
         /// <returns>The index of the row showing the model, or -1 if the object could not be found.</returns>
-        int GetObjectIndex(Object model);
+        int GetObjectIndex(object model);
 
         /// <summary>
         /// The ListView is about to request the given range of items. Do
@@ -166,29 +167,20 @@ namespace BrightIdeasSoftware
         /// </summary>
         /// <param name="n"></param>
         /// <returns></returns>
-        public virtual object GetNthObject(int n)
-        {
-            return null;
-        }
+        public virtual object GetNthObject(int n) => null;
 
         /// <summary>
         ///
         /// </summary>
         /// <returns></returns>
-        public virtual int GetObjectCount()
-        {
-            return -1;
-        }
+        public virtual int GetObjectCount() => -1;
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public virtual int GetObjectIndex(object model)
-        {
-            return -1;
-        }
+        public virtual int GetObjectIndex(object model) => -1;
 
         /// <summary>
         ///
@@ -207,10 +199,7 @@ namespace BrightIdeasSoftware
         /// <param name="last"></param>
         /// <param name="column"></param>
         /// <returns></returns>
-        public virtual int SearchText(string value, int first, int last, OLVColumn column)
-        {
-            return -1;
-        }
+        public virtual int SearchText(string value, int first, int last, OLVColumn column) => -1;
 
         /// <summary>
         ///
@@ -277,20 +266,24 @@ namespace BrightIdeasSoftware
         {
             if (first <= last)
             {
-                for (int i = first; i <= last; i++)
+                for (var i = first; i <= last; i++)
                 {
-                    string data = column.GetStringValue(source.GetNthObject(i));
+                    var data = column.GetStringValue(source.GetNthObject(i));
                     if (data.StartsWith(value, StringComparison.CurrentCultureIgnoreCase))
+                    {
                         return i;
+                    }
                 }
             }
             else
             {
-                for (int i = first; i >= last; i--)
+                for (var i = first; i >= last; i--)
                 {
-                    string data = column.GetStringValue(source.GetNthObject(i));
+                    var data = column.GetStringValue(source.GetNthObject(i));
                     if (data.StartsWith(value, StringComparison.CurrentCultureIgnoreCase))
+                    {
                         return i;
+                    }
                 }
             }
 
@@ -330,12 +323,7 @@ namespace BrightIdeasSoftware
         /// <summary>
         /// How will the n'th object of the data source be fetched?
         /// </summary>
-        public RowGetterDelegate RowGetter {
-            get { return rowGetter; }
-            set { rowGetter = value; }
-        }
-
-        private RowGetterDelegate rowGetter;
+        public RowGetterDelegate RowGetter { get; set; }
 
         #endregion Public properties
 
@@ -348,10 +336,14 @@ namespace BrightIdeasSoftware
         /// <returns></returns>
         public override object GetNthObject(int n)
         {
-            if (this.RowGetter == null)
+            if (RowGetter == null)
+            {
                 return null;
+            }
             else
-                return this.RowGetter(n);
+            {
+                return RowGetter(n);
+            }
         }
 
         /// <summary>
@@ -362,10 +354,7 @@ namespace BrightIdeasSoftware
         /// <param name="last"></param>
         /// <param name="column"></param>
         /// <returns></returns>
-        public override int SearchText(string value, int first, int last, OLVColumn column)
-        {
-            return DefaultSearchText(value, first, last, column, this);
-        }
+        public override int SearchText(string value, int first, int last, OLVColumn column) => DefaultSearchText(value, first, last, column, this);
 
         #endregion IVirtualListDataSource implementation
     }

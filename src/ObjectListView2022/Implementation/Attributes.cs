@@ -38,7 +38,7 @@
 using System;
 using System.Windows.Forms;
 
-namespace BrightIdeasSoftware
+namespace BrightIdeasSoftware.Implementation
 {
     /// <summary>
     /// This attribute is used to mark a property of a model
@@ -69,7 +69,7 @@ namespace BrightIdeasSoftware
         /// <param name="title">The title of the column</param>
         public OLVColumnAttribute(string title)
         {
-            this.Title = title;
+            Title = title;
         }
 
         #endregion Constructor
@@ -79,21 +79,16 @@ namespace BrightIdeasSoftware
         /// <summary>
         ///
         /// </summary>
-        public string AspectToStringFormat {
-            get { return aspectToStringFormat; }
-            set { aspectToStringFormat = value; }
-        }
-
-        private string aspectToStringFormat;
+        public string AspectToStringFormat { get; set; }
 
         /// <summary>
         ///
         /// </summary>
         public bool CheckBoxes {
-            get { return checkBoxes; }
+            get => checkBoxes;
             set {
                 checkBoxes = value;
-                this.IsCheckBoxesSet = true;
+                IsCheckBoxesSet = true;
             }
         }
 
@@ -103,28 +98,18 @@ namespace BrightIdeasSoftware
         /// <summary>
         ///
         /// </summary>
-        public int DisplayIndex {
-            get { return displayIndex; }
-            set { displayIndex = value; }
-        }
-
-        private int displayIndex = -1;
+        public int DisplayIndex { get; set; } = -1;
 
         /// <summary>
         ///
         /// </summary>
-        public bool FillsFreeSpace {
-            get { return fillsFreeSpace; }
-            set { fillsFreeSpace = value; }
-        }
-
-        private bool fillsFreeSpace;
+        public bool FillsFreeSpace { get; set; }
 
         /// <summary>
         ///
         /// </summary>
         public int FreeSpaceProportion {
-            get { return freeSpaceProportion; }
+            get => freeSpaceProportion;
             set {
                 freeSpaceProportion = value;
                 IsFreeSpaceProportionSet = true;
@@ -138,71 +123,41 @@ namespace BrightIdeasSoftware
         /// An array of IComparables that mark the cutoff points for values when
         /// grouping on this column.
         /// </summary>
-        public object[] GroupCutoffs {
-            get { return groupCutoffs; }
-            set { groupCutoffs = value; }
-        }
-
-        private object[] groupCutoffs;
+        public object[] GroupCutoffs { get; set; }
 
         /// <summary>
         ///
         /// </summary>
-        public string[] GroupDescriptions {
-            get { return groupDescriptions; }
-            set { groupDescriptions = value; }
-        }
-
-        private string[] groupDescriptions;
+        public string[] GroupDescriptions { get; set; }
 
         /// <summary>
         ///
         /// </summary>
-        public string GroupWithItemCountFormat {
-            get { return groupWithItemCountFormat; }
-            set { groupWithItemCountFormat = value; }
-        }
-
-        private string groupWithItemCountFormat;
+        public string GroupWithItemCountFormat { get; set; }
 
         /// <summary>
         ///
         /// </summary>
-        public string GroupWithItemCountSingularFormat {
-            get { return groupWithItemCountSingularFormat; }
-            set { groupWithItemCountSingularFormat = value; }
-        }
-
-        private string groupWithItemCountSingularFormat;
+        public string GroupWithItemCountSingularFormat { get; set; }
 
         /// <summary>
         ///
         /// </summary>
-        public bool Hyperlink {
-            get { return hyperlink; }
-            set { hyperlink = value; }
-        }
-
-        private bool hyperlink;
+        public bool Hyperlink { get; set; }
 
         /// <summary>
         ///
         /// </summary>
-        public string ImageAspectName {
-            get { return imageAspectName; }
-            set { imageAspectName = value; }
-        }
-
-        private string imageAspectName;
+        public string ImageAspectName { get; set; }
 
         /// <summary>
         ///
         /// </summary>
         public bool IsEditable {
-            get { return isEditable; }
+            get => isEditable;
             set {
                 isEditable = value;
-                this.IsEditableSet = true;
+                IsEditableSet = true;
             }
         }
 
@@ -212,60 +167,35 @@ namespace BrightIdeasSoftware
         /// <summary>
         ///
         /// </summary>
-        public bool IsVisible {
-            get { return isVisible; }
-            set { isVisible = value; }
-        }
-
-        private bool isVisible = true;
+        public bool IsVisible { get; set; } = true;
 
         /// <summary>
         ///
         /// </summary>
-        public bool IsTileViewColumn {
-            get { return isTileViewColumn; }
-            set { isTileViewColumn = value; }
-        }
-
-        private bool isTileViewColumn;
+        public bool IsTileViewColumn { get; set; }
 
         /// <summary>
         ///
         /// </summary>
-        public int MaximumWidth {
-            get { return maximumWidth; }
-            set { maximumWidth = value; }
-        }
-
-        private int maximumWidth = -1;
+        public int MaximumWidth { get; set; } = -1;
 
         /// <summary>
         ///
         /// </summary>
-        public int MinimumWidth {
-            get { return minimumWidth; }
-            set { minimumWidth = value; }
-        }
-
-        private int minimumWidth = -1;
+        public int MinimumWidth { get; set; } = -1;
 
         /// <summary>
         ///
         /// </summary>
-        public String Name {
-            get { return name; }
-            set { name = value; }
-        }
-
-        private String name;
+        public string Name { get; set; }
 
         /// <summary>
         ///
         /// </summary>
         public HorizontalAlignment TextAlign {
-            get { return this.textAlign; }
+            get => textAlign;
             set {
-                this.textAlign = value;
+                textAlign = value;
                 IsTextAlignSet = true;
             }
         }
@@ -276,41 +206,26 @@ namespace BrightIdeasSoftware
         /// <summary>
         ///
         /// </summary>
-        public String Tag {
-            get { return tag; }
-            set { tag = value; }
-        }
-
-        private String tag;
+        public string Tag { get; set; }
 
         /// <summary>
         ///
         /// </summary>
-        public String Title {
-            get { return title; }
-            set { title = value; }
-        }
-
-        private String title;
+        public string Title { get; set; }
 
         /// <summary>
         ///
         /// </summary>
-        public String ToolTipText {
-            get { return toolTipText; }
-            set { toolTipText = value; }
-        }
-
-        private String toolTipText;
+        public string ToolTipText { get; set; }
 
         /// <summary>
         ///
         /// </summary>
         public bool TriStateCheckBoxes {
-            get { return triStateCheckBoxes; }
+            get => triStateCheckBoxes;
             set {
                 triStateCheckBoxes = value;
-                this.IsTriStateCheckBoxesSet = true;
+                IsTriStateCheckBoxesSet = true;
             }
         }
 
@@ -320,22 +235,12 @@ namespace BrightIdeasSoftware
         /// <summary>
         ///
         /// </summary>
-        public bool UseInitialLetterForGroup {
-            get { return useInitialLetterForGroup; }
-            set { useInitialLetterForGroup = value; }
-        }
-
-        private bool useInitialLetterForGroup;
+        public bool UseInitialLetterForGroup { get; set; }
 
         /// <summary>
         ///
         /// </summary>
-        public int Width {
-            get { return width; }
-            set { width = value; }
-        }
-
-        private int width = 150;
+        public int Width { get; set; } = 150;
 
         #endregion Public properties
     }

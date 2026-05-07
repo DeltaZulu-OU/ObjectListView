@@ -34,7 +34,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
-namespace BrightIdeasSoftware
+namespace BrightIdeasSoftware.Implementation
 {
     /// <summary>
     /// A IVirtualGroups is the interface that a virtual list must implement to support virtual groups
@@ -91,10 +91,7 @@ namespace BrightIdeasSoftware
         /// </summary>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public virtual IList<OLVGroup> GetGroups(GroupingParameters parameters)
-        {
-            return new List<OLVGroup>();
-        }
+        public virtual IList<OLVGroup> GetGroups(GroupingParameters parameters) => new List<OLVGroup>();
 
         /// <summary>
         /// Return the index of the item that appears at the given position within the given group.
@@ -102,20 +99,14 @@ namespace BrightIdeasSoftware
         /// <param name="group"></param>
         /// <param name="indexWithinGroup"></param>
         /// <returns></returns>
-        public virtual int GetGroupMember(OLVGroup group, int indexWithinGroup)
-        {
-            return -1;
-        }
+        public virtual int GetGroupMember(OLVGroup group, int indexWithinGroup) => -1;
 
         /// <summary>
         /// Return the index of the group to which the given item belongs
         /// </summary>
         /// <param name="itemIndex"></param>
         /// <returns></returns>
-        public virtual int GetGroup(int itemIndex)
-        {
-            return -1;
-        }
+        public virtual int GetGroup(int itemIndex) => -1;
 
         /// <summary>
         /// Return the index at which the given item is shown in the given group
@@ -123,10 +114,7 @@ namespace BrightIdeasSoftware
         /// <param name="group"></param>
         /// <param name="itemIndex"></param>
         /// <returns></returns>
-        public virtual int GetIndexWithinGroup(OLVGroup group, int itemIndex)
-        {
-            return -1;
-        }
+        public virtual int GetIndexWithinGroup(OLVGroup group, int itemIndex) => -1;
 
         /// <summary>
         /// A hint that the given range of items are going to be required
@@ -156,73 +144,82 @@ namespace BrightIdeasSoftware
             // Any changes made here may need to be reflected there
 
             // This strategy can only be used on FastObjectListViews
-            FastObjectListView folv = (FastObjectListView)parmameters.ListView;
+            var folv = (FastObjectListView)parmameters.ListView;
 
             // Separate the list view items into groups, using the group key as the descrimanent
-            int objectCount = 0;
-            NullableDictionary<object, List<object>> map = new NullableDictionary<object, List<object>>();
-            foreach (object model in folv.FilteredObjects)
+            var objectCount = 0;
+            var map = new NullableDictionary<object, List<object>>();
+            foreach (var model in folv.FilteredObjects)
             {
-                object key = parmameters.GroupByColumn.GetGroupKey(model);
+                var key = parmameters.GroupByColumn.GetGroupKey(model);
                 if (!map.ContainsKey(key))
+                {
                     map[key] = new List<object>();
+                }
+
                 map[key].Add(model);
                 objectCount++;
             }
 
             // Sort the items within each group
             // TODO: Give parameters a ModelComparer property
-            OLVColumn primarySortColumn = parmameters.SortItemsByPrimaryColumn ? parmameters.ListView.GetColumn(0) : parmameters.PrimarySort;
-            ModelObjectComparer sorter = new ModelObjectComparer(primarySortColumn, parmameters.PrimarySortOrder,
+            var primarySortColumn = parmameters.SortItemsByPrimaryColumn ? parmameters.ListView.GetColumn(0) : parmameters.PrimarySort;
+            var sorter = new ModelObjectComparer(primarySortColumn, parmameters.PrimarySortOrder,
                 parmameters.SecondarySort, parmameters.SecondarySortOrder);
-            foreach (object key in map.Keys)
+            foreach (var key in map.Keys)
             {
                 map[key].Sort(sorter);
             }
 
             // Make a list of the required groups
-            List<OLVGroup> groups = new List<OLVGroup>();
-            foreach (object key in map.Keys)
+            var groups = new List<OLVGroup>();
+            foreach (var key in map.Keys)
             {
-                string title = parmameters.GroupByColumn.ConvertGroupKeyToTitle(key);
-                if (!String.IsNullOrEmpty(parmameters.TitleFormat))
+                var title = parmameters.GroupByColumn.ConvertGroupKeyToTitle(key);
+                if (!string.IsNullOrEmpty(parmameters.TitleFormat))
                 {
-                    int count = map[key].Count;
-                    string format = (count == 1 ? parmameters.TitleSingularFormat : parmameters.TitleFormat);
+                    var count = map[key].Count;
+                    var format = count == 1 ? parmameters.TitleSingularFormat : parmameters.TitleFormat;
                     try
                     {
-                        title = String.Format(format, title, count);
+                        title = string.Format(format, title, count);
                     }
                     catch (FormatException)
                     {
                         title = "Invalid group format: " + format;
                     }
                 }
-                OLVGroup lvg = new OLVGroup(title);
-                lvg.Collapsible = folv.HasCollapsibleGroups;
-                lvg.Key = key;
-                lvg.SortValue = key as IComparable;
-                lvg.Contents = map[key].ConvertAll<int>(delegate (object x) { return folv.IndexOf(x); });
-                lvg.VirtualItemCount = map[key].Count;
-                if (parmameters.GroupByColumn.GroupFormatter != null)
-                    parmameters.GroupByColumn.GroupFormatter(lvg, parmameters);
+                var lvg = new OLVGroup(title)
+                {
+                    Collapsible = folv.HasCollapsibleGroups,
+                    Key = key,
+                    SortValue = key as IComparable,
+                    Contents = map[key].ConvertAll(delegate (object x) { return folv.IndexOf(x); }),
+                    VirtualItemCount = map[key].Count
+                };
+                parmameters.GroupByColumn.GroupFormatter?.Invoke(lvg, parmameters);
+
                 groups.Add(lvg);
             }
 
             // Sort the groups
             if (parmameters.GroupByOrder != SortOrder.None)
+            {
                 groups.Sort(parmameters.GroupComparer ?? new OLVGroupComparer(parmameters.GroupByOrder));
+            }
 
             // Build an array that remembers which group each item belongs to.
-            this.indexToGroupMap = new List<int>(objectCount);
-            this.indexToGroupMap.AddRange(new int[objectCount]);
+            indexToGroupMap = new List<int>(objectCount);
+            indexToGroupMap.AddRange(new int[objectCount]);
 
-            for (int i = 0; i < groups.Count; i++)
+            for (var i = 0; i < groups.Count; i++)
             {
-                OLVGroup group = groups[i];
-                List<int> members = (List<int>)group.Contents;
-                foreach (int j in members)
-                    this.indexToGroupMap[j] = i;
+                var group = groups[i];
+                var members = (List<int>)group.Contents;
+                foreach (var j in members)
+                {
+                    indexToGroupMap[j] = i;
+                }
             }
 
             return groups;
@@ -236,20 +233,14 @@ namespace BrightIdeasSoftware
         /// <param name="group"></param>
         /// <param name="indexWithinGroup"></param>
         /// <returns></returns>
-        public override int GetGroupMember(OLVGroup group, int indexWithinGroup)
-        {
-            return (int)group.Contents[indexWithinGroup];
-        }
+        public override int GetGroupMember(OLVGroup group, int indexWithinGroup) => (int)group.Contents[indexWithinGroup];
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="itemIndex"></param>
         /// <returns></returns>
-        public override int GetGroup(int itemIndex)
-        {
-            return this.indexToGroupMap[itemIndex];
-        }
+        public override int GetGroup(int itemIndex) => indexToGroupMap[itemIndex];
 
         /// <summary>
         ///
@@ -257,10 +248,7 @@ namespace BrightIdeasSoftware
         /// <param name="group"></param>
         /// <param name="itemIndex"></param>
         /// <returns></returns>
-        public override int GetIndexWithinGroup(OLVGroup group, int itemIndex)
-        {
-            return group.Contents.IndexOf(itemIndex);
-        }
+        public override int GetIndexWithinGroup(OLVGroup group, int itemIndex) => group.Contents.IndexOf(itemIndex);
     }
 
     /// <summary>
@@ -331,47 +319,33 @@ namespace BrightIdeasSoftware
             this.olv = olv;
         }
 
-        private VirtualObjectListView olv;
+        private readonly VirtualObjectListView olv;
 
         #region IOwnerDataCallback Members
 
-        public void GetItemPosition(int i, out NativeMethods.POINT pt)
-        {
+        public void GetItemPosition(int i, out NativeMethods.POINT pt) =>
             //System.Diagnostics.Debug.WriteLine("GetItemPosition");
             throw new NotSupportedException();
-        }
 
-        public void SetItemPosition(int t, NativeMethods.POINT pt)
-        {
+        public void SetItemPosition(int t, NativeMethods.POINT pt) =>
             //System.Diagnostics.Debug.WriteLine("SetItemPosition");
             throw new NotSupportedException();
-        }
 
-        public void GetItemInGroup(int groupIndex, int n, out int itemIndex)
-        {
+        public void GetItemInGroup(int groupIndex, int n, out int itemIndex) =>
             //System.Diagnostics.Debug.WriteLine(String.Format("-> GetItemInGroup({0}, {1})", groupIndex, n));
-            itemIndex = this.olv.GroupingStrategy.GetGroupMember(this.olv.OLVGroups[groupIndex], n);
-            //System.Diagnostics.Debug.WriteLine(String.Format("<- {0}", itemIndex));
-        }
+            itemIndex = olv.GroupingStrategy.GetGroupMember(olv.OLVGroups[groupIndex], n);//System.Diagnostics.Debug.WriteLine(String.Format("<- {0}", itemIndex));
 
-        public void GetItemGroup(int itemIndex, int occurrenceCount, out int groupIndex)
-        {
+        public void GetItemGroup(int itemIndex, int occurrenceCount, out int groupIndex) =>
             //System.Diagnostics.Debug.WriteLine(String.Format("GetItemGroup({0}, {1})", itemIndex, occurrenceCount));
-            groupIndex = this.olv.GroupingStrategy.GetGroup(itemIndex);
-            //System.Diagnostics.Debug.WriteLine(String.Format("<- {0}", groupIndex));
-        }
+            groupIndex = olv.GroupingStrategy.GetGroup(itemIndex);//System.Diagnostics.Debug.WriteLine(String.Format("<- {0}", groupIndex));
 
-        public void GetItemGroupCount(int itemIndex, out int occurrenceCount)
-        {
+        public void GetItemGroupCount(int itemIndex, out int occurrenceCount) =>
             //System.Diagnostics.Debug.WriteLine(String.Format("GetItemGroupCount({0})", itemIndex));
             occurrenceCount = 1;
-        }
 
-        public void OnCacheHint(NativeMethods.LVITEMINDEX from, NativeMethods.LVITEMINDEX to)
-        {
+        public void OnCacheHint(NativeMethods.LVITEMINDEX from, NativeMethods.LVITEMINDEX to) =>
             //System.Diagnostics.Debug.WriteLine(String.Format("OnCacheHint({0}, {1}, {2}, {3})", from.iGroup, from.iItem, to.iGroup, to.iItem));
-            this.olv.GroupingStrategy.CacheHint(from.iGroup, from.iItem, to.iGroup, to.iItem);
-        }
+            olv.GroupingStrategy.CacheHint(from.iGroup, from.iItem, to.iGroup, to.iItem);
 
         #endregion IOwnerDataCallback Members
     }

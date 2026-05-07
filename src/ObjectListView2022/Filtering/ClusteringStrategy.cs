@@ -28,7 +28,7 @@
 using System;
 using System.Collections;
 
-namespace BrightIdeasSoftware
+namespace BrightIdeasSoftware.Filtering
 {
     /// <summary>
     /// This class provides a useful base implemention of a clustering
@@ -56,12 +56,7 @@ namespace BrightIdeasSoftware
         /// - {0} is the cluster key converted to a string
         /// - {1} is the number of items in the cluster (always 1 in this case)
         /// </summary>
-        public static string DefaultDisplayLabelFormatSingular {
-            get { return defaultDisplayLabelFormatSingular; }
-            set { defaultDisplayLabelFormatSingular = value; }
-        }
-
-        private static string defaultDisplayLabelFormatSingular = "{0} ({1} item)";
+        public static string DefaultDisplayLabelFormatSingular { get; set; } = "{0} ({1} item)";
 
         /// <summary>
         /// Gets or sets the format that will be used by default for clusters that
@@ -69,12 +64,7 @@ namespace BrightIdeasSoftware
         /// - {0} is the cluster key converted to a string
         /// - {1} is the number of items in the cluster
         /// </summary>
-        public static string DefaultDisplayLabelFormatPlural {
-            get { return defaultDisplayLabelFormatPural; }
-            set { defaultDisplayLabelFormatPural = value; }
-        }
-
-        private static string defaultDisplayLabelFormatPural = "{0} ({1} items)";
+        public static string DefaultDisplayLabelFormatPlural { get; set; } = "{0} ({1} items)";
 
         #endregion Static properties
 
@@ -85,8 +75,8 @@ namespace BrightIdeasSoftware
         /// </summary>
         public ClusteringStrategy()
         {
-            this.DisplayLabelFormatSingular = DefaultDisplayLabelFormatSingular;
-            this.DisplayLabelFormatPlural = DefaultDisplayLabelFormatPlural;
+            DisplayLabelFormatSingular = DefaultDisplayLabelFormatSingular;
+            DisplayLabelFormatPlural = DefaultDisplayLabelFormatPlural;
         }
 
         #endregion Life and death
@@ -96,12 +86,7 @@ namespace BrightIdeasSoftware
         /// <summary>
         /// Gets or sets the column upon which this strategy is operating
         /// </summary>
-        public OLVColumn Column {
-            get { return column; }
-            set { column = value; }
-        }
-
-        private OLVColumn column;
+        public OLVColumn Column { get; set; }
 
         /// <summary>
         /// Gets or sets the format that will be used when the cluster
@@ -111,12 +96,7 @@ namespace BrightIdeasSoftware
         /// </summary>
         /// <remarks>If this is not set, the value from
         /// ClusteringStrategy.DefaultDisplayLabelFormatSingular will be used</remarks>
-        public string DisplayLabelFormatSingular {
-            get { return displayLabelFormatSingular; }
-            set { displayLabelFormatSingular = value; }
-        }
-
-        private string displayLabelFormatSingular;
+        public string DisplayLabelFormatSingular { get; set; }
 
         /// <summary>
         /// Gets or sets the format that will be used when the cluster
@@ -126,12 +106,7 @@ namespace BrightIdeasSoftware
         /// </summary>
         /// <remarks>If this is not set, the value from
         /// ClusteringStrategy.DefaultDisplayLabelFormatPlural will be used</remarks>
-        public string DisplayLabelFormatPlural {
-            get { return displayLabelFormatPural; }
-            set { displayLabelFormatPural = value; }
-        }
-
-        private string displayLabelFormatPural;
+        public string DisplayLabelFormatPlural { get; set; }
 
         #endregion Public properties
 
@@ -142,20 +117,14 @@ namespace BrightIdeasSoftware
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public virtual object GetClusterKey(object model)
-        {
-            return this.Column.GetValue(model);
-        }
+        public virtual object GetClusterKey(object model) => Column.GetValue(model);
 
         /// <summary>
         /// Create a cluster to hold the given cluster key
         /// </summary>
         /// <param name="clusterKey"></param>
         /// <returns></returns>
-        public virtual ICluster CreateCluster(object clusterKey)
-        {
-            return new Cluster(clusterKey);
-        }
+        public virtual ICluster CreateCluster(object clusterKey) => new Cluster(clusterKey);
 
         /// <summary>
         /// Gets the display label that the given cluster should use
@@ -164,10 +133,13 @@ namespace BrightIdeasSoftware
         /// <returns></returns>
         public virtual string GetClusterDisplayLabel(ICluster cluster)
         {
-            string s = this.Column.ValueToString(cluster.ClusterKey) ?? NULL_LABEL;
-            if (String.IsNullOrEmpty(s))
+            var s = Column.ValueToString(cluster.ClusterKey) ?? NULL_LABEL;
+            if (string.IsNullOrEmpty(s))
+            {
                 s = EMPTY_LABEL;
-            return this.ApplyDisplayFormat(cluster, s);
+            }
+
+            return ApplyDisplayFormat(cluster, s);
         }
 
         /// <summary>
@@ -176,10 +148,7 @@ namespace BrightIdeasSoftware
         /// </summary>
         /// <param name="valuesChosenForFiltering"></param>
         /// <returns></returns>
-        public virtual IModelFilter CreateFilter(IList valuesChosenForFiltering)
-        {
-            return new OneOfFilter(this.GetClusterKey, valuesChosenForFiltering);
-        }
+        public virtual IModelFilter CreateFilter(IList valuesChosenForFiltering) => new OneOfFilter(GetClusterKey, valuesChosenForFiltering);
 
         /// <summary>
         /// Create a label that combines the string representation of the cluster
@@ -190,8 +159,8 @@ namespace BrightIdeasSoftware
         /// <returns></returns>
         protected virtual string ApplyDisplayFormat(ICluster cluster, string s)
         {
-            string format = (cluster.Count == 1) ? this.DisplayLabelFormatSingular : this.DisplayLabelFormatPlural;
-            return String.IsNullOrEmpty(format) ? s : String.Format(format, s, cluster.Count);
+            var format = cluster.Count == 1 ? DisplayLabelFormatSingular : DisplayLabelFormatPlural;
+            return string.IsNullOrEmpty(format) ? s : string.Format(format, s, cluster.Count);
         }
 
         #endregion ICluster implementation

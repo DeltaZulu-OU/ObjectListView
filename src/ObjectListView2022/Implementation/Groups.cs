@@ -40,7 +40,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
-namespace BrightIdeasSoftware
+namespace BrightIdeasSoftware.Implementation
 {
     /// <summary>
     /// These values indicate what is the state of the group. These values
@@ -244,10 +244,10 @@ namespace BrightIdeasSoftware
         /// <param name="header">Title of the group</param>
         public OLVGroup(string header)
         {
-            this.Header = header;
-            this.Id = OLVGroup.nextId++;
-            this.TitleImage = -1;
-            this.ExtendedImage = -1;
+            Header = header;
+            Id = nextId++;
+            TitleImage = -1;
+            ExtendedImage = -1;
         }
 
         private static int nextId;
@@ -262,84 +262,60 @@ namespace BrightIdeasSoftware
         /// <remarks>
         /// Descriptions only appear when group is centered and there is a title image
         /// </remarks>
-        public string BottomDescription {
-            get { return this.bottomDescription; }
-            set { this.bottomDescription = value; }
-        }
-
-        private string bottomDescription;
+        public string BottomDescription { get; set; }
 
         /// <summary>
         /// Gets or sets whether or not this group is collapsed
         /// </summary>
-        public bool Collapsed {
-            get { return this.GetOneState(GroupState.LVGS_COLLAPSED); }
-            set { this.SetOneState(value, GroupState.LVGS_COLLAPSED); }
+        public bool Collapsed { get => GetOneState(GroupState.LVGS_COLLAPSED); set => SetOneState(value, GroupState.LVGS_COLLAPSED);
         }
 
         /// <summary>
         /// Gets or sets whether or not this group can be collapsed
         /// </summary>
-        public bool Collapsible {
-            get { return this.GetOneState(GroupState.LVGS_COLLAPSIBLE); }
-            set { this.SetOneState(value, GroupState.LVGS_COLLAPSIBLE); }
+        public bool Collapsible { get => GetOneState(GroupState.LVGS_COLLAPSIBLE); set => SetOneState(value, GroupState.LVGS_COLLAPSIBLE);
         }
 
         /// <summary>
         /// Gets or sets some representation of the contents of this group
         /// </summary>
         /// <remarks>This is user defined (like Tag)</remarks>
-        public IList Contents {
-            get { return this.contents; }
-            set { this.contents = value; }
-        }
-
-        private IList contents;
+        public IList Contents { get; set; }
 
         /// <summary>
         /// Gets whether this group has been created.
         /// </summary>
-        public bool Created {
-            get { return this.ListView != null; }
-        }
+        public bool Created => ListView != null;
 
         /// <summary>
         /// Gets or sets the int or string that will select the extended image to be shown against the title
         /// </summary>
-        public object ExtendedImage {
-            get { return this.extendedImage; }
-            set { this.extendedImage = value; }
-        }
-
-        private object extendedImage;
+        public object ExtendedImage { get; set; }
 
         /// <summary>
         /// Gets or sets the footer of the group
         /// </summary>
-        public string Footer {
-            get { return this.footer; }
-            set { this.footer = value; }
-        }
-
-        private string footer;
+        public string Footer { get; set; }
 
         /// <summary>
         /// Gets the internal id of our associated ListViewGroup.
         /// </summary>
         public int GroupId {
             get {
-                if (this.ListViewGroup == null)
-                    return this.Id;
-
-                // Use reflection to get around the access control on the ID property
-                if (OLVGroup.groupIdPropInfo == null)
+                if (ListViewGroup == null)
                 {
-                    OLVGroup.groupIdPropInfo = typeof(ListViewGroup).GetProperty("ID",
-                        BindingFlags.NonPublic | BindingFlags.Instance);
-                    System.Diagnostics.Debug.Assert(OLVGroup.groupIdPropInfo != null);
+                    return Id;
                 }
 
-                int? groupId = OLVGroup.groupIdPropInfo.GetValue(this.ListViewGroup, null) as int?;
+                // Use reflection to get around the access control on the ID property
+                if (groupIdPropInfo == null)
+                {
+                    groupIdPropInfo = typeof(ListViewGroup).GetProperty("ID",
+                        BindingFlags.NonPublic | BindingFlags.Instance);
+                    System.Diagnostics.Debug.Assert(groupIdPropInfo != null);
+                }
+
+                var groupId = groupIdPropInfo.GetValue(ListViewGroup, null) as int?;
                 return groupId.HasValue ? groupId.Value : -1;
             }
         }
@@ -349,92 +325,53 @@ namespace BrightIdeasSoftware
         /// <summary>
         /// Gets or sets the header of the group
         /// </summary>
-        public string Header {
-            get { return this.header; }
-            set { this.header = value; }
-        }
-
-        private string header;
+        public string Header { get; set; }
 
         /// <summary>
         /// Gets or sets the horizontal alignment of the group header
         /// </summary>
-        public HorizontalAlignment HeaderAlignment {
-            get { return this.headerAlignment; }
-            set { this.headerAlignment = value; }
-        }
-
-        private HorizontalAlignment headerAlignment;
+        public HorizontalAlignment HeaderAlignment { get; set; }
 
         /// <summary>
         /// Gets or sets the internally created id of the group
         /// </summary>
-        public int Id {
-            get { return this.id; }
-            set { this.id = value; }
-        }
-
-        private int id;
+        public int Id { get; set; }
 
         /// <summary>
         /// Gets or sets ListViewItems that are members of this group
         /// </summary>
         /// <remarks>Listener of the BeforeCreatingGroups event can populate this collection.
         /// It is only used on non-virtual lists.</remarks>
-        public IList<OLVListItem> Items {
-            get { return this.items; }
-            set { this.items = value; }
-        }
-
-        private IList<OLVListItem> items = new List<OLVListItem>();
+        public IList<OLVListItem> Items { get; set; } = new List<OLVListItem>();
 
         /// <summary>
         /// Gets or sets the key that was used to partition objects into this group
         /// </summary>
         /// <remarks>This is user defined (like Tag)</remarks>
-        public object Key {
-            get { return this.key; }
-            set { this.key = value; }
-        }
-
-        private object key;
+        public object Key { get; set; }
 
         /// <summary>
         /// Gets the ObjectListView that this group belongs to
         /// </summary>
         /// <remarks>If this is null, the group has not yet been created.</remarks>
-        public ObjectListView ListView {
-            get { return this.listView; }
-            protected set { this.listView = value; }
-        }
-
-        private ObjectListView listView;
+        public ObjectListView ListView { get; protected set; }
 
         /// <summary>
         /// Gets or sets the name of the group
         /// </summary>
         /// <remarks>As of 2009-09-01, this property is not used.</remarks>
-        public string Name {
-            get { return this.name; }
-            set { this.name = value; }
-        }
-
-        private string name;
+        public string Name { get; set; }
 
         /// <summary>
         /// Gets or sets whether this group is focused
         /// </summary>
-        public bool Focused {
-            get { return this.GetOneState(GroupState.LVGS_FOCUSED); }
-            set { this.SetOneState(value, GroupState.LVGS_FOCUSED); }
+        public bool Focused { get => GetOneState(GroupState.LVGS_FOCUSED); set => SetOneState(value, GroupState.LVGS_FOCUSED);
         }
 
         /// <summary>
         /// Gets or sets whether this group is selected
         /// </summary>
-        public bool Selected {
-            get { return this.GetOneState(GroupState.LVGS_SELECTED); }
-            set { this.SetOneState(value, GroupState.LVGS_SELECTED); }
+        public bool Selected { get => GetOneState(GroupState.LVGS_SELECTED); set => SetOneState(value, GroupState.LVGS_SELECTED);
         }
 
         /// <summary>
@@ -444,52 +381,27 @@ namespace BrightIdeasSoftware
         /// As of WinSDK v7.0, subsetting of group is officially unimplemented.
         /// We can get around this using undocumented interfaces and may do so.
         /// </remarks>
-        public string SubsetTitle {
-            get { return this.subsetTitle; }
-            set { this.subsetTitle = value; }
-        }
-
-        private string subsetTitle;
+        public string SubsetTitle { get; set; }
 
         /// <summary>
         /// Gets or set the subtitleof the task
         /// </summary>
-        public string Subtitle {
-            get { return this.subtitle; }
-            set { this.subtitle = value; }
-        }
-
-        private string subtitle;
+        public string Subtitle { get; set; }
 
         /// <summary>
         /// Gets or sets the value by which this group will be sorted.
         /// </summary>
-        public IComparable SortValue {
-            get { return this.sortValue; }
-            set { this.sortValue = value; }
-        }
-
-        private IComparable sortValue;
+        public IComparable SortValue { get; set; }
 
         /// <summary>
         /// Gets or sets the state of the group
         /// </summary>
-        public GroupState State {
-            get { return this.state; }
-            set { this.state = value; }
-        }
-
-        private GroupState state;
+        public GroupState State { get; set; }
 
         /// <summary>
         /// Gets or sets which bits of State are valid
         /// </summary>
-        public GroupState StateMask {
-            get { return this.stateMask; }
-            set { this.stateMask = value; }
-        }
-
-        private GroupState stateMask;
+        public GroupState StateMask { get; set; }
 
         /// <summary>
         /// Gets or sets whether this group is showing only a subset of its elements
@@ -497,42 +409,25 @@ namespace BrightIdeasSoftware
         /// <remarks>
         /// As of WinSDK v7.0, this property officially does nothing.
         /// </remarks>
-        public bool Subseted {
-            get { return this.GetOneState(GroupState.LVGS_SUBSETED); }
-            set { this.SetOneState(value, GroupState.LVGS_SUBSETED); }
+        public bool Subseted { get => GetOneState(GroupState.LVGS_SUBSETED); set => SetOneState(value, GroupState.LVGS_SUBSETED);
         }
 
         /// <summary>
         /// Gets or sets the user-defined data attached to this group
         /// </summary>
-        public object Tag {
-            get { return this.tag; }
-            set { this.tag = value; }
-        }
-
-        private object tag;
+        public object Tag { get; set; }
 
         /// <summary>
         /// Gets or sets the task of this group
         /// </summary>
         /// <remarks>This task is the clickable text that appears on the right margin
         /// of the group header.</remarks>
-        public string Task {
-            get { return this.task; }
-            set { this.task = value; }
-        }
-
-        private string task;
+        public string Task { get; set; }
 
         /// <summary>
         /// Gets or sets the int or string that will select the image to be shown against the title
         /// </summary>
-        public object TitleImage {
-            get { return this.titleImage; }
-            set { this.titleImage = value; }
-        }
-
-        private object titleImage;
+        public object TitleImage { get; set; }
 
         /// <summary>
         /// Gets or sets the top description of the group
@@ -540,23 +435,13 @@ namespace BrightIdeasSoftware
         /// <remarks>
         /// Descriptions only appear when group is centered and there is a title image
         /// </remarks>
-        public string TopDescription {
-            get { return this.topDescription; }
-            set { this.topDescription = value; }
-        }
-
-        private string topDescription;
+        public string TopDescription { get; set; }
 
         /// <summary>
         /// Gets or sets the number of items that are within this group.
         /// </summary>
         /// <remarks>This should only be used for virtual groups.</remarks>
-        public int VirtualItemCount {
-            get { return this.virtualItemCount; }
-            set { this.virtualItemCount = value; }
-        }
-
-        private int virtualItemCount;
+        public int VirtualItemCount { get; set; }
 
         #endregion Public properties
 
@@ -566,12 +451,7 @@ namespace BrightIdeasSoftware
         /// Gets or sets the ListViewGroup that is shadowed by this group.
         /// </summary>
         /// <remarks>For virtual groups, this will always be null.</remarks>
-        protected ListViewGroup ListViewGroup {
-            get { return this.listViewGroup; }
-            set { this.listViewGroup = value; }
-        }
-
-        private ListViewGroup listViewGroup;
+        protected ListViewGroup ListViewGroup { get; set; }
 
         #endregion Protected properties
 
@@ -584,15 +464,20 @@ namespace BrightIdeasSoftware
         /// <returns></returns>
         public int GetImageIndex(object imageSelector)
         {
-            if (imageSelector == null || this.ListView == null || this.ListView.GroupImageList == null)
+            if (imageSelector == null || ListView == null || ListView.GroupImageList == null)
+            {
                 return -1;
+            }
 
-            if (imageSelector is Int32)
+            if (imageSelector is int)
+            {
                 return (int)imageSelector;
+            }
 
-            String imageSelectorAsString = imageSelector as String;
-            if (imageSelectorAsString != null)
-                return this.ListView.GroupImageList.Images.IndexOfKey(imageSelectorAsString);
+            if (imageSelector is string imageSelectorAsString)
+            {
+                return ListView.GroupImageList.Images.IndexOfKey(imageSelectorAsString);
+            }
 
             return -1;
         }
@@ -601,10 +486,7 @@ namespace BrightIdeasSoftware
         /// Convert this object to a string representation
         /// </summary>
         /// <returns></returns>
-        public override string ToString()
-        {
-            return this.Header;
-        }
+        public override string ToString() => Header;
 
         #endregion Calculations/Conversions
 
@@ -618,8 +500,8 @@ namespace BrightIdeasSoftware
         /// <remarks>This is used when creating virtual groups</remarks>
         public void InsertGroupNewStyle(ObjectListView olv)
         {
-            this.ListView = olv;
-            NativeMethods.InsertGroup(olv, this.AsNativeGroup(true));
+            ListView = olv;
+            NativeMethods.InsertGroup(olv, AsNativeGroup(true));
         }
 
         /// <summary>
@@ -628,23 +510,26 @@ namespace BrightIdeasSoftware
         /// <param name="olv"></param>
         public void InsertGroupOldStyle(ObjectListView olv)
         {
-            this.ListView = olv;
+            ListView = olv;
 
             // Create/update the associated ListViewGroup
-            if (this.ListViewGroup == null)
-                this.ListViewGroup = new ListViewGroup();
-            this.ListViewGroup.Header = this.Header;
-            this.ListViewGroup.HeaderAlignment = this.HeaderAlignment;
-            this.ListViewGroup.Name = this.Name;
+            if (ListViewGroup == null)
+            {
+                ListViewGroup = new ListViewGroup();
+            }
+
+            ListViewGroup.Header = Header;
+            ListViewGroup.HeaderAlignment = HeaderAlignment;
+            ListViewGroup.Name = Name;
 
             // Remember which OLVGroup created the ListViewGroup
-            this.ListViewGroup.Tag = this;
+            ListViewGroup.Tag = this;
 
             // Add the group to the control
-            olv.Groups.Add(this.ListViewGroup);
+            olv.Groups.Add(ListViewGroup);
 
             // Add any extra information
-            NativeMethods.SetGroupInfo(olv, this.GroupId, this.AsNativeGroup(false));
+            NativeMethods.SetGroupInfo(olv, GroupId, AsNativeGroup(false));
         }
 
         /// <summary>
@@ -653,17 +538,16 @@ namespace BrightIdeasSoftware
         /// </summary>
         public void SetItemsOldStyle()
         {
-            List<OLVListItem> list = this.Items as List<OLVListItem>;
-            if (list == null)
+            if (Items is not List<OLVListItem> list)
             {
-                foreach (OLVListItem item in this.Items)
+                foreach (var item in Items)
                 {
-                    this.ListViewGroup.Items.Add(item);
+                    ListViewGroup.Items.Add(item);
                 }
             }
             else
             {
-                this.ListViewGroup.Items.AddRange(list.ToArray());
+                ListViewGroup.Items.AddRange(list.ToArray());
             }
         }
 
@@ -676,73 +560,75 @@ namespace BrightIdeasSoftware
         /// </summary>
         internal NativeMethods.LVGROUP2 AsNativeGroup(bool withId)
         {
-            NativeMethods.LVGROUP2 group = new NativeMethods.LVGROUP2();
-            group.cbSize = (uint)Marshal.SizeOf(typeof(NativeMethods.LVGROUP2));
-            group.mask = (uint)(GroupMask.LVGF_HEADER ^ GroupMask.LVGF_ALIGN ^ GroupMask.LVGF_STATE);
-            group.pszHeader = this.Header;
-            group.uAlign = (uint)this.HeaderAlignment;
-            group.stateMask = (uint)this.StateMask;
-            group.state = (uint)this.State;
+            var group = new NativeMethods.LVGROUP2
+            {
+                cbSize = (uint)Marshal.SizeOf(typeof(NativeMethods.LVGROUP2)),
+                mask = (uint)(GroupMask.LVGF_HEADER ^ GroupMask.LVGF_ALIGN ^ GroupMask.LVGF_STATE),
+                pszHeader = Header,
+                uAlign = (uint)HeaderAlignment,
+                stateMask = (uint)StateMask,
+                state = (uint)State
+            };
 
             if (withId)
             {
-                group.iGroupId = this.GroupId;
+                group.iGroupId = GroupId;
                 group.mask ^= (uint)GroupMask.LVGF_GROUPID;
             }
 
-            if (!String.IsNullOrEmpty(this.Footer))
+            if (!string.IsNullOrEmpty(Footer))
             {
-                group.pszFooter = this.Footer;
+                group.pszFooter = Footer;
                 group.mask ^= (uint)GroupMask.LVGF_FOOTER;
             }
 
-            if (!String.IsNullOrEmpty(this.Subtitle))
+            if (!string.IsNullOrEmpty(Subtitle))
             {
-                group.pszSubtitle = this.Subtitle;
+                group.pszSubtitle = Subtitle;
                 group.mask ^= (uint)GroupMask.LVGF_SUBTITLE;
             }
 
-            if (!String.IsNullOrEmpty(this.Task))
+            if (!string.IsNullOrEmpty(Task))
             {
-                group.pszTask = this.Task;
+                group.pszTask = Task;
                 group.mask ^= (uint)GroupMask.LVGF_TASK;
             }
 
-            if (!String.IsNullOrEmpty(this.TopDescription))
+            if (!string.IsNullOrEmpty(TopDescription))
             {
-                group.pszDescriptionTop = this.TopDescription;
+                group.pszDescriptionTop = TopDescription;
                 group.mask ^= (uint)GroupMask.LVGF_DESCRIPTIONTOP;
             }
 
-            if (!String.IsNullOrEmpty(this.BottomDescription))
+            if (!string.IsNullOrEmpty(BottomDescription))
             {
-                group.pszDescriptionBottom = this.BottomDescription;
+                group.pszDescriptionBottom = BottomDescription;
                 group.mask ^= (uint)GroupMask.LVGF_DESCRIPTIONBOTTOM;
             }
 
-            int imageIndex = this.GetImageIndex(this.TitleImage);
+            var imageIndex = GetImageIndex(TitleImage);
             if (imageIndex >= 0)
             {
                 group.iTitleImage = imageIndex;
                 group.mask ^= (uint)GroupMask.LVGF_TITLEIMAGE;
             }
 
-            imageIndex = this.GetImageIndex(this.ExtendedImage);
+            imageIndex = GetImageIndex(ExtendedImage);
             if (imageIndex >= 0)
             {
                 group.iExtendedImage = imageIndex;
                 group.mask ^= (uint)GroupMask.LVGF_EXTENDEDIMAGE;
             }
 
-            if (!String.IsNullOrEmpty(this.SubsetTitle))
+            if (!string.IsNullOrEmpty(SubsetTitle))
             {
-                group.pszSubsetTitle = this.SubsetTitle;
+                group.pszSubsetTitle = SubsetTitle;
                 group.mask ^= (uint)GroupMask.LVGF_SUBSET;
             }
 
-            if (this.VirtualItemCount > 0)
+            if (VirtualItemCount > 0)
             {
-                group.cItems = this.VirtualItemCount;
+                group.cItems = VirtualItemCount;
                 group.mask ^= (uint)GroupMask.LVGF_ITEMS;
             }
 
@@ -751,42 +637,50 @@ namespace BrightIdeasSoftware
 
         private bool GetOneState(GroupState mask)
         {
-            if (this.Created)
-                this.State = this.GetState();
-            return (this.State & mask) == mask;
+            if (Created)
+            {
+                State = GetState();
+            }
+
+            return (State & mask) == mask;
         }
 
         /// <summary>
         /// Get the current state of this group from the underlying control
         /// </summary>
-        protected GroupState GetState()
-        {
-            return NativeMethods.GetGroupState(this.ListView, this.GroupId, GroupState.LVGS_ALL);
-        }
+        protected GroupState GetState() => NativeMethods.GetGroupState(ListView, GroupId, GroupState.LVGS_ALL);
 
         /// <summary>
         /// Get the current state of this group from the underlying control
         /// </summary>
         protected int SetState(GroupState newState, GroupState mask)
         {
-            NativeMethods.LVGROUP2 group = new NativeMethods.LVGROUP2();
-            group.cbSize = ((uint)Marshal.SizeOf(typeof(NativeMethods.LVGROUP2)));
-            group.mask = (uint)GroupMask.LVGF_STATE;
-            group.state = (uint)newState;
-            group.stateMask = (uint)mask;
-            return NativeMethods.SetGroupInfo(this.ListView, this.GroupId, group);
+            var group = new NativeMethods.LVGROUP2
+            {
+                cbSize = (uint)Marshal.SizeOf(typeof(NativeMethods.LVGROUP2)),
+                mask = (uint)GroupMask.LVGF_STATE,
+                state = (uint)newState,
+                stateMask = (uint)mask
+            };
+            return NativeMethods.SetGroupInfo(ListView, GroupId, group);
         }
 
         private void SetOneState(bool value, GroupState mask)
         {
-            this.StateMask ^= mask;
+            StateMask ^= mask;
             if (value)
-                this.State ^= mask;
+            {
+                State ^= mask;
+            }
             else
-                this.State &= ~mask;
+            {
+                State &= ~mask;
+            }
 
-            if (this.Created)
-                this.SetState(this.State, mask);
+            if (Created)
+            {
+                SetState(State, mask);
+            }
         }
 
         #endregion Implementation

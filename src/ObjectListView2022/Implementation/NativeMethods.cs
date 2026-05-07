@@ -35,8 +35,9 @@ using System;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using BrightIdeasSoftware.SubControls;
 
-namespace BrightIdeasSoftware
+namespace BrightIdeasSoftware.Implementation
 {
     /// <summary>
     /// Wrapper for all native method calls on ListView controls
@@ -143,7 +144,7 @@ namespace BrightIdeasSoftware
         private const int SIF_POS = 0x0004;
         private const int SIF_DISABLENOSCROLL = 0x0008;
         private const int SIF_TRACKPOS = 0x0010;
-        private const int SIF_ALL = (SIF_RANGE | SIF_PAGE | SIF_POS | SIF_TRACKPOS);
+        private const int SIF_ALL = SIF_RANGE | SIF_PAGE | SIF_POS | SIF_TRACKPOS;
 
         private const int ILD_NORMAL = 0x0;
         private const int ILD_TRANSPARENT = 0x1;
@@ -268,7 +269,7 @@ namespace BrightIdeasSoftware
             public int vkDirection;
         }
 
-        [StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
+        [StructLayout(LayoutKind.Sequential)]
         public struct LVGROUP
         {
             public uint cbSize;
@@ -289,7 +290,7 @@ namespace BrightIdeasSoftware
             public uint uAlign;
         }
 
-        [StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
+        [StructLayout(LayoutKind.Sequential)]
         public struct LVGROUP2
         {
             public uint cbSize;
@@ -339,7 +340,7 @@ namespace BrightIdeasSoftware
             public uint cchSubsetTitle;
         }
 
-        [StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
+        [StructLayout(LayoutKind.Sequential)]
         public struct LVGROUPMETRICS
         {
             public uint cbSize;
@@ -404,10 +405,10 @@ namespace BrightIdeasSoftware
         [StructLayout(LayoutKind.Sequential)]
         public struct NMCUSTOMDRAW
         {
-            public NativeMethods.NMHDR nmcd;
+            public NMHDR nmcd;
             public int dwDrawStage;
             public IntPtr hdc;
-            public NativeMethods.RECT rc;
+            public RECT rc;
             public IntPtr dwItemSpec;
             public int uItemState;
             public IntPtr lItemlParam;
@@ -444,7 +445,7 @@ namespace BrightIdeasSoftware
         [StructLayout(LayoutKind.Sequential)]
         public struct NMLISTVIEW
         {
-            public NativeMethods.NMHDR hdr;
+            public NMHDR hdr;
             public int iItem;
             public int iSubItem;
             public int uNewState;
@@ -456,7 +457,7 @@ namespace BrightIdeasSoftware
         [StructLayout(LayoutKind.Sequential)]
         public struct NMLVCUSTOMDRAW
         {
-            public NativeMethods.NMCUSTOMDRAW nmcd;
+            public NMCUSTOMDRAW nmcd;
             public int clrText;
             public int clrTextBk;
             public int iSubItem;
@@ -466,22 +467,22 @@ namespace BrightIdeasSoftware
             public int iIconPhase;
             public int iPartId;
             public int iStateId;
-            public NativeMethods.RECT rcText;
+            public RECT rcText;
             public uint uAlign;
         }
 
         [StructLayout(LayoutKind.Sequential)]
         public struct NMLVFINDITEM
         {
-            public NativeMethods.NMHDR hdr;
+            public NMHDR hdr;
             public int iStart;
-            public NativeMethods.LVFINDINFO lvfi;
+            public LVFINDINFO lvfi;
         }
 
         [StructLayout(LayoutKind.Sequential)]
         public struct NMLVGETINFOTIP
         {
-            public NativeMethods.NMHDR hdr;
+            public NMHDR hdr;
             public int dwFlags;
             public string pszText;
             public int cchTextMax;
@@ -511,7 +512,7 @@ namespace BrightIdeasSoftware
         [StructLayout(LayoutKind.Sequential)]
         public struct NMLVSCROLL
         {
-            public NativeMethods.NMHDR hdr;
+            public NMHDR hdr;
             public int dx;
             public int dy;
         }
@@ -519,7 +520,7 @@ namespace BrightIdeasSoftware
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
         public struct NMTTDISPINFO
         {
-            public NativeMethods.NMHDR hdr;
+            public NMHDR hdr;
 
             [MarshalAs(UnmanagedType.LPTStr)]
             public string lpszText;
@@ -545,7 +546,7 @@ namespace BrightIdeasSoftware
         [StructLayout(LayoutKind.Sequential)]
         public class SCROLLINFO
         {
-            public int cbSize = Marshal.SizeOf(typeof(NativeMethods.SCROLLINFO));
+            public int cbSize = Marshal.SizeOf(typeof(SCROLLINFO));
             public int fMask;
             public int nMin;
             public int nMax;
@@ -557,11 +558,11 @@ namespace BrightIdeasSoftware
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
         public class TOOLINFO
         {
-            public int cbSize = Marshal.SizeOf(typeof(NativeMethods.TOOLINFO));
+            public int cbSize = Marshal.SizeOf(typeof(TOOLINFO));
             public int uFlags;
             public IntPtr hwnd;
             public IntPtr uId;
-            public NativeMethods.RECT rect;
+            public RECT rect;
             public IntPtr hinst = IntPtr.Zero;
             public IntPtr lpszText;
             public IntPtr lParam = IntPtr.Zero;
@@ -611,10 +612,10 @@ namespace BrightIdeasSoftware
         public static extern IntPtr SendMessageHDHITTESTINFO(IntPtr hWnd, int Msg, IntPtr wParam, [In, Out] HDHITTESTINFO lParam);
 
         [DllImport("user32.dll", EntryPoint = "SendMessage", CharSet = CharSet.Auto)]
-        public static extern IntPtr SendMessageTOOLINFO(IntPtr hWnd, int Msg, int wParam, NativeMethods.TOOLINFO lParam);
+        public static extern IntPtr SendMessageTOOLINFO(IntPtr hWnd, int Msg, int wParam, TOOLINFO lParam);
 
         [DllImport("user32.dll", EntryPoint = "SendMessage", CharSet = CharSet.Auto)]
-        public static extern IntPtr SendMessageLVBKIMAGE(IntPtr hWnd, int Msg, int wParam, ref NativeMethods.LVBKIMAGE lParam);
+        public static extern IntPtr SendMessageLVBKIMAGE(IntPtr hWnd, int Msg, int wParam, ref LVBKIMAGE lParam);
 
         [DllImport("user32.dll", EntryPoint = "SendMessage", CharSet = CharSet.Auto)]
         public static extern IntPtr SendMessageString(IntPtr hWnd, int Msg, int wParam, string lParam);
@@ -706,35 +707,35 @@ namespace BrightIdeasSoftware
         /// <returns></returns>
         public static bool SetBackgroundImage(ListView lv, Image image, bool isWatermark, bool isTiled, int xOffset, int yOffset)
         {
-            LVBKIMAGE lvbkimage = new LVBKIMAGE();
-
-            // We have to clear any pre-existing background image, otherwise the attempt to set the image will fail.
-            // We don't know which type may already have been set, so we just clear both the watermark and the image.
-            lvbkimage.ulFlags = LVBKIF_TYPE_WATERMARK;
-            IntPtr result = NativeMethods.SendMessageLVBKIMAGE(lv.Handle, LVM_SETBKIMAGE, 0, ref lvbkimage);
+            var lvbkimage = new LVBKIMAGE
+            {
+                // We have to clear any pre-existing background image, otherwise the attempt to set the image will fail.
+                // We don't know which type may already have been set, so we just clear both the watermark and the image.
+                ulFlags = LVBKIF_TYPE_WATERMARK
+            };
+            var result = SendMessageLVBKIMAGE(lv.Handle, LVM_SETBKIMAGE, 0, ref lvbkimage);
             lvbkimage.ulFlags = LVBKIF_SOURCE_HBITMAP;
-            result = NativeMethods.SendMessageLVBKIMAGE(lv.Handle, LVM_SETBKIMAGE, 0, ref lvbkimage);
+            result = SendMessageLVBKIMAGE(lv.Handle, LVM_SETBKIMAGE, 0, ref lvbkimage);
 
-            Bitmap bm = image as Bitmap;
-            if (bm != null)
+            if (image is Bitmap bm)
             {
                 lvbkimage.hBmp = bm.GetHbitmap();
-                lvbkimage.ulFlags = isWatermark ? LVBKIF_TYPE_WATERMARK : (isTiled ? LVBKIF_SOURCE_HBITMAP | LVBKIF_STYLE_TILE : LVBKIF_SOURCE_HBITMAP);
+                lvbkimage.ulFlags = isWatermark ? LVBKIF_TYPE_WATERMARK : isTiled ? LVBKIF_SOURCE_HBITMAP | LVBKIF_STYLE_TILE : LVBKIF_SOURCE_HBITMAP;
                 lvbkimage.xOffset = xOffset;
                 lvbkimage.yOffset = yOffset;
-                result = NativeMethods.SendMessageLVBKIMAGE(lv.Handle, LVM_SETBKIMAGE, 0, ref lvbkimage);
+                result = SendMessageLVBKIMAGE(lv.Handle, LVM_SETBKIMAGE, 0, ref lvbkimage);
             }
 
-            return (result != IntPtr.Zero);
+            return result != IntPtr.Zero;
         }
 
         public static bool DrawImageList(Graphics g, ImageList il, int index, int x, int y, bool isSelected, bool isDisabled)
         {
-            ImageListDrawItemConstants flags = (isSelected ? ImageListDrawItemConstants.ILD_SELECTED : ImageListDrawItemConstants.ILD_NORMAL) | ImageListDrawItemConstants.ILD_TRANSPARENT;
-            ImageListDrawStateConstants state = isDisabled ? ImageListDrawStateConstants.ILS_SATURATE : ImageListDrawStateConstants.ILS_NORMAL;
+            var flags = (isSelected ? ImageListDrawItemConstants.ILD_SELECTED : ImageListDrawItemConstants.ILD_NORMAL) | ImageListDrawItemConstants.ILD_TRANSPARENT;
+            var state = isDisabled ? ImageListDrawStateConstants.ILS_SATURATE : ImageListDrawStateConstants.ILS_NORMAL;
             try
             {
-                IntPtr hdc = g.GetHdc();
+                var hdc = g.GetHdc();
                 return DrawImage(il, hdc, index, x, y, flags, 0, 0, state);
             }
             finally
@@ -812,31 +813,31 @@ namespace BrightIdeasSoftware
             /// <summary>
             /// The image state is not modified.
             /// </summary>
-            ILS_NORMAL = (0x00000000),
+            ILS_NORMAL = 0x00000000,
 
             /// <summary>
             /// Adds a glow effect to the icon, which causes the icon to appear to glow
             /// with a given color around the edges. (Note: does not appear to be implemented)
             /// </summary>
-            ILS_GLOW = (0x00000001), //The color for the glow effect is passed to the IImageList::Draw method in the crEffect member of IMAGELISTDRAWPARAMS.
+            ILS_GLOW = 0x00000001, //The color for the glow effect is passed to the IImageList::Draw method in the crEffect member of IMAGELISTDRAWPARAMS.
 
             /// <summary>
             /// Adds a drop shadow effect to the icon. (Note: does not appear to be implemented)
             /// </summary>
-            ILS_SHADOW = (0x00000002), //The color for the drop shadow effect is passed to the IImageList::Draw method in the crEffect member of IMAGELISTDRAWPARAMS.
+            ILS_SHADOW = 0x00000002, //The color for the drop shadow effect is passed to the IImageList::Draw method in the crEffect member of IMAGELISTDRAWPARAMS.
 
             /// <summary>
             /// Saturates the icon by increasing each color component
             /// of the RGB triplet for each pixel in the icon. (Note: only ever appears to result in a completely unsaturated icon)
             /// </summary>
-            ILS_SATURATE = (0x00000004), // The amount to increase is indicated by the frame member in the IMAGELISTDRAWPARAMS method.
+            ILS_SATURATE = 0x00000004, // The amount to increase is indicated by the frame member in the IMAGELISTDRAWPARAMS method.
 
             /// <summary>
             /// Alpha blends the icon. Alpha blending controls the transparency
             /// level of an icon, according to the value of its alpha channel.
             /// (Note: does not appear to be implemented).
             /// </summary>
-            ILS_ALPHA = (0x00000008) //The value of the alpha channel is indicated by the frame member in the IMAGELISTDRAWPARAMS method. The alpha channel can be from 0 to 255, with 0 being completely transparent, and 255 being completely opaque.
+            ILS_ALPHA = 0x00000008 //The value of the alpha channel is indicated by the frame member in the IMAGELISTDRAWPARAMS method. The alpha channel can be from 0 to 255, with 0 being completely transparent, and 255 being completely opaque.
         }
 
         private const uint CLR_DEFAULT = 0xFF000000;
@@ -855,8 +856,10 @@ namespace BrightIdeasSoftware
         /// <param name="stateFlags">State flags</param>
         public static bool DrawImage(ImageList il, IntPtr hdc, int index, int x, int y, ImageListDrawItemConstants flags, int cx, int cy, ImageListDrawStateConstants stateFlags)
         {
-            IMAGELISTDRAWPARAMS pimldp = new IMAGELISTDRAWPARAMS();
-            pimldp.hdcDst = hdc;
+            var pimldp = new IMAGELISTDRAWPARAMS
+            {
+                hdcDst = hdc
+            };
             pimldp.cbSize = Marshal.SizeOf(pimldp.GetType());
             pimldp.i = index;
             pimldp.x = x;
@@ -876,10 +879,7 @@ namespace BrightIdeasSoftware
         /// <remarks>This method must be called after any .NET call that update the extended styles
         /// since they seem to erase this setting.</remarks>
         /// <param name="list">The listview to send a m to</param>
-        public static void ForceSubItemImagesExStyle(ListView list)
-        {
-            SendMessage(list.Handle, LVM_SETEXTENDEDLISTVIEWSTYLE, LVS_EX_SUBITEMIMAGES, LVS_EX_SUBITEMIMAGES);
-        }
+        public static void ForceSubItemImagesExStyle(ListView list) => SendMessage(list.Handle, LVM_SETEXTENDEDLISTVIEWSTYLE, LVS_EX_SUBITEMIMAGES, LVS_EX_SUBITEMIMAGES);
 
         /// <summary>
         /// Change the virtual list size of the given ListView (which must be in virtual mode)
@@ -887,10 +887,7 @@ namespace BrightIdeasSoftware
         /// <remarks>This will not change the scroll position</remarks>
         /// <param name="list">The listview to send a message to</param>
         /// <param name="count">How many rows should the list have?</param>
-        public static void SetItemCount(ListView list, int count)
-        {
-            SendMessage(list.Handle, LVM_SETITEMCOUNT, count, LVSICF_NOSCROLL);
-        }
+        public static void SetItemCount(ListView list, int count) => SendMessage(list.Handle, LVM_SETITEMCOUNT, count, LVSICF_NOSCROLL);
 
         /// <summary>
         /// Make sure the ListView has the extended style that says to display subitem images.
@@ -900,10 +897,7 @@ namespace BrightIdeasSoftware
         /// <param name="list">The listview to send a m to</param>
         /// <param name="style"></param>
         /// <param name="styleMask"></param>
-        public static void SetExtendedStyle(ListView list, int style, int styleMask)
-        {
-            SendMessage(list.Handle, LVM_SETEXTENDEDLISTVIEWSTYLE, styleMask, style);
-        }
+        public static void SetExtendedStyle(ListView list, int style, int styleMask) => SendMessage(list.Handle, LVM_SETEXTENDEDLISTVIEWSTYLE, styleMask, style);
 
         /// <summary>
         /// Calculates the number of items that can fit vertically in the visible area of a list-view (which
@@ -911,10 +905,7 @@ namespace BrightIdeasSoftware
         /// </summary>
         /// <param name="list">The listView</param>
         /// <returns>Number of visible items per page</returns>
-        public static int GetCountPerPage(ListView list)
-        {
-            return (int)SendMessage(list.Handle, LVM_GETCOUNTPERPAGE, 0, 0);
-        }
+        public static int GetCountPerPage(ListView list) => (int)SendMessage(list.Handle, LVM_GETCOUNTPERPAGE, 0, 0);
 
         /// <summary>
         /// For the given item and subitem, make it display the given image
@@ -925,11 +916,13 @@ namespace BrightIdeasSoftware
         /// <param name="imageIndex">index into the image list</param>
         public static void SetSubItemImage(ListView list, int itemIndex, int subItemIndex, int imageIndex)
         {
-            LVITEM lvItem = new LVITEM();
-            lvItem.mask = LVIF_IMAGE;
-            lvItem.iItem = itemIndex;
-            lvItem.iSubItem = subItemIndex;
-            lvItem.iImage = imageIndex;
+            var lvItem = new LVITEM
+            {
+                mask = LVIF_IMAGE,
+                iItem = itemIndex,
+                iSubItem = subItemIndex,
+                iImage = imageIndex
+            };
             SendMessageLVItem(list.Handle, LVM_SETITEM, 0, ref lvItem);
         }
 
@@ -943,27 +936,36 @@ namespace BrightIdeasSoftware
         /// <param name="imageIndex">Index into the small image list</param>
         public static void SetColumnImage(ListView list, int columnIndex, SortOrder order, int imageIndex)
         {
-            IntPtr hdrCntl = NativeMethods.GetHeaderControl(list);
+            var hdrCntl = GetHeaderControl(list);
             if (hdrCntl.ToInt32() == 0)
+            {
                 return;
+            }
 
-            HDITEM item = new HDITEM();
-            item.mask = HDI_FORMAT;
-            IntPtr result = SendMessageHDItem(hdrCntl, HDM_GETITEM, columnIndex, ref item);
+            var item = new HDITEM
+            {
+                mask = HDI_FORMAT
+            };
+            var result = SendMessageHDItem(hdrCntl, HDM_GETITEM, columnIndex, ref item);
 
             item.fmt &= ~(HDF_SORTUP | HDF_SORTDOWN | HDF_IMAGE | HDF_BITMAP_ON_RIGHT);
 
-            if (NativeMethods.HasBuiltinSortIndicators())
+            if (HasBuiltinSortIndicators())
             {
                 if (order == SortOrder.Ascending)
+                {
                     item.fmt |= HDF_SORTUP;
+                }
+
                 if (order == SortOrder.Descending)
+                {
                     item.fmt |= HDF_SORTDOWN;
+                }
             }
             else
             {
                 item.mask |= HDI_IMAGE;
-                item.fmt |= (HDF_IMAGE | HDF_BITMAP_ON_RIGHT);
+                item.fmt |= HDF_IMAGE | HDF_BITMAP_ON_RIGHT;
                 item.iImage = imageIndex;
             }
 
@@ -975,10 +977,7 @@ namespace BrightIdeasSoftware
         /// </summary>
         /// <returns>Are there builtin sort indicators</returns>
         /// <remarks>XP and later have these</remarks>
-        public static bool HasBuiltinSortIndicators()
-        {
-            return OSFeature.Feature.GetVersionPresent(OSFeature.Themes) != null;
-        }
+        public static bool HasBuiltinSortIndicators() => OSFeature.Feature.GetVersionPresent(OSFeature.Themes) != null;
 
         /// <summary>
         /// Return the bounds of the update region on the given control.
@@ -989,7 +988,7 @@ namespace BrightIdeasSoftware
         /// <returns>A rectangle</returns>
         public static Rectangle GetUpdateRect(Control cntl)
         {
-            Rectangle r = new Rectangle();
+            var r = new Rectangle();
             GetUpdateRectInternal(cntl.Handle, ref r, false);
             return r;
         }
@@ -999,38 +998,26 @@ namespace BrightIdeasSoftware
         /// </summary>
         /// <param name="cntl">The control to be validated</param>
         /// <param name="r">The area of the control to be validated</param>
-        public static void ValidateRect(Control cntl, Rectangle r)
-        {
-            ValidatedRectInternal(cntl.Handle, ref r);
-        }
+        public static void ValidateRect(Control cntl, Rectangle r) => ValidatedRectInternal(cntl.Handle, ref r);
 
         /// <summary>
         /// Select all rows on the given listview
         /// </summary>
         /// <param name="list">The listview whose items are to be selected</param>
-        public static void SelectAllItems(ListView list)
-        {
-            NativeMethods.SetItemState(list, -1, LVIS_SELECTED, LVIS_SELECTED);
-        }
+        public static void SelectAllItems(ListView list) => SetItemState(list, -1, LVIS_SELECTED, LVIS_SELECTED);
 
         /// <summary>
         /// Deselect all rows on the given listview
         /// </summary>
         /// <param name="list">The listview whose items are to be deselected</param>
-        public static void DeselectAllItems(ListView list)
-        {
-            NativeMethods.SetItemState(list, -1, LVIS_SELECTED, 0);
-        }
+        public static void DeselectAllItems(ListView list) => SetItemState(list, -1, LVIS_SELECTED, 0);
 
         /// <summary>
         /// Deselect a single row
         /// </summary>
         /// <param name="list"></param>
         /// <param name="index"></param>
-        public static void DeselectOneItem(ListView list, int index)
-        {
-            NativeMethods.SetItemState(list, index, LVIS_SELECTED, 0);
-        }
+        public static void DeselectOneItem(ListView list, int index) => SetItemState(list, index, LVIS_SELECTED, 0);
 
         /// <summary>
         /// Set the item state on the given item
@@ -1041,9 +1028,11 @@ namespace BrightIdeasSoftware
         /// <param name="value">The value to be set</param>
         public static void SetItemState(ListView list, int itemIndex, int mask, int value)
         {
-            LVITEM lvItem = new LVITEM();
-            lvItem.stateMask = mask;
-            lvItem.state = value;
+            var lvItem = new LVITEM
+            {
+                stateMask = mask,
+                state = value
+            };
             SendMessageLVItem(list.Handle, LVM_SETITEMSTATE, itemIndex, ref lvItem);
         }
 
@@ -1054,20 +1043,14 @@ namespace BrightIdeasSoftware
         /// <param name="dx"></param>
         /// <param name="dy"></param>
         /// <returns>true if the scroll succeeded</returns>
-        public static bool Scroll(ListView list, int dx, int dy)
-        {
-            return SendMessage(list.Handle, LVM_SCROLL, dx, dy) != IntPtr.Zero;
-        }
+        public static bool Scroll(ListView list, int dx, int dy) => SendMessage(list.Handle, LVM_SCROLL, dx, dy) != IntPtr.Zero;
 
         /// <summary>
         /// Return the handle to the header control on the given list
         /// </summary>
         /// <param name="list">The listview whose header control is to be returned</param>
         /// <returns>The handle to the header control</returns>
-        public static IntPtr GetHeaderControl(ListView list)
-        {
-            return SendMessage(list.Handle, LVM_GETHEADER, 0, 0);
-        }
+        public static IntPtr GetHeaderControl(ListView list) => SendMessage(list.Handle, LVM_GETHEADER, 0, 0);
 
         /// <summary>
         /// Return the edges of the given column.
@@ -1078,13 +1061,15 @@ namespace BrightIdeasSoftware
         /// -1 means that the sides could not be retrieved.</returns>
         public static Point GetColumnSides(ObjectListView lv, int columnIndex)
         {
-            Point sides = new Point(-1, -1);
-            IntPtr hdr = NativeMethods.GetHeaderControl(lv);
+            var sides = new Point(-1, -1);
+            var hdr = GetHeaderControl(lv);
             if (hdr == IntPtr.Zero)
+            {
                 return new Point(-1, -1);
+            }
 
-            RECT r = new RECT();
-            NativeMethods.SendMessageRECT(hdr, HDM_GETITEMRECT, columnIndex, ref r);
+            var r = new RECT();
+            SendMessageRECT(hdr, HDM_GETITEMRECT, columnIndex, ref r);
             return new Point(r.left, r.right);
         }
 
@@ -1097,13 +1082,15 @@ namespace BrightIdeasSoftware
         /// -1 means that the sides could not be retrieved.</returns>
         public static Point GetScrolledColumnSides(ListView lv, int columnIndex)
         {
-            IntPtr hdr = NativeMethods.GetHeaderControl(lv);
+            var hdr = GetHeaderControl(lv);
             if (hdr == IntPtr.Zero)
+            {
                 return new Point(-1, -1);
+            }
 
-            RECT r = new RECT();
-            IntPtr result = NativeMethods.SendMessageRECT(hdr, HDM_GETITEMRECT, columnIndex, ref r);
-            int scrollH = NativeMethods.GetScrollPosition(lv, true);
+            var r = new RECT();
+            var result = SendMessageRECT(hdr, HDM_GETITEMRECT, columnIndex, ref r);
+            var scrollH = GetScrollPosition(lv, true);
             return new Point(r.left - scrollH, r.right - scrollH);
         }
 
@@ -1118,19 +1105,25 @@ namespace BrightIdeasSoftware
         {
             const int HHT_ONHEADER = 2;
             const int HHT_ONDIVIDER = 4;
-            return NativeMethods.HeaderControlHitTest(handle, pt, HHT_ONHEADER | HHT_ONDIVIDER);
+            return HeaderControlHitTest(handle, pt, HHT_ONHEADER | HHT_ONDIVIDER);
         }
 
         private static int HeaderControlHitTest(IntPtr handle, Point pt, int flag)
         {
-            HDHITTESTINFO testInfo = new HDHITTESTINFO();
-            testInfo.pt_x = pt.X;
-            testInfo.pt_y = pt.Y;
-            IntPtr result = NativeMethods.SendMessageHDHITTESTINFO(handle, HDM_HITTEST, IntPtr.Zero, testInfo);
+            var testInfo = new HDHITTESTINFO
+            {
+                pt_x = pt.X,
+                pt_y = pt.Y
+            };
+            var result = SendMessageHDHITTESTINFO(handle, HDM_HITTEST, IntPtr.Zero, testInfo);
             if ((testInfo.flags & flag) != 0)
+            {
                 return testInfo.iItem;
+            }
             else
+            {
                 return -1;
+            }
         }
 
         /// <summary>
@@ -1142,7 +1135,7 @@ namespace BrightIdeasSoftware
         public static int GetDividerUnderPoint(IntPtr handle, Point pt)
         {
             const int HHT_ONDIVIDER = 4;
-            return NativeMethods.HeaderControlHitTest(handle, pt, HHT_ONDIVIDER);
+            return HeaderControlHitTest(handle, pt, HHT_ONDIVIDER);
         }
 
         /// <summary>
@@ -1153,14 +1146,20 @@ namespace BrightIdeasSoftware
         /// <returns></returns>
         public static int GetScrollPosition(ListView lv, bool horizontalBar)
         {
-            int fnBar = (horizontalBar ? SB_HORZ : SB_VERT);
+            var fnBar = horizontalBar ? SB_HORZ : SB_VERT;
 
-            SCROLLINFO scrollInfo = new SCROLLINFO();
-            scrollInfo.fMask = SIF_POS;
+            var scrollInfo = new SCROLLINFO
+            {
+                fMask = SIF_POS
+            };
             if (GetScrollInfo(lv.Handle, fnBar, scrollInfo))
+            {
                 return scrollInfo.nPos;
+            }
             else
+            {
                 return -1;
+            }
         }
 
         /// <summary>
@@ -1169,10 +1168,7 @@ namespace BrightIdeasSoftware
         /// <param name="toBeMoved"></param>
         /// <param name="reference"></param>
         /// <returns></returns>
-        public static bool ChangeZOrder(IWin32Window toBeMoved, IWin32Window reference)
-        {
-            return NativeMethods.SetWindowPos(toBeMoved.Handle, reference.Handle, 0, 0, 0, 0, SWP_ZORDERONLY);
-        }
+        public static bool ChangeZOrder(IWin32Window toBeMoved, IWin32Window reference) => SetWindowPos(toBeMoved.Handle, reference.Handle, 0, 0, 0, 0, SWP_ZORDERONLY);
 
         /// <summary>
         /// Make the given control/window a topmost window
@@ -1181,8 +1177,8 @@ namespace BrightIdeasSoftware
         /// <returns></returns>
         public static bool MakeTopMost(IWin32Window toBeMoved)
         {
-            IntPtr HWND_TOPMOST = (IntPtr)(-1);
-            return NativeMethods.SetWindowPos(toBeMoved.Handle, HWND_TOPMOST, 0, 0, 0, 0, SWP_ZORDERONLY);
+            var HWND_TOPMOST = (IntPtr)(-1);
+            return SetWindowPos(toBeMoved.Handle, HWND_TOPMOST, 0, 0, 0, 0, SWP_ZORDERONLY);
         }
 
         /// <summary>
@@ -1192,10 +1188,7 @@ namespace BrightIdeasSoftware
         /// <param name="width"></param>
         /// <param name="height"></param>
         /// <returns></returns>
-        public static bool ChangeSize(IWin32Window toBeMoved, int width, int height)
-        {
-            return NativeMethods.SetWindowPos(toBeMoved.Handle, IntPtr.Zero, 0, 0, width, height, SWP_SIZEONLY);
-        }
+        public static bool ChangeSize(IWin32Window toBeMoved, int width, int height) => SetWindowPos(toBeMoved.Handle, IntPtr.Zero, 0, 0, width, height, SWP_SIZEONLY);
 
         /// <summary>
         /// Show the given window without activating it
@@ -1204,7 +1197,7 @@ namespace BrightIdeasSoftware
         public static void ShowWithoutActivate(IWin32Window win)
         {
             const int SW_SHOWNA = 8;
-            NativeMethods.ShowWindow(win.Handle, SW_SHOWNA);
+            ShowWindow(win.Handle, SW_SHOWNA);
         }
 
         /// <summary>
@@ -1216,49 +1209,45 @@ namespace BrightIdeasSoftware
         /// This method works, but it prevents subitems in the given column from having
         /// back colors.
         /// </remarks>
-        public static void SetSelectedColumn(ListView objectListView, ColumnHeader value)
-        {
-            NativeMethods.SendMessage(objectListView.Handle,
-                LVM_SETSELECTEDCOLUMN, (value == null) ? -1 : value.Index, 0);
-        }
+        public static void SetSelectedColumn(ListView objectListView, ColumnHeader value) => SendMessage(objectListView.Handle,
+                LVM_SETSELECTEDCOLUMN, value == null ? -1 : value.Index, 0);
 
-        public static int GetTopIndex(ListView lv)
-        {
-            return (int)SendMessage(lv.Handle, LVM_GETTOPINDEX, 0, 0);
-        }
+        public static int GetTopIndex(ListView lv) => (int)SendMessage(lv.Handle, LVM_GETTOPINDEX, 0, 0);
 
-        public static IntPtr GetTooltipControl(ListView lv)
-        {
-            return SendMessage(lv.Handle, LVM_GETTOOLTIPS, 0, 0);
-        }
+        public static IntPtr GetTooltipControl(ListView lv) => SendMessage(lv.Handle, LVM_GETTOOLTIPS, 0, 0);
 
-        public static IntPtr SetTooltipControl(ListView lv, ToolTipControl tooltip)
-        {
-            return SendMessage(lv.Handle, LVM_SETTOOLTIPS, 0, tooltip.Handle);
-        }
+        public static IntPtr SetTooltipControl(ListView lv, ToolTipControl tooltip) => SendMessage(lv.Handle, LVM_SETTOOLTIPS, 0, tooltip.Handle);
 
         public static bool HasHorizontalScrollBar(ListView lv)
         {
             const int GWL_STYLE = -16;
             const int WS_HSCROLL = 0x00100000;
 
-            return (NativeMethods.GetWindowLong(lv.Handle, GWL_STYLE) & WS_HSCROLL) != 0;
+            return (GetWindowLong(lv.Handle, GWL_STYLE) & WS_HSCROLL) != 0;
         }
 
         public static int GetWindowLong(IntPtr hWnd, int nIndex)
         {
             if (IntPtr.Size == 4)
+            {
                 return (int)GetWindowLong32(hWnd, nIndex);
+            }
             else
+            {
                 return (int)(long)GetWindowLongPtr64(hWnd, nIndex);
+            }
         }
 
         public static int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong)
         {
             if (IntPtr.Size == 4)
+            {
                 return (int)SetWindowLongPtr32(hWnd, nIndex, dwNewLong);
+            }
             else
+            {
                 return (int)(long)SetWindowLongPtr64(hWnd, nIndex, dwNewLong);
+            }
         }
 
         [DllImport("gdi32.dll", CharSet = CharSet.Auto, SetLastError = true, ExactSpelling = true)]
@@ -1290,48 +1279,30 @@ namespace BrightIdeasSoftware
             public int y;
         }
 
-        public static int GetGroupInfo(ObjectListView olv, int groupId, ref LVGROUP2 group)
-        {
-            return (int)NativeMethods.SendMessage(olv.Handle, LVM_GETGROUPINFO, groupId, ref group);
-        }
+        public static int GetGroupInfo(ObjectListView olv, int groupId, ref LVGROUP2 group) => (int)SendMessage(olv.Handle, LVM_GETGROUPINFO, groupId, ref group);
 
-        public static GroupState GetGroupState(ObjectListView olv, int groupId, GroupState mask)
-        {
-            return (GroupState)NativeMethods.SendMessage(olv.Handle, LVM_GETGROUPSTATE, groupId, (int)mask);
-        }
+        public static GroupState GetGroupState(ObjectListView olv, int groupId, GroupState mask) => (GroupState)SendMessage(olv.Handle, LVM_GETGROUPSTATE, groupId, (int)mask);
 
-        public static int InsertGroup(ObjectListView olv, LVGROUP2 group)
-        {
-            return (int)NativeMethods.SendMessage(olv.Handle, LVM_INSERTGROUP, -1, ref group);
-        }
+        public static int InsertGroup(ObjectListView olv, LVGROUP2 group) => (int)SendMessage(olv.Handle, LVM_INSERTGROUP, -1, ref group);
 
-        public static int SetGroupInfo(ObjectListView olv, int groupId, LVGROUP2 group)
-        {
-            return (int)NativeMethods.SendMessage(olv.Handle, LVM_SETGROUPINFO, groupId, ref group);
-        }
+        public static int SetGroupInfo(ObjectListView olv, int groupId, LVGROUP2 group) => (int)SendMessage(olv.Handle, LVM_SETGROUPINFO, groupId, ref group);
 
-        public static int SetGroupMetrics(ObjectListView olv, LVGROUPMETRICS metrics)
-        {
-            return (int)NativeMethods.SendMessage(olv.Handle, LVM_SETGROUPMETRICS, 0, ref metrics);
-        }
+        public static int SetGroupMetrics(ObjectListView olv, LVGROUPMETRICS metrics) => (int)SendMessage(olv.Handle, LVM_SETGROUPMETRICS, 0, ref metrics);
 
-        public static void ClearGroups(VirtualObjectListView virtualObjectListView)
-        {
-            NativeMethods.SendMessage(virtualObjectListView.Handle, LVM_REMOVEALLGROUPS, 0, 0);
-        }
+        public static void ClearGroups(VirtualObjectListView virtualObjectListView) => SendMessage(virtualObjectListView.Handle, LVM_REMOVEALLGROUPS, 0, 0);
 
         public static void SetGroupImageList(ObjectListView olv, ImageList il)
         {
             const int LVSIL_GROUPHEADER = 3;
-            IntPtr handle = IntPtr.Zero;
+            var handle = IntPtr.Zero;
             if (il != null)
+            {
                 handle = il.Handle;
-            NativeMethods.SendMessage(olv.Handle, LVM_SETIMAGELIST, LVSIL_GROUPHEADER, handle);
+            }
+
+            SendMessage(olv.Handle, LVM_SETIMAGELIST, LVSIL_GROUPHEADER, handle);
         }
 
-        public static int HitTest(ObjectListView olv, ref LVHITTESTINFO hittest)
-        {
-            return (int)NativeMethods.SendMessage(olv.Handle, olv.View == View.Details ? LVM_SUBITEMHITTEST : LVM_HITTEST, -1, ref hittest);
-        }
+        public static int HitTest(ObjectListView olv, ref LVHITTESTINFO hittest) => (int)SendMessage(olv.Handle, olv.View == View.Details ? LVM_SUBITEMHITTEST : LVM_HITTEST, -1, ref hittest);
     }
 }

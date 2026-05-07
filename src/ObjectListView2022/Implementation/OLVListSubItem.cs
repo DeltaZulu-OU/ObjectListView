@@ -30,8 +30,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
+using BrightIdeasSoftware.Rendering;
 
-namespace BrightIdeasSoftware
+namespace BrightIdeasSoftware.Implementation
 {
     /// <summary>
     /// A ListViewSubItem that knows which image should be drawn against it.
@@ -51,11 +52,11 @@ namespace BrightIdeasSoftware
         /// <summary>
         /// Create a OLVListSubItem that shows the given string and image
         /// </summary>
-        public OLVListSubItem(object modelValue, string text, Object image)
+        public OLVListSubItem(object modelValue, string text, object image)
         {
-            this.ModelValue = modelValue;
-            this.Text = text;
-            this.ImageSelector = image;
+            ModelValue = modelValue;
+            Text = text;
+            ImageSelector = image;
         }
 
         #endregion Constructors
@@ -66,9 +67,7 @@ namespace BrightIdeasSoftware
         /// Gets or sets how many pixels will be left blank around this cell
         /// </summary>
         /// <remarks>This setting only takes effect when the control is owner drawn.</remarks>
-        public Rectangle? CellPadding {
-            get { return this.cellPadding; }
-            set { this.cellPadding = value; }
+        public Rectangle? CellPadding { get => cellPadding; set => cellPadding = value;
         }
 
         private Rectangle? cellPadding;
@@ -77,44 +76,30 @@ namespace BrightIdeasSoftware
         /// Gets or sets how this cell will be vertically aligned
         /// </summary>
         /// <remarks>This setting only takes effect when the control is owner drawn.</remarks>
-        public StringAlignment? CellVerticalAlignment {
-            get { return this.cellVerticalAlignment; }
-            set { this.cellVerticalAlignment = value; }
-        }
-
-        private StringAlignment? cellVerticalAlignment;
+        public StringAlignment? CellVerticalAlignment { get; set; }
 
         /// <summary>
         /// Gets or sets the model value is being displayed by this subitem.
         /// </summary>
-        public object ModelValue {
-            get { return modelValue; }
-            private set { modelValue = value; }
-        }
-
-        private object modelValue;
+        public object ModelValue { get; private set; }
 
         /// <summary>
         /// Gets if this subitem has any decorations set for it.
         /// </summary>
-        public bool HasDecoration {
-            get {
-                return this.decorations != null && this.decorations.Count > 0;
-            }
-        }
+        public bool HasDecoration => decorations != null && decorations.Count > 0;
 
         /// <summary>
         /// Gets or sets the decoration that will be drawn over this item
         /// </summary>
         /// <remarks>Setting this replaces all other decorations</remarks>
         public IDecoration Decoration {
-            get {
-                return this.HasDecoration ? this.Decorations[0] : null;
-            }
+            get => HasDecoration ? Decorations[0] : null;
             set {
-                this.Decorations.Clear();
+                Decorations.Clear();
                 if (value != null)
-                    this.Decorations.Add(value);
+                {
+                    Decorations.Add(value);
+                }
             }
         }
 
@@ -123,9 +108,12 @@ namespace BrightIdeasSoftware
         /// </summary>
         public IList<IDecoration> Decorations {
             get {
-                if (this.decorations == null)
-                    this.decorations = new List<IDecoration>();
-                return this.decorations;
+                if (decorations == null)
+                {
+                    decorations = new List<IDecoration>();
+                }
+
+                return decorations;
             }
         }
 
@@ -136,32 +124,17 @@ namespace BrightIdeasSoftware
         /// </summary>
         /// <remarks><para>This can be an Image, a string or an int. A string or an int will
         /// be used as an index into the small image list.</para></remarks>
-        public Object ImageSelector {
-            get { return imageSelector; }
-            set { imageSelector = value; }
-        }
-
-        private Object imageSelector;
+        public object ImageSelector { get; set; }
 
         /// <summary>
         /// Gets or sets the url that should be invoked when this subitem is clicked
         /// </summary>
-        public string Url {
-            get { return this.url; }
-            set { this.url = value; }
-        }
-
-        private string url;
+        public string Url { get; set; }
 
         /// <summary>
         /// Gets or sets whether this cell is selected
         /// </summary>
-        public bool Selected {
-            get { return this.selected; }
-            set { this.selected = value; }
-        }
-
-        private bool selected;
+        public bool Selected { get; set; }
 
         #endregion Properties
 

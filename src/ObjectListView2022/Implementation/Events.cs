@@ -57,6 +57,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
+using BrightIdeasSoftware.DragDrop;
+using BrightIdeasSoftware.Implementation;
+using BrightIdeasSoftware.SubControls;
 
 namespace BrightIdeasSoftware
 {
@@ -410,370 +413,222 @@ namespace BrightIdeasSoftware
         ///
         /// </summary>
         /// <param name="e"></param>
-        protected virtual void OnAboutToCreateGroups(CreateGroupsEventArgs e)
-        {
-            if (this.AboutToCreateGroups != null)
-                this.AboutToCreateGroups(this, e);
-        }
+        protected virtual void OnAboutToCreateGroups(CreateGroupsEventArgs e) => AboutToCreateGroups?.Invoke(this, e);
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="e"></param>
-        protected virtual void OnBeforeCreatingGroups(CreateGroupsEventArgs e)
-        {
-            if (this.BeforeCreatingGroups != null)
-                this.BeforeCreatingGroups(this, e);
-        }
+        protected virtual void OnBeforeCreatingGroups(CreateGroupsEventArgs e) => BeforeCreatingGroups?.Invoke(this, e);
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="e"></param>
-        protected virtual void OnAfterCreatingGroups(CreateGroupsEventArgs e)
-        {
-            if (this.AfterCreatingGroups != null)
-                this.AfterCreatingGroups(this, e);
-        }
+        protected virtual void OnAfterCreatingGroups(CreateGroupsEventArgs e) => AfterCreatingGroups?.Invoke(this, e);
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="e"></param>
-        protected virtual void OnAfterSearching(AfterSearchingEventArgs e)
-        {
-            if (this.AfterSearching != null)
-                this.AfterSearching(this, e);
-        }
+        protected virtual void OnAfterSearching(AfterSearchingEventArgs e) => AfterSearching?.Invoke(this, e);
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="e"></param>
-        protected virtual void OnAfterSorting(AfterSortingEventArgs e)
-        {
-            if (this.AfterSorting != null)
-                this.AfterSorting(this, e);
-        }
+        protected virtual void OnAfterSorting(AfterSortingEventArgs e) => AfterSorting?.Invoke(this, e);
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="e"></param>
-        protected virtual void OnBeforeSearching(BeforeSearchingEventArgs e)
-        {
-            if (this.BeforeSearching != null)
-                this.BeforeSearching(this, e);
-        }
+        protected virtual void OnBeforeSearching(BeforeSearchingEventArgs e) => BeforeSearching?.Invoke(this, e);
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="e"></param>
-        protected virtual void OnBeforeSorting(BeforeSortingEventArgs e)
-        {
-            if (this.BeforeSorting != null)
-                this.BeforeSorting(this, e);
-        }
+        protected virtual void OnBeforeSorting(BeforeSortingEventArgs e) => BeforeSorting?.Invoke(this, e);
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="args"></param>
-        protected virtual void OnButtonClick(CellClickEventArgs args)
-        {
-            if (this.ButtonClick != null)
-                this.ButtonClick(this, args);
-        }
+        protected virtual void OnButtonClick(CellClickEventArgs args) => ButtonClick?.Invoke(this, args);
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="args"></param>
-        protected virtual void OnCanDrop(OlvDropEventArgs args)
-        {
-            if (this.CanDrop != null)
-                this.CanDrop(this, args);
-        }
+        protected virtual void OnCanDrop(OlvDropEventArgs args) => CanDrop?.Invoke(this, args);
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="args"></param>
-        protected virtual void OnCellClick(CellClickEventArgs args)
-        {
-            if (this.CellClick != null)
-                this.CellClick(this, args);
-        }
+        protected virtual void OnCellClick(CellClickEventArgs args) => CellClick?.Invoke(this, args);
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="args"></param>
-        protected virtual void OnCellOver(CellOverEventArgs args)
-        {
-            if (this.CellOver != null)
-                this.CellOver(this, args);
-        }
+        protected virtual void OnCellOver(CellOverEventArgs args) => CellOver?.Invoke(this, args);
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="args"></param>
-        protected virtual void OnCellRightClick(CellRightClickEventArgs args)
-        {
-            if (this.CellRightClick != null)
-                this.CellRightClick(this, args);
-        }
+        protected virtual void OnCellRightClick(CellRightClickEventArgs args) => CellRightClick?.Invoke(this, args);
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="args"></param>
-        protected virtual void OnCellToolTip(ToolTipShowingEventArgs args)
-        {
-            if (this.CellToolTipShowing != null)
-                this.CellToolTipShowing(this, args);
-        }
+        protected virtual void OnCellToolTip(ToolTipShowingEventArgs args) => CellToolTipShowing?.Invoke(this, args);
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="args"></param>
-        protected virtual void OnSubItemChecking(SubItemCheckingEventArgs args)
-        {
-            if (this.SubItemChecking != null)
-                this.SubItemChecking(this, args);
-        }
+        protected virtual void OnSubItemChecking(SubItemCheckingEventArgs args) => SubItemChecking?.Invoke(this, args);
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="e"></param>
-        protected virtual void OnColumnRightClick(ColumnClickEventArgs e)
-        {
-            if (this.ColumnRightClick != null)
-                this.ColumnRightClick(this, e);
-        }
+        protected virtual void OnColumnRightClick(ColumnClickEventArgs e) => ColumnRightClick?.Invoke(this, e);
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="args"></param>
-        protected virtual void OnDropped(OlvDropEventArgs args)
-        {
-            if (this.Dropped != null)
-                this.Dropped(this, args);
-        }
+        protected virtual void OnDropped(OlvDropEventArgs args) => Dropped?.Invoke(this, args);
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="e"></param>
-        protected internal virtual void OnFilter(FilterEventArgs e)
-        {
-            if (this.Filter != null)
-                this.Filter(this, e);
-        }
+        protected internal virtual void OnFilter(FilterEventArgs e) => Filter?.Invoke(this, e);
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="args"></param>
-        protected virtual void OnFormatCell(FormatCellEventArgs args)
-        {
-            if (this.FormatCell != null)
-                this.FormatCell(this, args);
-        }
+        protected virtual void OnFormatCell(FormatCellEventArgs args) => FormatCell?.Invoke(this, args);
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="args"></param>
-        protected virtual void OnFormatRow(FormatRowEventArgs args)
-        {
-            if (this.FormatRow != null)
-                this.FormatRow(this, args);
-        }
+        protected virtual void OnFormatRow(FormatRowEventArgs args) => FormatRow?.Invoke(this, args);
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="args"></param>
-        protected virtual void OnFreezing(FreezeEventArgs args)
-        {
-            if (this.Freezing != null)
-                this.Freezing(this, args);
-        }
+        protected virtual void OnFreezing(FreezeEventArgs args) => Freezing?.Invoke(this, args);
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="args"></param>
-        protected virtual void OnGroupExpandingCollapsing(GroupExpandingCollapsingEventArgs args)
-        {
-            if (this.GroupExpandingCollapsing != null)
-                this.GroupExpandingCollapsing(this, args);
-        }
+        protected virtual void OnGroupExpandingCollapsing(GroupExpandingCollapsingEventArgs args) => GroupExpandingCollapsing?.Invoke(this, args);
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="args"></param>
-        protected virtual void OnGroupStateChanged(GroupStateChangedEventArgs args)
-        {
-            if (this.GroupStateChanged != null)
-                this.GroupStateChanged(this, args);
-        }
+        protected virtual void OnGroupStateChanged(GroupStateChangedEventArgs args) => GroupStateChanged?.Invoke(this, args);
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="args"></param>
-        protected virtual void OnHeaderCheckBoxChanging(HeaderCheckBoxChangingEventArgs args)
-        {
-            if (this.HeaderCheckBoxChanging != null)
-                this.HeaderCheckBoxChanging(this, args);
-        }
+        protected virtual void OnHeaderCheckBoxChanging(HeaderCheckBoxChangingEventArgs args) => HeaderCheckBoxChanging?.Invoke(this, args);
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="args"></param>
-        protected virtual void OnHeaderToolTip(ToolTipShowingEventArgs args)
-        {
-            if (this.HeaderToolTipShowing != null)
-                this.HeaderToolTipShowing(this, args);
-        }
+        protected virtual void OnHeaderToolTip(ToolTipShowingEventArgs args) => HeaderToolTipShowing?.Invoke(this, args);
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="e"></param>
-        protected virtual void OnHotItemChanged(HotItemChangedEventArgs e)
-        {
-            if (this.HotItemChanged != null)
-                this.HotItemChanged(this, e);
-        }
+        protected virtual void OnHotItemChanged(HotItemChangedEventArgs e) => HotItemChanged?.Invoke(this, e);
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="e"></param>
-        protected virtual void OnHyperlinkClicked(HyperlinkClickedEventArgs e)
-        {
-            if (this.HyperlinkClicked != null)
-                this.HyperlinkClicked(this, e);
-        }
+        protected virtual void OnHyperlinkClicked(HyperlinkClickedEventArgs e) => HyperlinkClicked?.Invoke(this, e);
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="e"></param>
-        protected virtual void OnGroupTaskClicked(GroupTaskClickedEventArgs e)
-        {
-            if (this.GroupTaskClicked != null)
-                this.GroupTaskClicked(this, e);
-        }
+        protected virtual void OnGroupTaskClicked(GroupTaskClickedEventArgs e) => GroupTaskClicked?.Invoke(this, e);
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="e"></param>
-        protected virtual void OnIsHyperlink(IsHyperlinkEventArgs e)
-        {
-            if (this.IsHyperlink != null)
-                this.IsHyperlink(this, e);
-        }
+        protected virtual void OnIsHyperlink(IsHyperlinkEventArgs e) => IsHyperlink?.Invoke(this, e);
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="e"></param>
-        protected virtual void OnItemsAdding(ItemsAddingEventArgs e)
-        {
-            if (this.ItemsAdding != null)
-                this.ItemsAdding(this, e);
-        }
+        protected virtual void OnItemsAdding(ItemsAddingEventArgs e) => ItemsAdding?.Invoke(this, e);
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="e"></param>
-        protected virtual void OnItemsChanged(ItemsChangedEventArgs e)
-        {
-            if (this.ItemsChanged != null)
-                this.ItemsChanged(this, e);
-        }
+        protected virtual void OnItemsChanged(ItemsChangedEventArgs e) => ItemsChanged?.Invoke(this, e);
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="e"></param>
-        protected virtual void OnItemsChanging(ItemsChangingEventArgs e)
-        {
-            if (this.ItemsChanging != null)
-                this.ItemsChanging(this, e);
-        }
+        protected virtual void OnItemsChanging(ItemsChangingEventArgs e) => ItemsChanging?.Invoke(this, e);
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="e"></param>
-        protected virtual void OnItemsRemoving(ItemsRemovingEventArgs e)
-        {
-            if (this.ItemsRemoving != null)
-                this.ItemsRemoving(this, e);
-        }
+        protected virtual void OnItemsRemoving(ItemsRemovingEventArgs e) => ItemsRemoving?.Invoke(this, e);
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="args"></param>
-        protected virtual void OnModelCanDrop(ModelDropEventArgs args)
-        {
-            if (this.ModelCanDrop != null)
-                this.ModelCanDrop(this, args);
-        }
+        protected virtual void OnModelCanDrop(ModelDropEventArgs args) => ModelCanDrop?.Invoke(this, args);
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="args"></param>
-        protected virtual void OnModelDropped(ModelDropEventArgs args)
-        {
-            if (this.ModelDropped != null)
-                this.ModelDropped(this, args);
-        }
+        protected virtual void OnModelDropped(ModelDropEventArgs args) => ModelDropped?.Invoke(this, args);
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="e"></param>
-        protected virtual void OnSelectionChanged(EventArgs e)
-        {
-            if (this.SelectionChanged != null)
-                this.SelectionChanged(this, e);
-        }
+        protected virtual void OnSelectionChanged(EventArgs e) => SelectionChanged?.Invoke(this, e);
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="e"></param>
-        protected virtual void OnScroll(ScrollEventArgs e)
-        {
-            if (this.Scroll != null)
-                this.Scroll(this, e);
-        }
+        protected virtual void OnScroll(ScrollEventArgs e) => Scroll?.Invoke(this, e);
 
         /// <summary>
         /// Tell the world when a cell is about to be edited.
         /// </summary>
-        protected virtual void OnCellEditStarting(CellEditEventArgs e)
-        {
-            if (this.CellEditStarting != null)
-                this.CellEditStarting(this, e);
-        }
+        protected virtual void OnCellEditStarting(CellEditEventArgs e) => CellEditStarting?.Invoke(this, e);
 
         /// <summary>
         /// Tell the world when a cell is about to finish being edited.
@@ -807,8 +662,7 @@ namespace BrightIdeasSoftware
             else
             {
                 lastValidatingEvent = Environment.TickCount;
-                if (this.CellEditValidating != null)
-                    this.CellEditValidating(this, e);
+                CellEditValidating?.Invoke(this, e);
             }
             lastValidatingEvent = Environment.TickCount;
         }
@@ -818,20 +672,12 @@ namespace BrightIdeasSoftware
         /// <summary>
         /// Tell the world when a cell is about to finish being edited.
         /// </summary>
-        protected virtual void OnCellEditFinishing(CellEditEventArgs e)
-        {
-            if (this.CellEditFinishing != null)
-                this.CellEditFinishing(this, e);
-        }
+        protected virtual void OnCellEditFinishing(CellEditEventArgs e) => CellEditFinishing?.Invoke(this, e);
 
         /// <summary>
         /// Tell the world when a cell has finished being edited.
         /// </summary>
-        protected virtual void OnCellEditFinished(CellEditEventArgs e)
-        {
-            if (this.CellEditFinished != null)
-                this.CellEditFinished(this, e);
-        }
+        protected virtual void OnCellEditFinished(CellEditEventArgs e) => CellEditFinished?.Invoke(this, e);
 
         #endregion OnEvents
     }
@@ -876,41 +722,25 @@ namespace BrightIdeasSoftware
         /// Trigger the expanding event
         /// </summary>
         /// <param name="e"></param>
-        protected virtual void OnExpanding(TreeBranchExpandingEventArgs e)
-        {
-            if (this.Expanding != null)
-                this.Expanding(this, e);
-        }
+        protected virtual void OnExpanding(TreeBranchExpandingEventArgs e) => Expanding?.Invoke(this, e);
 
         /// <summary>
         /// Trigger the collapsing event
         /// </summary>
         /// <param name="e"></param>
-        protected virtual void OnCollapsing(TreeBranchCollapsingEventArgs e)
-        {
-            if (this.Collapsing != null)
-                this.Collapsing(this, e);
-        }
+        protected virtual void OnCollapsing(TreeBranchCollapsingEventArgs e) => Collapsing?.Invoke(this, e);
 
         /// <summary>
         /// Trigger the expanded event
         /// </summary>
         /// <param name="e"></param>
-        protected virtual void OnExpanded(TreeBranchExpandedEventArgs e)
-        {
-            if (this.Expanded != null)
-                this.Expanded(this, e);
-        }
+        protected virtual void OnExpanded(TreeBranchExpandedEventArgs e) => Expanded?.Invoke(this, e);
 
         /// <summary>
         /// Trigger the collapsed event
         /// </summary>
         /// <param name="e"></param>
-        protected virtual void OnCollapsed(TreeBranchCollapsedEventArgs e)
-        {
-            if (this.Collapsed != null)
-                this.Collapsed(this, e);
-        }
+        protected virtual void OnCollapsed(TreeBranchCollapsedEventArgs e) => Collapsed?.Invoke(this, e);
 
         #endregion OnEvents
     }
@@ -934,13 +764,13 @@ namespace BrightIdeasSoftware
         /// <param name="subItemIndex"></param>
         public CellEditEventArgs(OLVColumn column, Control control, Rectangle cellBounds, OLVListItem item, int subItemIndex)
         {
-            this.Control = control;
-            this.column = column;
+            Control = control;
+            this.Column = column;
             this.cellBounds = cellBounds;
-            this.listViewItem = item;
-            this.rowObject = item.RowObject;
-            this.subItemIndex = subItemIndex;
-            this.value = column.GetValue(item.RowObject);
+            ListViewItem = item;
+            RowObject = item.RowObject;
+            this.SubItemIndex = subItemIndex;
+            Value = column.GetValue(item.RowObject);
         }
 
         /// <summary>
@@ -967,65 +797,38 @@ namespace BrightIdeasSoftware
         /// <summary>
         /// The column of the cell that is going to be or has been edited.
         /// </summary>
-        public OLVColumn Column {
-            get { return this.column; }
-        }
-
-        private OLVColumn column;
+        public OLVColumn Column { get; }
 
         /// <summary>
         /// The model object of the row of the cell that is going to be or has been edited.
         /// </summary>
-        public Object RowObject {
-            get { return this.rowObject; }
-        }
-
-        private Object rowObject;
+        public Object RowObject { get; }
 
         /// <summary>
         /// The listview item of the cell that is going to be or has been edited.
         /// </summary>
-        public OLVListItem ListViewItem {
-            get { return this.listViewItem; }
-        }
-
-        private OLVListItem listViewItem;
+        public OLVListItem ListViewItem { get; }
 
         /// <summary>
         /// The data value of the cell as it stands in the control.
         /// </summary>
         /// <remarks>Only validate during Validating and Finishing events.</remarks>
-        public Object NewValue {
-            get { return this.newValue; }
-            set { this.newValue = value; }
-        }
-
-        private Object newValue;
+        public Object NewValue { get; set; }
 
         /// <summary>
         /// The index of the cell that is going to be or has been edited.
         /// </summary>
-        public int SubItemIndex {
-            get { return this.subItemIndex; }
-        }
-
-        private int subItemIndex;
+        public int SubItemIndex { get; }
 
         /// <summary>
         /// The data value of the cell before the edit operation began.
         /// </summary>
-        public Object Value {
-            get { return this.value; }
-        }
-
-        private Object value;
+        public Object Value { get; }
 
         /// <summary>
         /// The bounds of the cell that is going to be or has been edited.
         /// </summary>
-        public Rectangle CellBounds {
-            get { return this.cellBounds; }
-        }
+        public Rectangle CellBounds => cellBounds;
 
         private Rectangle cellBounds;
 
@@ -1035,12 +838,7 @@ namespace BrightIdeasSoftware
         /// </summary>
         /// <remarks>If the control is expensive to create, you might want to cache it and reuse for
         /// for various cells. If so, you don't want ObjectListView to dispose of the control automatically</remarks>
-        public bool AutoDispose {
-            get { return autoDispose; }
-            set { autoDispose = value; }
-        }
-
-        private bool autoDispose = true;
+        public bool AutoDispose { get; set; } = true;
     }
 
     /// <summary>
@@ -1068,12 +866,12 @@ namespace BrightIdeasSoftware
         /// <param name="order2"></param>
         public BeforeSortingEventArgs(OLVColumn column, SortOrder order, OLVColumn column2, SortOrder order2)
         {
-            this.ColumnToGroupBy = column;
-            this.GroupByOrder = order;
-            this.ColumnToSort = column;
-            this.SortOrder = order;
-            this.SecondaryColumnToSort = column2;
-            this.SecondarySortOrder = order2;
+            ColumnToGroupBy = column;
+            GroupByOrder = order;
+            ColumnToSort = column;
+            SortOrder = order;
+            SecondaryColumnToSort = column2;
+            SecondarySortOrder = order2;
         }
 
         /// <summary>
@@ -1087,12 +885,12 @@ namespace BrightIdeasSoftware
         /// <param name="order2"></param>
         public BeforeSortingEventArgs(OLVColumn groupColumn, SortOrder groupOrder, OLVColumn column, SortOrder order, OLVColumn column2, SortOrder order2)
         {
-            this.ColumnToGroupBy = groupColumn;
-            this.GroupByOrder = groupOrder;
-            this.ColumnToSort = column;
-            this.SortOrder = order;
-            this.SecondaryColumnToSort = column2;
-            this.SecondarySortOrder = order2;
+            ColumnToGroupBy = groupColumn;
+            GroupByOrder = groupOrder;
+            ColumnToSort = column;
+            SortOrder = order;
+            SecondaryColumnToSort = column2;
+            SecondarySortOrder = order2;
         }
 
         /// <summary>
@@ -1147,12 +945,12 @@ namespace BrightIdeasSoftware
         /// <param name="order2"></param>
         public AfterSortingEventArgs(OLVColumn groupColumn, SortOrder groupOrder, OLVColumn column, SortOrder order, OLVColumn column2, SortOrder order2)
         {
-            this.columnToGroupBy = groupColumn;
-            this.groupByOrder = groupOrder;
-            this.columnToSort = column;
-            this.sortOrder = order;
-            this.secondaryColumnToSort = column2;
-            this.secondarySortOrder = order2;
+            ColumnToGroupBy = groupColumn;
+            GroupByOrder = groupOrder;
+            ColumnToSort = column;
+            SortOrder = order;
+            SecondaryColumnToSort = column2;
+            SecondarySortOrder = order2;
         }
 
         /// <summary>
@@ -1161,67 +959,43 @@ namespace BrightIdeasSoftware
         /// <param name="args"></param>
         public AfterSortingEventArgs(BeforeSortingEventArgs args)
         {
-            this.columnToGroupBy = args.ColumnToGroupBy;
-            this.groupByOrder = args.GroupByOrder;
-            this.columnToSort = args.ColumnToSort;
-            this.sortOrder = args.SortOrder;
-            this.secondaryColumnToSort = args.SecondaryColumnToSort;
-            this.secondarySortOrder = args.SecondarySortOrder;
+            ColumnToGroupBy = args.ColumnToGroupBy;
+            GroupByOrder = args.GroupByOrder;
+            ColumnToSort = args.ColumnToSort;
+            SortOrder = args.SortOrder;
+            SecondaryColumnToSort = args.SecondaryColumnToSort;
+            SecondarySortOrder = args.SecondarySortOrder;
         }
 
         /// <summary>
         /// What column was used for grouping?
         /// </summary>
-        public OLVColumn ColumnToGroupBy {
-            get { return columnToGroupBy; }
-        }
-
-        private OLVColumn columnToGroupBy;
+        public OLVColumn ColumnToGroupBy { get; }
 
         /// <summary>
         /// What ordering was used for grouping?
         /// </summary>
-        public SortOrder GroupByOrder {
-            get { return groupByOrder; }
-        }
-
-        private SortOrder groupByOrder;
+        public SortOrder GroupByOrder { get; }
 
         /// <summary>
         /// What column was used for sorting?
         /// </summary>
-        public OLVColumn ColumnToSort {
-            get { return columnToSort; }
-        }
-
-        private OLVColumn columnToSort;
+        public OLVColumn ColumnToSort { get; }
 
         /// <summary>
         /// What ordering was used for sorting?
         /// </summary>
-        public SortOrder SortOrder {
-            get { return sortOrder; }
-        }
-
-        private SortOrder sortOrder;
+        public SortOrder SortOrder { get; }
 
         /// <summary>
         /// What column was used for secondary sorting?
         /// </summary>
-        public OLVColumn SecondaryColumnToSort {
-            get { return secondaryColumnToSort; }
-        }
-
-        private OLVColumn secondaryColumnToSort;
+        public OLVColumn SecondaryColumnToSort { get; }
 
         /// <summary>
         /// What order was used for secondary sorting?
         /// </summary>
-        public SortOrder SecondarySortOrder {
-            get { return secondarySortOrder; }
-        }
-
-        private SortOrder secondarySortOrder;
+        public SortOrder SecondarySortOrder { get; }
     }
 
     /// <summary>
@@ -1236,7 +1010,7 @@ namespace BrightIdeasSoftware
         /// <param name="objects"></param>
         public FilterEventArgs(IEnumerable objects)
         {
-            this.Objects = objects;
+            Objects = objects;
         }
 
         /// <summary>
@@ -1270,27 +1044,19 @@ namespace BrightIdeasSoftware
         /// <param name="newObjectCount"></param>
         public ItemsChangedEventArgs(int oldObjectCount, int newObjectCount)
         {
-            this.oldObjectCount = oldObjectCount;
-            this.newObjectCount = newObjectCount;
+            this.OldObjectCount = oldObjectCount;
+            this.NewObjectCount = newObjectCount;
         }
 
         /// <summary>
         /// Gets how many items were in the list before it changed
         /// </summary>
-        public int OldObjectCount {
-            get { return oldObjectCount; }
-        }
-
-        private int oldObjectCount;
+        public int OldObjectCount { get; }
 
         /// <summary>
         /// Gets how many objects are in the list after the change.
         /// </summary>
-        public int NewObjectCount {
-            get { return newObjectCount; }
-        }
-
-        private int newObjectCount;
+        public int NewObjectCount { get; }
     }
 
     /// <summary>
@@ -1304,7 +1070,7 @@ namespace BrightIdeasSoftware
         /// <param name="objectsToAdd"></param>
         public ItemsAddingEventArgs(ICollection objectsToAdd)
         {
-            this.ObjectsToAdd = objectsToAdd;
+            ObjectsToAdd = objectsToAdd;
         }
 
         /// <summary>
@@ -1314,8 +1080,8 @@ namespace BrightIdeasSoftware
         /// <param name="objectsToAdd"></param>
         public ItemsAddingEventArgs(int index, ICollection objectsToAdd)
         {
-            this.Index = index;
-            this.ObjectsToAdd = objectsToAdd;
+            Index = index;
+            ObjectsToAdd = objectsToAdd;
         }
 
         /// <summary>
@@ -1344,19 +1110,15 @@ namespace BrightIdeasSoftware
         /// <param name="newObjects"></param>
         public ItemsChangingEventArgs(IEnumerable oldObjects, IEnumerable newObjects)
         {
-            this.oldObjects = oldObjects;
-            this.NewObjects = newObjects;
+            this.OldObjects = oldObjects;
+            NewObjects = newObjects;
         }
 
         /// <summary>
         /// Gets the objects that were in the list before it change.
         /// For virtual lists, this will always be null.
         /// </summary>
-        public IEnumerable OldObjects {
-            get { return oldObjects; }
-        }
-
-        private IEnumerable oldObjects;
+        public IEnumerable OldObjects { get; }
 
         /// <summary>
         /// Gets or sets the objects that will be in the list after it changes.
@@ -1375,7 +1137,7 @@ namespace BrightIdeasSoftware
         /// <param name="objectsToRemove"></param>
         public ItemsRemovingEventArgs(ICollection objectsToRemove)
         {
-            this.ObjectsToRemove = objectsToRemove;
+            ObjectsToRemove = objectsToRemove;
         }
 
         /// <summary>
@@ -1396,18 +1158,14 @@ namespace BrightIdeasSoftware
         /// <param name="indexSelected"></param>
         public AfterSearchingEventArgs(string stringToFind, int indexSelected)
         {
-            this.stringToFind = stringToFind;
-            this.indexSelected = indexSelected;
+            this.StringToFind = stringToFind;
+            this.IndexSelected = indexSelected;
         }
 
         /// <summary>
         /// Gets the string that was actually searched for
         /// </summary>
-        public string StringToFind {
-            get { return this.stringToFind; }
-        }
-
-        private string stringToFind;
+        public string StringToFind { get; }
 
         /// <summary>
         /// Gets or sets whether an the event handler already handled this event
@@ -1418,11 +1176,7 @@ namespace BrightIdeasSoftware
         /// Gets the index of the row that was selected by the search.
         /// -1 means that no row was matched
         /// </summary>
-        public int IndexSelected {
-            get { return this.indexSelected; }
-        }
-
-        private int indexSelected;
+        public int IndexSelected { get; }
     }
 
     /// <summary>
@@ -1437,8 +1191,8 @@ namespace BrightIdeasSoftware
         /// <param name="startSearchFrom"></param>
         public BeforeSearchingEventArgs(string stringToFind, int startSearchFrom)
         {
-            this.StringToFind = stringToFind;
-            this.StartSearchFrom = startSearchFrom;
+            StringToFind = stringToFind;
+            StartSearchFrom = startSearchFrom;
         }
 
         /// <summary>
@@ -1463,63 +1217,36 @@ namespace BrightIdeasSoftware
         /// <summary>
         /// Gets the ObjectListView that is the source of the event
         /// </summary>
-        public ObjectListView ListView {
-            get { return this.listView; }
-            internal set { this.listView = value; }
-        }
-
-        private ObjectListView listView;
+        public ObjectListView ListView { get; internal set; }
 
         /// <summary>
         /// Gets the model object under the cell
         /// </summary>
         /// <remarks>This is null for events triggered by the header.</remarks>
-        public object Model {
-            get { return this.model; }
-            internal set { this.model = value; }
-        }
-
-        private object model;
+        public object Model { get; internal set; }
 
         /// <summary>
         /// Gets the row index of the cell
         /// </summary>
         /// <remarks>This is -1 for events triggered by the header.</remarks>
-        public int RowIndex {
-            get { return this.rowIndex; }
-            internal set { this.rowIndex = value; }
-        }
-
-        private int rowIndex = -1;
+        public int RowIndex { get; internal set; } = -1;
 
         /// <summary>
         /// Gets the column index of the cell
         /// </summary>
         /// <remarks>This is -1 when the view is not in details view.</remarks>
-        public int ColumnIndex {
-            get { return this.columnIndex; }
-            internal set { this.columnIndex = value; }
-        }
-
-        private int columnIndex = -1;
+        public int ColumnIndex { get; internal set; } = -1;
 
         /// <summary>
         /// Gets the column of the cell
         /// </summary>
         /// <remarks>This is null when the view is not in details view.</remarks>
-        public OLVColumn Column {
-            get { return this.column; }
-            internal set { this.column = value; }
-        }
-
-        private OLVColumn column;
+        public OLVColumn Column { get; internal set; }
 
         /// <summary>
         /// Gets the location of the mouse at the time of the event
         /// </summary>
-        public Point Location {
-            get { return this.location; }
-            internal set { this.location = value; }
+        public Point Location { get => location; internal set => location = value;
         }
 
         private Point location;
@@ -1527,44 +1254,24 @@ namespace BrightIdeasSoftware
         /// <summary>
         /// Gets the state of the modifier keys at the time of the event
         /// </summary>
-        public Keys ModifierKeys {
-            get { return this.modifierKeys; }
-            internal set { this.modifierKeys = value; }
-        }
-
-        private Keys modifierKeys;
+        public Keys ModifierKeys { get; internal set; }
 
         /// <summary>
         /// Gets the item of the cell
         /// </summary>
-        public OLVListItem Item {
-            get { return item; }
-            internal set { this.item = value; }
-        }
-
-        private OLVListItem item;
+        public OLVListItem Item { get; internal set; }
 
         /// <summary>
         /// Gets the subitem of the cell
         /// </summary>
         /// <remarks>This is null when the view is not in details view and
         /// for event triggered by the header</remarks>
-        public OLVListSubItem SubItem {
-            get { return subItem; }
-            internal set { this.subItem = value; }
-        }
-
-        private OLVListSubItem subItem;
+        public OLVListSubItem SubItem { get; internal set; }
 
         /// <summary>
         /// Gets the HitTest object that determined which cell was hit
         /// </summary>
-        public OlvListViewHitTestInfo HitTest {
-            get { return hitTest; }
-            internal set { hitTest = value; }
-        }
-
-        private OlvListViewHitTestInfo hitTest;
+        public OlvListViewHitTestInfo HitTest { get; internal set; }
 
         /// <summary>
         /// Gets or set if this event completelely handled. If it was, no further processing
@@ -1581,12 +1288,7 @@ namespace BrightIdeasSoftware
         /// <summary>
         /// Gets or sets the number of clicks associated with this event
         /// </summary>
-        public int ClickCount {
-            get { return this.clickCount; }
-            set { this.clickCount = value; }
-        }
-
-        private int clickCount;
+        public int ClickCount { get; set; }
     }
 
     /// <summary>
@@ -1620,19 +1322,14 @@ namespace BrightIdeasSoftware
         /// <param name="freeze"></param>
         public FreezeEventArgs(int freeze)
         {
-            this.FreezeLevel = freeze;
+            FreezeLevel = freeze;
         }
 
         /// <summary>
         /// How frozen is the control? 0 means that the control is unfrozen,
         /// more than 0 indicates froze.
         /// </summary>
-        public int FreezeLevel {
-            get { return this.freezeLevel; }
-            set { this.freezeLevel = value; }
-        }
-
-        private int freezeLevel;
+        public int FreezeLevel { get; set; }
     }
 
     /// <summary>
@@ -1643,12 +1340,7 @@ namespace BrightIdeasSoftware
         /// <summary>
         /// Gets the tooltip control that is triggering the tooltip event
         /// </summary>
-        public ToolTipControl ToolTipControl {
-            get { return this.toolTipControl; }
-            internal set { this.toolTipControl = value; }
-        }
-
-        private ToolTipControl toolTipControl;
+        public ToolTipControl ToolTipControl { get; internal set; }
 
         /// <summary>
         /// Gets or sets the text should be shown on the tooltip for this event
@@ -1711,96 +1403,51 @@ namespace BrightIdeasSoftware
         /// <summary>
         /// Gets the ObjectListView that is the source of the event
         /// </summary>
-        public ObjectListView ListView {
-            get { return this.listView; }
-            internal set { this.listView = value; }
-        }
-
-        private ObjectListView listView;
+        public ObjectListView ListView { get; internal set; }
 
         /// <summary>
         /// Gets the model object under the cell
         /// </summary>
-        public object Model {
-            get { return this.model; }
-            internal set { this.model = value; }
-        }
-
-        private object model;
+        public object Model { get; internal set; }
 
         /// <summary>
         /// Gets the row index of the cell
         /// </summary>
-        public int RowIndex {
-            get { return this.rowIndex; }
-            internal set { this.rowIndex = value; }
-        }
-
-        private int rowIndex = -1;
+        public int RowIndex { get; internal set; } = -1;
 
         /// <summary>
         /// Gets the column index of the cell
         /// </summary>
         /// <remarks>This is -1 when the view is not in details view.</remarks>
-        public int ColumnIndex {
-            get { return this.columnIndex; }
-            internal set { this.columnIndex = value; }
-        }
-
-        private int columnIndex = -1;
+        public int ColumnIndex { get; internal set; } = -1;
 
         /// <summary>
         /// Gets the column of the cell
         /// </summary>
         /// <remarks>This is null when the view is not in details view.</remarks>
-        public OLVColumn Column {
-            get { return this.column; }
-            internal set { this.column = value; }
-        }
-
-        private OLVColumn column;
+        public OLVColumn Column { get; internal set; }
 
         /// <summary>
         /// Gets the item of the cell
         /// </summary>
-        public OLVListItem Item {
-            get { return item; }
-            internal set { this.item = value; }
-        }
-
-        private OLVListItem item;
+        public OLVListItem Item { get; internal set; }
 
         /// <summary>
         /// Gets the subitem of the cell
         /// </summary>
         /// <remarks>This is null when the view is not in details view</remarks>
-        public OLVListSubItem SubItem {
-            get { return subItem; }
-            internal set { this.subItem = value; }
-        }
-
-        private OLVListSubItem subItem;
+        public OLVListSubItem SubItem { get; internal set; }
 
         /// <summary>
         /// Gets the ObjectListView that is the source of the event
         /// </summary>
-        public string Url {
-            get { return this.url; }
-            internal set { this.url = value; }
-        }
-
-        private string url;
+        public string Url { get; internal set; }
 
         /// <summary>
         /// Gets or set if this event completelely handled. If it was, no further processing
         /// will be done for it.
         /// </summary>
-        public bool Handled {
-            get { return handled; }
-            set { handled = value; }
-        }
-
-        private bool handled;
+        public bool Handled { get; set; }
     }
 
     /// <summary>
@@ -1811,54 +1458,29 @@ namespace BrightIdeasSoftware
         /// <summary>
         /// Gets the ObjectListView that is the source of the event
         /// </summary>
-        public ObjectListView ListView {
-            get { return this.listView; }
-            internal set { this.listView = value; }
-        }
-
-        private ObjectListView listView;
+        public ObjectListView ListView { get; internal set; }
 
         /// <summary>
         /// Gets the model object under the cell
         /// </summary>
-        public object Model {
-            get { return this.model; }
-            internal set { this.model = value; }
-        }
-
-        private object model;
+        public object Model { get; internal set; }
 
         /// <summary>
         /// Gets the column of the cell
         /// </summary>
         /// <remarks>This is null when the view is not in details view.</remarks>
-        public OLVColumn Column {
-            get { return this.column; }
-            internal set { this.column = value; }
-        }
-
-        private OLVColumn column;
+        public OLVColumn Column { get; internal set; }
 
         /// <summary>
         /// Gets the text of the cell
         /// </summary>
-        public string Text {
-            get { return this.text; }
-            internal set { this.text = value; }
-        }
-
-        private string text;
+        public string Text { get; internal set; }
 
         /// <summary>
         /// Gets or sets whether or not this cell is a hyperlink.
         /// Defaults to true for enabled rows and false for disabled rows.
         /// </summary>
-        public bool IsHyperlink {
-            get { return this.isHyperlink; }
-            set { this.isHyperlink = value; }
-        }
-
-        private bool isHyperlink;
+        public bool IsHyperlink { get; set; }
 
         /// <summary>
         /// Gets or sets the url that should be invoked when this cell is clicked.
@@ -1876,59 +1498,32 @@ namespace BrightIdeasSoftware
         /// <summary>
         /// Gets the ObjectListView that is the source of the event
         /// </summary>
-        public ObjectListView ListView {
-            get { return this.listView; }
-            internal set { this.listView = value; }
-        }
-
-        private ObjectListView listView;
+        public ObjectListView ListView { get; internal set; }
 
         /// <summary>
         /// Gets the item of the cell
         /// </summary>
-        public OLVListItem Item {
-            get { return item; }
-            internal set { this.item = value; }
-        }
-
-        private OLVListItem item;
+        public OLVListItem Item { get; internal set; }
 
         /// <summary>
         /// Gets the model object under the cell
         /// </summary>
-        public object Model {
-            get { return this.Item.RowObject; }
-        }
+        public object Model => Item.RowObject;
 
         /// <summary>
         /// Gets the row index of the cell
         /// </summary>
-        public int RowIndex {
-            get { return this.rowIndex; }
-            internal set { this.rowIndex = value; }
-        }
-
-        private int rowIndex = -1;
+        public int RowIndex { get; internal set; } = -1;
 
         /// <summary>
         /// Gets the display index of the row
         /// </summary>
-        public int DisplayIndex {
-            get { return this.displayIndex; }
-            internal set { this.displayIndex = value; }
-        }
-
-        private int displayIndex = -1;
+        public int DisplayIndex { get; internal set; } = -1;
 
         /// <summary>
         /// Should events be triggered for each cell in this row?
         /// </summary>
-        public bool UseCellFormatEvents {
-            get { return useCellFormatEvents; }
-            set { useCellFormatEvents = value; }
-        }
-
-        private bool useCellFormatEvents;
+        public bool UseCellFormatEvents { get; set; }
     }
 
     /// <summary>
@@ -1940,42 +1535,25 @@ namespace BrightIdeasSoftware
         /// Gets the column index of the cell
         /// </summary>
         /// <remarks>This is -1 when the view is not in details view.</remarks>
-        public int ColumnIndex {
-            get { return this.columnIndex; }
-            internal set { this.columnIndex = value; }
-        }
-
-        private int columnIndex = -1;
+        public int ColumnIndex { get; internal set; } = -1;
 
         /// <summary>
         /// Gets the column of the cell
         /// </summary>
         /// <remarks>This is null when the view is not in details view.</remarks>
-        public OLVColumn Column {
-            get { return this.column; }
-            internal set { this.column = value; }
-        }
-
-        private OLVColumn column;
+        public OLVColumn Column { get; internal set; }
 
         /// <summary>
         /// Gets the subitem of the cell
         /// </summary>
         /// <remarks>This is null when the view is not in details view</remarks>
-        public OLVListSubItem SubItem {
-            get { return subItem; }
-            internal set { this.subItem = value; }
-        }
-
-        private OLVListSubItem subItem;
+        public OLVListSubItem SubItem { get; internal set; }
 
         /// <summary>
         /// Gets the model value that is being displayed by the cell.
         /// </summary>
         /// <remarks>This is null when the view is not in details view</remarks>
-        public object CellValue {
-            get { return this.SubItem == null ? null : this.SubItem.ModelValue; }
-        }
+        public object CellValue => SubItem?.ModelValue;
     }
 
     /// <summary>
@@ -1986,12 +1564,7 @@ namespace BrightIdeasSoftware
         /// <summary>
         /// Gets the url that was associated with this cell.
         /// </summary>
-        public string Url {
-            get { return url; }
-            set { url = value; }
-        }
-
-        private string url;
+        public string Url { get; set; }
     }
 
     /// <summary>
@@ -2002,22 +1575,12 @@ namespace BrightIdeasSoftware
         /// <summary>
         /// Get the column whose checkbox is changing
         /// </summary>
-        public OLVColumn Column {
-            get { return column; }
-            internal set { column = value; }
-        }
-
-        private OLVColumn column;
+        public OLVColumn Column { get; internal set; }
 
         /// <summary>
         /// Get or set the new state that should be used by the column
         /// </summary>
-        public CheckState NewCheckState {
-            get { return newCheckState; }
-            set { newCheckState = value; }
-        }
-
-        private CheckState newCheckState;
+        public CheckState NewCheckState { get; set; }
     }
 
     /// <summary>
@@ -2029,29 +1592,17 @@ namespace BrightIdeasSoftware
         /// Gets or set if this event completelely handled. If it was, no further processing
         /// will be done for it.
         /// </summary>
-        public bool Handled {
-            get { return handled; }
-            set { handled = value; }
-        }
-
-        private bool handled;
+        public bool Handled { get; set; }
 
         /// <summary>
         /// Gets the part of the cell that the mouse is over
         /// </summary>
-        public HitTestLocation HotCellHitLocation {
-            get { return newHotCellHitLocation; }
-            internal set { newHotCellHitLocation = value; }
-        }
-
-        private HitTestLocation newHotCellHitLocation;
+        public HitTestLocation HotCellHitLocation { get; internal set; }
 
         /// <summary>
         /// Gets an extended indication of the part of item/subitem/group that the mouse is currently over
         /// </summary>
-        public virtual HitTestLocationEx HotCellHitLocationEx {
-            get { return this.hotCellHitLocationEx; }
-            internal set { this.hotCellHitLocationEx = value; }
+        public virtual HitTestLocationEx HotCellHitLocationEx { get => hotCellHitLocationEx; internal set => hotCellHitLocationEx = value;
         }
 
         private HitTestLocationEx hotCellHitLocationEx;
@@ -2060,49 +1611,27 @@ namespace BrightIdeasSoftware
         /// Gets the index of the column that the mouse is over
         /// </summary>
         /// <remarks>In non-details view, this will always be 0.</remarks>
-        public int HotColumnIndex {
-            get { return newHotColumnIndex; }
-            internal set { newHotColumnIndex = value; }
-        }
-
-        private int newHotColumnIndex;
+        public int HotColumnIndex { get; internal set; }
 
         /// <summary>
         /// Gets the index of the row that the mouse is over
         /// </summary>
-        public int HotRowIndex {
-            get { return newHotRowIndex; }
-            internal set { newHotRowIndex = value; }
-        }
-
-        private int newHotRowIndex;
+        public int HotRowIndex { get; internal set; }
 
         /// <summary>
         /// Gets the group that the mouse is over
         /// </summary>
-        public OLVGroup HotGroup {
-            get { return hotGroup; }
-            internal set { hotGroup = value; }
-        }
-
-        private OLVGroup hotGroup;
+        public OLVGroup HotGroup { get; internal set; }
 
         /// <summary>
         /// Gets the part of the cell that the mouse used to be over
         /// </summary>
-        public HitTestLocation OldHotCellHitLocation {
-            get { return oldHotCellHitLocation; }
-            internal set { oldHotCellHitLocation = value; }
-        }
-
-        private HitTestLocation oldHotCellHitLocation;
+        public HitTestLocation OldHotCellHitLocation { get; internal set; }
 
         /// <summary>
         /// Gets an extended indication of the part of item/subitem/group that the mouse used to be over
         /// </summary>
-        public virtual HitTestLocationEx OldHotCellHitLocationEx {
-            get { return this.oldHotCellHitLocationEx; }
-            internal set { this.oldHotCellHitLocationEx = value; }
+        public virtual HitTestLocationEx OldHotCellHitLocationEx { get => oldHotCellHitLocationEx; internal set => oldHotCellHitLocationEx = value;
         }
 
         private HitTestLocationEx oldHotCellHitLocationEx;
@@ -2110,32 +1639,17 @@ namespace BrightIdeasSoftware
         /// <summary>
         /// Gets the index of the column that the mouse used to be over
         /// </summary>
-        public int OldHotColumnIndex {
-            get { return oldHotColumnIndex; }
-            internal set { oldHotColumnIndex = value; }
-        }
-
-        private int oldHotColumnIndex;
+        public int OldHotColumnIndex { get; internal set; }
 
         /// <summary>
         /// Gets the index of the row that the mouse used to be over
         /// </summary>
-        public int OldHotRowIndex {
-            get { return oldHotRowIndex; }
-            internal set { oldHotRowIndex = value; }
-        }
-
-        private int oldHotRowIndex;
+        public int OldHotRowIndex { get; internal set; }
 
         /// <summary>
         /// Gets the group that the mouse used to be over
         /// </summary>
-        public OLVGroup OldHotGroup {
-            get { return oldHotGroup; }
-            internal set { oldHotGroup = value; }
-        }
-
-        private OLVGroup oldHotGroup;
+        public OLVGroup OldHotGroup { get; internal set; }
 
         /// <summary>
         /// Returns a string that represents the current object.
@@ -2144,10 +1658,7 @@ namespace BrightIdeasSoftware
         /// A string that represents the current object.
         /// </returns>
         /// <filterpriority>2</filterpriority>
-        public override string ToString()
-        {
-            return string.Format("NewHotCellHitLocation: {0}, HotCellHitLocationEx: {1}, NewHotColumnIndex: {2}, NewHotRowIndex: {3}, HotGroup: {4}", this.newHotCellHitLocation, this.hotCellHitLocationEx, this.newHotColumnIndex, this.newHotRowIndex, this.hotGroup);
-        }
+        public override string ToString() => string.Format("NewHotCellHitLocation: {0}, HotCellHitLocationEx: {1}, NewHotColumnIndex: {2}, NewHotRowIndex: {3}, HotGroup: {4}", HotCellHitLocation, hotCellHitLocationEx, HotColumnIndex, HotRowIndex, HotGroup);
     }
 
     /// <summary>
@@ -2165,65 +1676,42 @@ namespace BrightIdeasSoftware
         /// <param name="newValue"></param>
         public SubItemCheckingEventArgs(OLVColumn column, OLVListItem item, int subItemIndex, CheckState currentValue, CheckState newValue)
         {
-            this.column = column;
-            this.listViewItem = item;
-            this.subItemIndex = subItemIndex;
-            this.currentValue = currentValue;
-            this.newValue = newValue;
+            this.Column = column;
+            ListViewItem = item;
+            this.SubItemIndex = subItemIndex;
+            this.CurrentValue = currentValue;
+            this.NewValue = newValue;
         }
 
         /// <summary>
         /// The column of the cell that is having its checkbox changed.
         /// </summary>
-        public OLVColumn Column {
-            get { return this.column; }
-        }
-
-        private OLVColumn column;
+        public OLVColumn Column { get; }
 
         /// <summary>
         /// The model object of the row of the cell that is having its checkbox changed.
         /// </summary>
-        public Object RowObject {
-            get { return this.listViewItem.RowObject; }
-        }
+        public Object RowObject => ListViewItem.RowObject;
 
         /// <summary>
         /// The listview item of the cell that is having its checkbox changed.
         /// </summary>
-        public OLVListItem ListViewItem {
-            get { return this.listViewItem; }
-        }
-
-        private OLVListItem listViewItem;
+        public OLVListItem ListViewItem { get; }
 
         /// <summary>
         /// The current check state of the cell.
         /// </summary>
-        public CheckState CurrentValue {
-            get { return this.currentValue; }
-        }
-
-        private CheckState currentValue;
+        public CheckState CurrentValue { get; }
 
         /// <summary>
         /// The proposed new check state of the cell.
         /// </summary>
-        public CheckState NewValue {
-            get { return this.newValue; }
-            set { this.newValue = value; }
-        }
-
-        private CheckState newValue;
+        public CheckState NewValue { get; set; }
 
         /// <summary>
         /// The index of the cell that is going to be or has been edited.
         /// </summary>
-        public int SubItemIndex {
-            get { return this.subItemIndex; }
-        }
-
-        private int subItemIndex;
+        public int SubItemIndex { get; }
     }
 
     /// <summary>
@@ -2237,37 +1725,23 @@ namespace BrightIdeasSoftware
         /// <param name="parms"></param>
         public CreateGroupsEventArgs(GroupingParameters parms)
         {
-            this.parameters = parms;
+            Parameters = parms;
         }
 
         /// <summary>
         /// Gets the settings that control the creation of groups
         /// </summary>
-        public GroupingParameters Parameters {
-            get { return this.parameters; }
-        }
-
-        private GroupingParameters parameters;
+        public GroupingParameters Parameters { get; }
 
         /// <summary>
         /// Gets or sets the groups that should be used
         /// </summary>
-        public IList<OLVGroup> Groups {
-            get { return this.groups; }
-            set { this.groups = value; }
-        }
-
-        private IList<OLVGroup> groups;
+        public IList<OLVGroup> Groups { get; set; }
 
         /// <summary>
         /// Has this event been cancelled by the event handler?
         /// </summary>
-        public bool Canceled {
-            get { return canceled; }
-            set { canceled = value; }
-        }
-
-        private bool canceled;
+        public bool Canceled { get; set; }
     }
 
     /// <summary>
@@ -2281,17 +1755,13 @@ namespace BrightIdeasSoftware
         /// <param name="group"></param>
         public GroupTaskClickedEventArgs(OLVGroup group)
         {
-            this.group = group;
+            this.Group = group;
         }
 
         /// <summary>
         /// Gets which group was clicked
         /// </summary>
-        public OLVGroup Group {
-            get { return this.group; }
-        }
-
-        private readonly OLVGroup group;
+        public OLVGroup Group { get; }
     }
 
     /// <summary>
@@ -2305,26 +1775,19 @@ namespace BrightIdeasSoftware
         /// <param name="group"> </param>
         public GroupExpandingCollapsingEventArgs(OLVGroup group)
         {
-            if (group == null) throw new ArgumentNullException("group");
-            this.olvGroup = group;
+            Group = group ?? throw new ArgumentNullException("group");
         }
 
         /// <summary>
         /// Gets which group is expanding/collapsing
         /// </summary>
-        public OLVGroup Group {
-            get { return this.olvGroup; }
-        }
-
-        private readonly OLVGroup olvGroup;
+        public OLVGroup Group { get; }
 
         /// <summary>
         /// Gets whether this event is going to expand the group.
         /// If this is false, the group must be collapsing.
         /// </summary>
-        public bool IsExpanding {
-            get { return this.Group.Collapsed; }
-        }
+        public bool IsExpanding => Group.Collapsed;
     }
 
     /// <summary>
@@ -2340,97 +1803,61 @@ namespace BrightIdeasSoftware
         /// <param name="newState"> </param>
         public GroupStateChangedEventArgs(OLVGroup group, GroupState oldState, GroupState newState)
         {
-            this.group = group;
-            this.oldState = oldState;
-            this.newState = newState;
+            this.Group = group;
+            this.OldState = oldState;
+            this.NewState = newState;
         }
 
         /// <summary>
         /// Gets whether the group was collapsed by this event
         /// </summary>
-        public bool Collapsed {
-            get {
-                return ((oldState & GroupState.LVGS_COLLAPSED) != GroupState.LVGS_COLLAPSED) &&
-                       ((newState & GroupState.LVGS_COLLAPSED) == GroupState.LVGS_COLLAPSED);
-            }
-        }
+        public bool Collapsed => ((OldState & GroupState.LVGS_COLLAPSED) != GroupState.LVGS_COLLAPSED) &&
+                       ((NewState & GroupState.LVGS_COLLAPSED) == GroupState.LVGS_COLLAPSED);
 
         /// <summary>
         /// Gets whether the group was focused by this event
         /// </summary>
-        public bool Focused {
-            get {
-                return ((oldState & GroupState.LVGS_FOCUSED) != GroupState.LVGS_FOCUSED) &&
-                       ((newState & GroupState.LVGS_FOCUSED) == GroupState.LVGS_FOCUSED);
-            }
-        }
+        public bool Focused => ((OldState & GroupState.LVGS_FOCUSED) != GroupState.LVGS_FOCUSED) &&
+                       ((NewState & GroupState.LVGS_FOCUSED) == GroupState.LVGS_FOCUSED);
 
         /// <summary>
         /// Gets whether the group was selected by this event
         /// </summary>
-        public bool Selected {
-            get {
-                return ((oldState & GroupState.LVGS_SELECTED) != GroupState.LVGS_SELECTED) &&
-                       ((newState & GroupState.LVGS_SELECTED) == GroupState.LVGS_SELECTED);
-            }
-        }
+        public bool Selected => ((OldState & GroupState.LVGS_SELECTED) != GroupState.LVGS_SELECTED) &&
+                       ((NewState & GroupState.LVGS_SELECTED) == GroupState.LVGS_SELECTED);
 
         /// <summary>
         /// Gets whether the group was uncollapsed by this event
         /// </summary>
-        public bool Uncollapsed {
-            get {
-                return ((oldState & GroupState.LVGS_COLLAPSED) == GroupState.LVGS_COLLAPSED) &&
-                       ((newState & GroupState.LVGS_COLLAPSED) != GroupState.LVGS_COLLAPSED);
-            }
-        }
+        public bool Uncollapsed => ((OldState & GroupState.LVGS_COLLAPSED) == GroupState.LVGS_COLLAPSED) &&
+                       ((NewState & GroupState.LVGS_COLLAPSED) != GroupState.LVGS_COLLAPSED);
 
         /// <summary>
         /// Gets whether the group was unfocused by this event
         /// </summary>
-        public bool Unfocused {
-            get {
-                return ((oldState & GroupState.LVGS_FOCUSED) == GroupState.LVGS_FOCUSED) &&
-                       ((newState & GroupState.LVGS_FOCUSED) != GroupState.LVGS_FOCUSED);
-            }
-        }
+        public bool Unfocused => ((OldState & GroupState.LVGS_FOCUSED) == GroupState.LVGS_FOCUSED) &&
+                       ((NewState & GroupState.LVGS_FOCUSED) != GroupState.LVGS_FOCUSED);
 
         /// <summary>
         /// Gets whether the group was unselected by this event
         /// </summary>
-        public bool Unselected {
-            get {
-                return ((oldState & GroupState.LVGS_SELECTED) == GroupState.LVGS_SELECTED) &&
-                       ((newState & GroupState.LVGS_SELECTED) != GroupState.LVGS_SELECTED);
-            }
-        }
+        public bool Unselected => ((OldState & GroupState.LVGS_SELECTED) == GroupState.LVGS_SELECTED) &&
+                       ((NewState & GroupState.LVGS_SELECTED) != GroupState.LVGS_SELECTED);
 
         /// <summary>
         /// Gets which group had its state changed
         /// </summary>
-        public OLVGroup Group {
-            get { return this.group; }
-        }
-
-        private readonly OLVGroup group;
+        public OLVGroup Group { get; }
 
         /// <summary>
         /// Gets the previous state of the group
         /// </summary>
-        public GroupState OldState {
-            get { return this.oldState; }
-        }
-
-        private readonly GroupState oldState;
+        public GroupState OldState { get; }
 
         /// <summary>
         /// Gets the new state of the group
         /// </summary>
-        public GroupState NewState {
-            get { return this.newState; }
-        }
-
-        private readonly GroupState newState;
+        public GroupState NewState { get; }
     }
 
     /// <summary>
@@ -2445,29 +1872,19 @@ namespace BrightIdeasSoftware
         /// <param name="item"></param>
         public TreeBranchExpandingEventArgs(object model, OLVListItem item)
         {
-            this.Model = model;
-            this.Item = item;
+            Model = model;
+            Item = item;
         }
 
         /// <summary>
         /// Gets the model that is about to expand. If null, all branches are going to be expanded.
         /// </summary>
-        public object Model {
-            get { return model; }
-            private set { model = value; }
-        }
-
-        private object model;
+        public object Model { get; private set; }
 
         /// <summary>
         /// Gets the OLVListItem that is about to be expanded
         /// </summary>
-        public OLVListItem Item {
-            get { return item; }
-            private set { item = value; }
-        }
-
-        private OLVListItem item;
+        public OLVListItem Item { get; private set; }
     }
 
     /// <summary>
@@ -2482,29 +1899,19 @@ namespace BrightIdeasSoftware
         /// <param name="item"></param>
         public TreeBranchExpandedEventArgs(object model, OLVListItem item)
         {
-            this.Model = model;
-            this.Item = item;
+            Model = model;
+            Item = item;
         }
 
         /// <summary>
         /// Gets the model that is was expanded. If null, all branches were expanded.
         /// </summary>
-        public object Model {
-            get { return model; }
-            private set { model = value; }
-        }
-
-        private object model;
+        public object Model { get; private set; }
 
         /// <summary>
         /// Gets the OLVListItem that was expanded
         /// </summary>
-        public OLVListItem Item {
-            get { return item; }
-            private set { item = value; }
-        }
-
-        private OLVListItem item;
+        public OLVListItem Item { get; private set; }
     }
 
     /// <summary>
@@ -2519,29 +1926,19 @@ namespace BrightIdeasSoftware
         /// <param name="item"></param>
         public TreeBranchCollapsingEventArgs(object model, OLVListItem item)
         {
-            this.Model = model;
-            this.Item = item;
+            Model = model;
+            Item = item;
         }
 
         /// <summary>
         /// Gets the model that is about to collapse. If this is null, all models are going to collapse.
         /// </summary>
-        public object Model {
-            get { return model; }
-            private set { model = value; }
-        }
-
-        private object model;
+        public object Model { get; private set; }
 
         /// <summary>
         /// Gets the OLVListItem that is about to be collapsed. Can be null
         /// </summary>
-        public OLVListItem Item {
-            get { return item; }
-            private set { item = value; }
-        }
-
-        private OLVListItem item;
+        public OLVListItem Item { get; private set; }
     }
 
     /// <summary>
@@ -2556,29 +1953,19 @@ namespace BrightIdeasSoftware
         /// <param name="item"></param>
         public TreeBranchCollapsedEventArgs(object model, OLVListItem item)
         {
-            this.Model = model;
-            this.Item = item;
+            Model = model;
+            Item = item;
         }
 
         /// <summary>
         /// Gets the model that is was collapsed. If null, all branches were collapsed
         /// </summary>
-        public object Model {
-            get { return model; }
-            private set { model = value; }
-        }
-
-        private object model;
+        public object Model { get; private set; }
 
         /// <summary>
         /// Gets the OLVListItem that was collapsed
         /// </summary>
-        public OLVListItem Item {
-            get { return item; }
-            private set { item = value; }
-        }
-
-        private OLVListItem item;
+        public OLVListItem Item { get; private set; }
     }
 
     #endregion Event Parameter Blocks

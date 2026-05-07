@@ -42,7 +42,7 @@ using System;
 using System.ComponentModel;
 using System.Drawing;
 
-namespace BrightIdeasSoftware
+namespace BrightIdeasSoftware.Rendering
 {
     /// <summary>
     /// The interface for an object which can draw itself over the top of
@@ -99,9 +99,7 @@ namespace BrightIdeasSoftware
          Description("How transparent should this overlay be"),
          DefaultValue(128),
          NotifyParentProperty(true)]
-        public int Transparency {
-            get { return this.transparency; }
-            set { this.transparency = Math.Min(255, Math.Max(0, value)); }
+        public int Transparency { get => transparency; set => transparency = Math.Min(255, Math.Max(0, value));
         }
 
         private int transparency = 128;
@@ -120,7 +118,7 @@ namespace BrightIdeasSoftware
         /// </summary>
         public ImageOverlay()
         {
-            this.Alignment = System.Drawing.ContentAlignment.BottomRight;
+            Alignment = ContentAlignment.BottomRight;
         }
 
         #region Public properties
@@ -132,9 +130,7 @@ namespace BrightIdeasSoftware
          Description("The horizontal inset by which the position of the overlay will be adjusted"),
          DefaultValue(20),
          NotifyParentProperty(true)]
-        public int InsetX {
-            get { return this.insetX; }
-            set { this.insetX = Math.Max(0, value); }
+        public int InsetX { get => insetX; set => insetX = Math.Max(0, value);
         }
 
         private int insetX = 20;
@@ -146,9 +142,7 @@ namespace BrightIdeasSoftware
          Description("Gets or sets the vertical inset by which the position of the overlay will be adjusted"),
          DefaultValue(20),
          NotifyParentProperty(true)]
-        public int InsetY {
-            get { return this.insetY; }
-            set { this.insetY = Math.Max(0, value); }
+        public int InsetY { get => insetY; set => insetY = Math.Max(0, value);
         }
 
         private int insetY = 20;
@@ -165,11 +159,11 @@ namespace BrightIdeasSoftware
         /// <param name="r">The bounds of the rendering</param>
         public virtual void Draw(ObjectListView olv, Graphics g, Rectangle r)
         {
-            Rectangle insetRect = r;
-            insetRect.Inflate(-this.InsetX, -this.InsetY);
+            var insetRect = r;
+            insetRect.Inflate(-InsetX, -InsetY);
 
             // We hard code a transparency of 255 here since transparency is handled by the glass panel
-            this.DrawImage(g, insetRect, this.Image, 255);
+            DrawImage(g, insetRect, Image, 255);
         }
 
         #endregion Commands
@@ -186,7 +180,7 @@ namespace BrightIdeasSoftware
         /// </summary>
         public TextOverlay()
         {
-            this.Alignment = System.Drawing.ContentAlignment.BottomRight;
+            Alignment = ContentAlignment.BottomRight;
         }
 
         #region Public properties
@@ -198,9 +192,7 @@ namespace BrightIdeasSoftware
          Description("The horizontal inset by which the position of the overlay will be adjusted"),
          DefaultValue(20),
          NotifyParentProperty(true)]
-        public int InsetX {
-            get { return this.insetX; }
-            set { this.insetX = Math.Max(0, value); }
+        public int InsetX { get => insetX; set => insetX = Math.Max(0, value);
         }
 
         private int insetX = 20;
@@ -212,9 +204,7 @@ namespace BrightIdeasSoftware
          Description("Gets or sets the vertical inset by which the position of the overlay will be adjusted"),
          DefaultValue(20),
          NotifyParentProperty(true)]
-        public int InsetY {
-            get { return this.insetY; }
-            set { this.insetY = Math.Max(0, value); }
+        public int InsetY { get => insetY; set => insetY = Math.Max(0, value);
         }
 
         private int insetY = 20;
@@ -226,12 +216,16 @@ namespace BrightIdeasSoftware
          Obsolete("Use CornerRounding instead", false),
          DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool RoundCorneredBorder {
-            get { return this.CornerRounding > 0; }
+            get => CornerRounding > 0;
             set {
                 if (value)
-                    this.CornerRounding = 16.0f;
+                {
+                    CornerRounding = 16.0f;
+                }
                 else
-                    this.CornerRounding = 0.0f;
+                {
+                    CornerRounding = 0.0f;
+                }
             }
         }
 
@@ -247,13 +241,15 @@ namespace BrightIdeasSoftware
         /// <param name="r">The bounds of the rendering</param>
         public virtual void Draw(ObjectListView olv, Graphics g, Rectangle r)
         {
-            if (String.IsNullOrEmpty(this.Text))
+            if (string.IsNullOrEmpty(Text))
+            {
                 return;
+            }
 
-            Rectangle insetRect = r;
-            insetRect.Inflate(-this.InsetX, -this.InsetY);
+            var insetRect = r;
+            insetRect.Inflate(-InsetX, -InsetY);
             // We hard code a transparency of 255 here since transparency is handled by the glass panel
-            this.DrawText(g, insetRect, this.Text, 255);
+            DrawText(g, insetRect, Text, 255);
         }
 
         #endregion Commands
@@ -269,19 +265,17 @@ namespace BrightIdeasSoftware
         /// </summary>
         public BillboardOverlay()
         {
-            this.Transparency = 255;
-            this.BackColor = Color.PeachPuff;
-            this.TextColor = Color.Black;
-            this.BorderColor = Color.Empty;
-            this.Font = new Font("Tahoma", 10);
+            Transparency = 255;
+            BackColor = Color.PeachPuff;
+            TextColor = Color.Black;
+            BorderColor = Color.Empty;
+            Font = new Font("Tahoma", 10);
         }
 
         /// <summary>
         /// Gets or sets where should the top left of the billboard be placed
         /// </summary>
-        public Point Location {
-            get { return this.location; }
-            set { this.location = value; }
+        public Point Location { get => location; set => location = value;
         }
 
         private Point location;
@@ -294,20 +288,27 @@ namespace BrightIdeasSoftware
         /// <param name="r">The bounds of the rendering</param>
         public override void Draw(ObjectListView olv, Graphics g, Rectangle r)
         {
-            if (String.IsNullOrEmpty(this.Text))
+            if (string.IsNullOrEmpty(Text))
+            {
                 return;
+            }
 
             // Calculate the bounds of the text, and then move it to where it should be
-            Rectangle textRect = this.CalculateTextBounds(g, r, this.Text);
-            textRect.Location = this.Location;
+            var textRect = CalculateTextBounds(g, r, Text);
+            textRect.Location = Location;
 
             // Make sure the billboard is within the bounds of the List, as far as is possible
             if (textRect.Right > r.Width)
+            {
                 textRect.X = Math.Max(r.Left, r.Width - textRect.Width);
-            if (textRect.Bottom > r.Height)
-                textRect.Y = Math.Max(r.Top, r.Height - textRect.Height);
+            }
 
-            this.DrawBorderedText(g, textRect, this.Text, 255);
+            if (textRect.Bottom > r.Height)
+            {
+                textRect.Y = Math.Max(r.Top, r.Height - textRect.Height);
+            }
+
+            DrawBorderedText(g, textRect, Text, 255);
         }
     }
 }

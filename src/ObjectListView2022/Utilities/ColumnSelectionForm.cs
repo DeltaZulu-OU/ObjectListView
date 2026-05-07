@@ -38,10 +38,7 @@ namespace BrightIdeasSoftware
         /// Open this form so it will edit the columns that are available in the listview's current view
         /// </summary>
         /// <param name="olv">The ObjectListView whose columns are to be altered</param>
-        public void OpenOn(ObjectListView olv)
-        {
-            this.OpenOn(olv, olv.View);
-        }
+        public void OpenOn(ObjectListView olv) => OpenOn(olv, olv.View);
 
         /// <summary>
         /// Open this form so it will edit the columns that are available in the given listview
@@ -52,11 +49,15 @@ namespace BrightIdeasSoftware
         public void OpenOn(ObjectListView olv, View view)
         {
             if (view != View.Details && view != View.Tile)
+            {
                 return;
+            }
 
-            this.InitializeForm(olv, view);
-            if (this.ShowDialog() == DialogResult.OK)
-                this.Apply(olv, view);
+            InitializeForm(olv, view);
+            if (ShowDialog() == DialogResult.OK)
+            {
+                Apply(olv, view);
+            }
         }
 
         /// <summary>
@@ -66,39 +67,45 @@ namespace BrightIdeasSoftware
         /// <param name="view"></param>
         protected void InitializeForm(ObjectListView olv, View view)
         {
-            this.AllColumns = olv.AllColumns;
-            this.RearrangableColumns = new List<OLVColumn>(this.AllColumns);
-            foreach (OLVColumn col in this.RearrangableColumns)
+            AllColumns = olv.AllColumns;
+            RearrangableColumns = new List<OLVColumn>(AllColumns);
+            foreach (var col in RearrangableColumns)
             {
                 if (view == View.Details)
-                    this.MapColumnToVisible[col] = col.IsVisible;
+                {
+                    MapColumnToVisible[col] = col.IsVisible;
+                }
                 else
-                    this.MapColumnToVisible[col] = col.IsTileViewColumn;
+                {
+                    MapColumnToVisible[col] = col.IsTileViewColumn;
+                }
             }
-            this.RearrangableColumns.Sort(new SortByDisplayOrder(this));
+            RearrangableColumns.Sort(new SortByDisplayOrder(this));
 
-            this.objectListView1.BooleanCheckStateGetter = delegate (Object rowObject) {
-                return this.MapColumnToVisible[(OLVColumn)rowObject];
+            objectListView1.BooleanCheckStateGetter = delegate (Object rowObject) {
+                return MapColumnToVisible[(OLVColumn)rowObject];
             };
 
-            this.objectListView1.BooleanCheckStatePutter = delegate (Object rowObject, bool newValue) {
+            objectListView1.BooleanCheckStatePutter = delegate (Object rowObject, bool newValue) {
                 // Some columns should always be shown, so ignore attempts to hide them
-                OLVColumn column = (OLVColumn)rowObject;
+                var column = (OLVColumn)rowObject;
                 if (!column.CanBeHidden)
+                {
                     return true;
+                }
 
-                this.MapColumnToVisible[column] = newValue;
+                MapColumnToVisible[column] = newValue;
                 EnableControls();
                 return newValue;
             };
 
-            this.objectListView1.SetObjects(this.RearrangableColumns);
-            this.EnableControls();
+            objectListView1.SetObjects(RearrangableColumns);
+            EnableControls();
         }
 
         private List<OLVColumn> AllColumns = null;
         private List<OLVColumn> RearrangableColumns = new List<OLVColumn>();
-        private Dictionary<OLVColumn, bool> MapColumnToVisible = new Dictionary<OLVColumn, bool>();
+        private readonly Dictionary<OLVColumn, bool> MapColumnToVisible = new Dictionary<OLVColumn, bool>();
 
         /// <summary>
         /// The user has pressed OK. Do what's requied.
@@ -112,25 +119,29 @@ namespace BrightIdeasSoftware
             // Update the column definitions to reflect whether they have been hidden
             if (view == View.Details)
             {
-                foreach (OLVColumn col in olv.AllColumns)
-                    col.IsVisible = this.MapColumnToVisible[col];
+                foreach (var col in olv.AllColumns)
+                {
+                    col.IsVisible = MapColumnToVisible[col];
+                }
             }
             else
             {
-                foreach (OLVColumn col in olv.AllColumns)
-                    col.IsTileViewColumn = this.MapColumnToVisible[col];
+                foreach (var col in olv.AllColumns)
+                {
+                    col.IsTileViewColumn = MapColumnToVisible[col];
+                }
             }
 
             // Collect the columns are still visible
-            List<OLVColumn> visibleColumns = this.RearrangableColumns.FindAll(
-                delegate (OLVColumn x) { return this.MapColumnToVisible[x]; });
+            var visibleColumns = RearrangableColumns.FindAll(
+                delegate (OLVColumn x) { return MapColumnToVisible[x]; });
 
             // Detail view and Tile view have to be handled in different ways.
             if (view == View.Details)
             {
                 // Of the still visible columns, change DisplayIndex to reflect their position in the rearranged list
                 olv.ChangeToFilteredColumns(view);
-                foreach (OLVColumn col in visibleColumns)
+                foreach (var col in visibleColumns)
                 {
                     col.DisplayIndex = visibleColumns.IndexOf((OLVColumn)col);
                     col.LastDisplayIndex = col.DisplayIndex;
@@ -141,7 +152,7 @@ namespace BrightIdeasSoftware
                 // In Tile view, DisplayOrder does nothing. So to change the display order, we have to change the
                 // order of the columns in the Columns property.
                 // Remember, the primary column is special and has to remain first!
-                OLVColumn primaryColumn = this.AllColumns[0];
+                var primaryColumn = AllColumns[0];
                 visibleColumns.Remove(primaryColumn);
 
                 olv.Columns.Clear();
@@ -157,54 +168,45 @@ namespace BrightIdeasSoftware
 
         private void buttonMoveUp_Click(object sender, EventArgs e)
         {
-            int selectedIndex = this.objectListView1.SelectedIndices[0];
-            OLVColumn col = this.RearrangableColumns[selectedIndex];
-            this.RearrangableColumns.RemoveAt(selectedIndex);
-            this.RearrangableColumns.Insert(selectedIndex - 1, col);
+            var selectedIndex = objectListView1.SelectedIndices[0];
+            var col = RearrangableColumns[selectedIndex];
+            RearrangableColumns.RemoveAt(selectedIndex);
+            RearrangableColumns.Insert(selectedIndex - 1, col);
 
-            this.objectListView1.BuildList();
+            objectListView1.BuildList();
 
             EnableControls();
         }
 
         private void buttonMoveDown_Click(object sender, EventArgs e)
         {
-            int selectedIndex = this.objectListView1.SelectedIndices[0];
-            OLVColumn col = this.RearrangableColumns[selectedIndex];
-            this.RearrangableColumns.RemoveAt(selectedIndex);
-            this.RearrangableColumns.Insert(selectedIndex + 1, col);
+            var selectedIndex = objectListView1.SelectedIndices[0];
+            var col = RearrangableColumns[selectedIndex];
+            RearrangableColumns.RemoveAt(selectedIndex);
+            RearrangableColumns.Insert(selectedIndex + 1, col);
 
-            this.objectListView1.BuildList();
+            objectListView1.BuildList();
 
             EnableControls();
         }
 
-        private void buttonShow_Click(object sender, EventArgs e)
-        {
-            this.objectListView1.SelectedItem.Checked = true;
-        }
+        private void buttonShow_Click(object sender, EventArgs e) => objectListView1.SelectedItem.Checked = true;
 
-        private void buttonHide_Click(object sender, EventArgs e)
-        {
-            this.objectListView1.SelectedItem.Checked = false;
-        }
+        private void buttonHide_Click(object sender, EventArgs e) => objectListView1.SelectedItem.Checked = false;
 
         private void buttonOK_Click(object sender, EventArgs e)
         {
-            this.DialogResult = DialogResult.OK;
-            this.Close();
+            DialogResult = DialogResult.OK;
+            Close();
         }
 
         private void buttonCancel_Click(object sender, EventArgs e)
         {
-            this.DialogResult = DialogResult.Cancel;
-            this.Close();
+            DialogResult = DialogResult.Cancel;
+            Close();
         }
 
-        private void objectListView1_SelectionChanged(object sender, EventArgs e)
-        {
-            EnableControls();
-        }
+        private void objectListView1_SelectionChanged(object sender, EventArgs e) => EnableControls();
 
         #endregion Event handlers
 
@@ -215,24 +217,24 @@ namespace BrightIdeasSoftware
         /// </summary>
         protected void EnableControls()
         {
-            if (this.objectListView1.SelectedIndices.Count == 0)
+            if (objectListView1.SelectedIndices.Count == 0)
             {
-                this.buttonMoveUp.Enabled = false;
-                this.buttonMoveDown.Enabled = false;
-                this.buttonShow.Enabled = false;
-                this.buttonHide.Enabled = false;
+                buttonMoveUp.Enabled = false;
+                buttonMoveDown.Enabled = false;
+                buttonShow.Enabled = false;
+                buttonHide.Enabled = false;
             }
             else
             {
                 // Can't move the first row up or the last row down
-                this.buttonMoveUp.Enabled = (this.objectListView1.SelectedIndices[0] != 0);
-                this.buttonMoveDown.Enabled = (this.objectListView1.SelectedIndices[0] < (this.objectListView1.GetItemCount() - 1));
+                buttonMoveUp.Enabled = (objectListView1.SelectedIndices[0] != 0);
+                buttonMoveDown.Enabled = (objectListView1.SelectedIndices[0] < (objectListView1.GetItemCount() - 1));
 
-                OLVColumn selectedColumn = (OLVColumn)this.objectListView1.SelectedObject;
+                var selectedColumn = (OLVColumn)objectListView1.SelectedObject;
 
                 // Some columns cannot be hidden (and hence cannot be Shown)
-                this.buttonShow.Enabled = !this.MapColumnToVisible[selectedColumn] && selectedColumn.CanBeHidden;
-                this.buttonHide.Enabled = this.MapColumnToVisible[selectedColumn] && selectedColumn.CanBeHidden;
+                buttonShow.Enabled = !MapColumnToVisible[selectedColumn] && selectedColumn.CanBeHidden;
+                buttonHide.Enabled = MapColumnToVisible[selectedColumn] && selectedColumn.CanBeHidden;
             }
         }
 
@@ -246,25 +248,33 @@ namespace BrightIdeasSoftware
         {
             public SortByDisplayOrder(ColumnSelectionForm form)
             {
-                this.Form = form;
+                Form = form;
             }
 
-            private ColumnSelectionForm Form;
+            private readonly ColumnSelectionForm Form;
 
             #region IComparer<OLVColumn> Members
 
             int IComparer<OLVColumn>.Compare(OLVColumn x, OLVColumn y)
             {
-                if (this.Form.MapColumnToVisible[x] && !this.Form.MapColumnToVisible[y])
+                if (Form.MapColumnToVisible[x] && !Form.MapColumnToVisible[y])
+                {
                     return -1;
+                }
 
-                if (!this.Form.MapColumnToVisible[x] && this.Form.MapColumnToVisible[y])
+                if (!Form.MapColumnToVisible[x] && Form.MapColumnToVisible[y])
+                {
                     return 1;
+                }
 
                 if (x.DisplayIndex == y.DisplayIndex)
+                {
                     return x.Text.CompareTo(y.Text);
+                }
                 else
+                {
                     return x.DisplayIndex - y.DisplayIndex;
+                }
             }
 
             #endregion IComparer<OLVColumn> Members

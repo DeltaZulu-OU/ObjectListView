@@ -33,8 +33,9 @@
 
 using System;
 using System.Windows.Forms;
+using BrightIdeasSoftware.Implementation;
 
-namespace BrightIdeasSoftware
+namespace BrightIdeasSoftware.DragDrop
 {
     /// <summary>
     /// An IDragSource controls how drag out from the ObjectListView will behave
@@ -56,21 +57,21 @@ namespace BrightIdeasSoftware
         /// item selected.</param>
         /// <returns>The data object that will be used for data transfer. This will often be a subclass
         /// of DataObject, but does not need to be.</returns>
-        Object StartDrag(ObjectListView olv, MouseButtons button, OLVListItem item);
+        object StartDrag(ObjectListView olv, MouseButtons button, OLVListItem item);
 
         /// <summary>
         /// What operations are possible for this drag? This controls the icon shown during the drag
         /// </summary>
         /// <param name="dragObject">The data object returned by StartDrag()</param>
         /// <returns>A combination of DragDropEffects flags</returns>
-        DragDropEffects GetAllowedEffects(Object dragObject);
+        DragDropEffects GetAllowedEffects(object dragObject);
 
         /// <summary>
         /// The drag operation is complete. Do whatever is necessary to complete the action.
         /// </summary>
         /// <param name="dragObject">The data object returned by StartDrag()</param>
         /// <param name="effect">The value returned from GetAllowedEffects()</param>
-        void EndDrag(Object dragObject, DragDropEffects effect);
+        void EndDrag(object dragObject, DragDropEffects effect);
     }
 
     /// <summary>
@@ -87,27 +88,21 @@ namespace BrightIdeasSoftware
         /// <param name="button"></param>
         /// <param name="item"></param>
         /// <returns></returns>
-        public virtual Object StartDrag(ObjectListView olv, MouseButtons button, OLVListItem item)
-        {
-            return null;
-        }
+        public virtual object StartDrag(ObjectListView olv, MouseButtons button, OLVListItem item) => null;
 
         /// <summary>
         /// See IDragSource documentation
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        public virtual DragDropEffects GetAllowedEffects(Object data)
-        {
-            return DragDropEffects.None;
-        }
+        public virtual DragDropEffects GetAllowedEffects(object data) => DragDropEffects.None;
 
         /// <summary>
         /// See IDragSource documentation
         /// </summary>
         /// <param name="dragObject"></param>
         /// <param name="effect"></param>
-        public virtual void EndDrag(Object dragObject, DragDropEffects effect)
+        public virtual void EndDrag(object dragObject, DragDropEffects effect)
         {
         }
 
@@ -141,7 +136,7 @@ namespace BrightIdeasSoftware
         /// <param name="refreshAfterDrop"></param>
         public SimpleDragSource(bool refreshAfterDrop)
         {
-            this.RefreshAfterDrop = refreshAfterDrop;
+            RefreshAfterDrop = refreshAfterDrop;
         }
 
         #endregion Constructors
@@ -152,12 +147,7 @@ namespace BrightIdeasSoftware
         /// Gets or sets whether the dragged rows should be refreshed when the
         /// drag operation is complete.
         /// </summary>
-        public bool RefreshAfterDrop {
-            get { return refreshAfterDrop; }
-            set { refreshAfterDrop = value; }
-        }
-
-        private bool refreshAfterDrop;
+        public bool RefreshAfterDrop { get; set; }
 
         #endregion Public properties
 
@@ -171,13 +161,15 @@ namespace BrightIdeasSoftware
         /// <param name="button"></param>
         /// <param name="item"></param>
         /// <returns></returns>
-        public virtual Object StartDrag(ObjectListView olv, MouseButtons button, OLVListItem item)
+        public virtual object StartDrag(ObjectListView olv, MouseButtons button, OLVListItem item)
         {
             // We only drag on left mouse
             if (button != MouseButtons.Left)
+            {
                 return null;
+            }
 
-            return this.CreateDataObject(olv);
+            return CreateDataObject(olv);
         }
 
         /// <summary>
@@ -185,24 +177,24 @@ namespace BrightIdeasSoftware
         /// </summary>
         /// <param name="data"></param>
         /// <returns>All opertions are supported</returns>
-        public virtual DragDropEffects GetAllowedEffects(Object data)
-        {
-            return DragDropEffects.All | DragDropEffects.Link; // why didn't MS include 'Link' in 'All'??
-        }
+        public virtual DragDropEffects GetAllowedEffects(object data) => DragDropEffects.All | DragDropEffects.Link; // why didn't MS include 'Link' in 'All'??
 
         /// <summary>
         /// The drag operation is finished. Refreshe the dragged rows if so configured.
         /// </summary>
         /// <param name="dragObject"></param>
         /// <param name="effect"></param>
-        public virtual void EndDrag(Object dragObject, DragDropEffects effect)
+        public virtual void EndDrag(object dragObject, DragDropEffects effect)
         {
-            OLVDataObject data = dragObject as OLVDataObject;
-            if (data == null)
+            if (dragObject is not OLVDataObject data)
+            {
                 return;
+            }
 
-            if (this.RefreshAfterDrop)
+            if (RefreshAfterDrop)
+            {
                 data.ListView.RefreshObjects(data.ModelObjects);
+            }
         }
 
         /// <summary>
@@ -214,10 +206,7 @@ namespace BrightIdeasSoftware
         /// </remarks>
         /// <param name="olv">The ObjectListView that is the source of the drag</param>
         /// <returns>A data object for the drag</returns>
-        protected virtual object CreateDataObject(ObjectListView olv)
-        {
-            return new OLVDataObject(olv);
-        }
+        protected virtual object CreateDataObject(ObjectListView olv) => new OLVDataObject(olv);
 
         #endregion IDragSource Members
     }

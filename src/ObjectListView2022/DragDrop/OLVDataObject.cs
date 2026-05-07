@@ -34,8 +34,9 @@
 using System;
 using System.Collections;
 using System.Windows.Forms;
+using BrightIdeasSoftware.Utilities;
 
-namespace BrightIdeasSoftware
+namespace BrightIdeasSoftware.DragDrop
 {
     /// <summary>
     /// A data transfer object that knows how to transform a list of model
@@ -62,11 +63,11 @@ namespace BrightIdeasSoftware
         /// <param name="modelObjects">The model objects to be put into the data object</param>
         public OLVDataObject(ObjectListView olv, IList modelObjects)
         {
-            this.objectListView = olv;
-            this.modelObjects = modelObjects;
-            this.includeHiddenColumns = olv.IncludeHiddenColumnsInDataTransfer;
-            this.includeColumnHeaders = olv.IncludeColumnHeadersInCopy;
-            this.CreateTextFormats();
+            ListView = olv;
+            this.ModelObjects = modelObjects;
+            IncludeHiddenColumns = olv.IncludeHiddenColumnsInDataTransfer;
+            IncludeColumnHeaders = olv.IncludeColumnHeadersInCopy;
+            CreateTextFormats();
         }
 
         #endregion Life and death
@@ -78,39 +79,23 @@ namespace BrightIdeasSoftware
         /// and HTML representation. If this is false, only visible columns will
         /// be included.
         /// </summary>
-        public bool IncludeHiddenColumns {
-            get { return includeHiddenColumns; }
-        }
-
-        private readonly bool includeHiddenColumns;
+        public bool IncludeHiddenColumns { get; }
 
         /// <summary>
         /// Gets or sets whether column headers will also be included in the text
         /// and HTML representation.
         /// </summary>
-        public bool IncludeColumnHeaders {
-            get { return includeColumnHeaders; }
-        }
-
-        private readonly bool includeColumnHeaders;
+        public bool IncludeColumnHeaders { get; }
 
         /// <summary>
         /// Gets the ObjectListView that is being used as the source of the data
         /// </summary>
-        public ObjectListView ListView {
-            get { return objectListView; }
-        }
-
-        private readonly ObjectListView objectListView;
+        public ObjectListView ListView { get; }
 
         /// <summary>
         /// Gets the model objects that are to be placed in the data object
         /// </summary>
-        public IList ModelObjects {
-            get { return modelObjects; }
-        }
-
-        private readonly IList modelObjects;
+        public IList ModelObjects { get; }
 
         #endregion Properties
 
@@ -120,17 +105,20 @@ namespace BrightIdeasSoftware
         /// </summary>
         public void CreateTextFormats()
         {
-            OLVExporter exporter = this.CreateExporter();
+            var exporter = CreateExporter();
 
             // Put both the text and html versions onto the clipboard.
             // For some reason, SetText() with UnicodeText doesn't set the basic CF_TEXT format,
             // but using SetData() does.
             //this.SetText(sbText.ToString(), TextDataFormat.UnicodeText);
-            this.SetData(exporter.ExportTo(OLVExporter.ExportFormat.TabSeparated));
-            string exportTo = exporter.ExportTo(OLVExporter.ExportFormat.CSV);
-            if (!String.IsNullOrEmpty(exportTo))
-                this.SetText(exportTo, TextDataFormat.CommaSeparatedValue);
-            this.SetText(ConvertToHtmlFragment(exporter.ExportTo(OLVExporter.ExportFormat.HTML)), TextDataFormat.Html);
+            SetData(exporter.ExportTo(OLVExporter.ExportFormat.TabSeparated));
+            var exportTo = exporter.ExportTo(OLVExporter.ExportFormat.CSV);
+            if (!string.IsNullOrEmpty(exportTo))
+            {
+                SetText(exportTo, TextDataFormat.CommaSeparatedValue);
+            }
+
+            SetText(ConvertToHtmlFragment(exporter.ExportTo(OLVExporter.ExportFormat.HTML)), TextDataFormat.Html);
         }
 
         /// <summary>
@@ -139,10 +127,12 @@ namespace BrightIdeasSoftware
         /// <returns></returns>
         protected OLVExporter CreateExporter()
         {
-            OLVExporter exporter = new OLVExporter(this.ListView);
-            exporter.IncludeColumnHeaders = this.IncludeColumnHeaders;
-            exporter.IncludeHiddenColumns = this.IncludeHiddenColumns;
-            exporter.ModelObjects = this.ModelObjects;
+            var exporter = new OLVExporter(ListView)
+            {
+                IncludeColumnHeaders = IncludeColumnHeaders,
+                IncludeHiddenColumns = IncludeHiddenColumns,
+                ModelObjects = ModelObjects
+            };
             return exporter;
         }
 
@@ -152,7 +142,7 @@ namespace BrightIdeasSoftware
         [Obsolete("Use OLVExporter directly instead", false)]
         public string CreateHtml()
         {
-            OLVExporter exporter = this.CreateExporter();
+            var exporter = CreateExporter();
             return exporter.ExportTo(OLVExporter.ExportFormat.HTML);
         }
 
@@ -168,7 +158,7 @@ namespace BrightIdeasSoftware
             // Minimal implementation of HTML clipboard format
             const string SOURCE = "http://www.codeproject.com/Articles/16009/A-Much-Easier-to-Use-ListView";
 
-            const String MARKER_BLOCK =
+            const string MARKER_BLOCK =
                 "Version:1.0\r\n" +
                 "StartHTML:{0,8}\r\n" +
                 "EndHTML:{1,8}\r\n" +
@@ -179,17 +169,17 @@ namespace BrightIdeasSoftware
                 "SourceURL:{4}\r\n" +
                 "{5}";
 
-            int prefixLength = String.Format(MARKER_BLOCK, 0, 0, 0, 0, SOURCE, "").Length;
+            var prefixLength = string.Format(MARKER_BLOCK, 0, 0, 0, 0, SOURCE, "").Length;
 
-            const String DEFAULT_HTML_BODY =
+            const string DEFAULT_HTML_BODY =
                 "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\">" +
                 "<HTML><HEAD></HEAD><BODY><!--StartFragment-->{0}<!--EndFragment--></BODY></HTML>";
 
-            string html = String.Format(DEFAULT_HTML_BODY, fragment);
-            int startFragment = prefixLength + html.IndexOf(fragment, StringComparison.Ordinal);
-            int endFragment = startFragment + fragment.Length;
+            var html = string.Format(DEFAULT_HTML_BODY, fragment);
+            var startFragment = prefixLength + html.IndexOf(fragment, StringComparison.Ordinal);
+            var endFragment = startFragment + fragment.Length;
 
-            return String.Format(MARKER_BLOCK, prefixLength, prefixLength + html.Length, startFragment, endFragment, SOURCE, html);
+            return string.Format(MARKER_BLOCK, prefixLength, prefixLength + html.Length, startFragment, endFragment, SOURCE, html);
         }
     }
 }
