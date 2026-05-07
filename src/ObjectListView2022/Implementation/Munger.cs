@@ -233,31 +233,19 @@ namespace BrightIdeasSoftware.Implementation
 
             var lastPart = Parts[Parts.Count - 1];
 
-            if (Parts.Count > 1)
+            target = EvaluatePutTarget(target);
+            if (target == null)
             {
-                var parts = new List<SimpleMunger>(Parts);
-                parts.RemoveAt(parts.Count - 1);
-                try
-                {
-                    target = EvaluateParts(target, parts);
-                }
-                catch (MungerException ex)
-                {
-                    ReportPutValueException(ex);
-                    return false;
-                }
+                return false;
             }
 
-            if (target != null)
+            try
             {
-                try
-                {
-                    return lastPart.PutValue(target, value);
-                }
-                catch (MungerException ex)
-                {
-                    ReportPutValueException(ex);
-                }
+                return lastPart.PutValue(target, value);
+            }
+            catch (MungerException ex)
+            {
+                ReportPutValueException(ex);
             }
 
             return false;
@@ -315,6 +303,37 @@ namespace BrightIdeasSoftware.Implementation
 
                 target = part.GetValue(target);
             }
+            return target;
+        }
+
+        /// <summary>
+        /// Evaluate all path segments except the final segment used for assignment.
+        /// </summary>
+        private object EvaluatePutTarget(object target)
+        {
+            if (Parts.Count <= 1)
+            {
+                return target;
+            }
+
+            for (var i = 0; i < Parts.Count - 1; i++)
+            {
+                if (target == null)
+                {
+                    return null;
+                }
+
+                try
+                {
+                    target = Parts[i].GetValue(target);
+                }
+                catch (MungerException ex)
+                {
+                    ReportPutValueException(ex);
+                    return null;
+                }
+            }
+
             return target;
         }
 
@@ -478,12 +497,14 @@ namespace BrightIdeasSoftware.Implementation
 
         private void ResolveName(object target, string name, int numberMethodParameters)
         {
-            if (cachedTargetType == target.GetType() && cachedName == name && cachedNumberParameters == numberMethodParameters)
+            var targetType = target.GetType();
+
+            if (cachedTargetType == targetType && cachedName == name && cachedNumberParameters == numberMethodParameters)
             {
                 return;
             }
 
-            cachedTargetType = target.GetType();
+            cachedTargetType = targetType;
             cachedName = name;
             cachedNumberParameters = numberMethodParameters;
 
@@ -493,45 +514,48 @@ namespace BrightIdeasSoftware.Implementation
             indexerPropertyInfo = null;
 
             const BindingFlags flags = BindingFlags.Public | BindingFlags.Instance /*| BindingFlags.NonPublic*/;
+            var properties = targetType.GetProperties(flags);
+            var fields = targetType.GetFields(flags);
+            var methods = targetType.GetMethods(flags);
 
-            foreach (var pinfo in target.GetType().GetProperties(flags))
+            foreach (var propertyInfo in properties)
             {
-                if (pinfo.Name == name)
+                if (propertyInfo.Name == name)
                 {
-                    resolvedPropertyInfo = pinfo;
+                    resolvedPropertyInfo = propertyInfo;
                     return;
                 }
 
-                // See if we can find an string indexer property while we are here.
+                // See if we can find a string indexer property while we are here.
                 // We also need to allow for old style <object> keyed collections.
-                if (indexerPropertyInfo == null && pinfo.Name == "Item")
+                if (indexerPropertyInfo == null && propertyInfo.Name == "Item")
                 {
-                    var par = pinfo.GetGetMethod().GetParameters();
-                    if (par.Length > 0)
+                    var parameters = propertyInfo.GetGetMethod().GetParameters();
+                    if (parameters.Length > 0)
                     {
-                        var parameterType = par[0].ParameterType;
+                        var parameterType = parameters[0].ParameterType;
                         if (parameterType == typeof(string) || parameterType == typeof(object))
                         {
-                            indexerPropertyInfo = pinfo;
+                            indexerPropertyInfo = propertyInfo;
                         }
                     }
                 }
             }
 
-            foreach (var info in target.GetType().GetFields(flags))
+            foreach (var fieldInfo in fields)
             {
-                if (info.Name == name)
+                if (fieldInfo.Name == name)
                 {
-                    resolvedFieldInfo = info;
+                    resolvedFieldInfo = fieldInfo;
                     return;
                 }
             }
 
-            foreach (var info in target.GetType().GetMethods(flags))
+            foreach (var methodInfo in methods)
             {
-                if (info.Name == name && info.GetParameters().Length == numberMethodParameters)
+                if (methodInfo.Name == name && methodInfo.GetParameters().Length == numberMethodParameters)
                 {
-                    resolvedMethodInfo = info;
+                    resolvedMethodInfo = methodInfo;
                     return;
                 }
             }
@@ -578,43 +602,4 @@ namespace BrightIdeasSoftware.Implementation
         public object Target { get; }
     }
 
-    /*
-     * We don't currently need this
-     * 2010-08-06
-     *
-
-    internal class SimpleBinder : Binder
-    {
-        public override FieldInfo BindToField(BindingFlags bindingAttr, FieldInfo[] match, object value, System.Globalization.CultureInfo culture) {
-            //return Type.DefaultBinder.BindToField(
-            throw new NotImplementedException();
-        }
-
-        public override object ChangeType(object value, Type type, System.Globalization.CultureInfo culture) {
-            throw new NotImplementedException();
-        }
-
-        public override MethodBase BindToMethod(BindingFlags bindingAttr, MethodBase[] match, ref object[] args, ParameterModifier[] modifiers, System.Globalization.CultureInfo culture, string[] names, out object state) {
-            throw new NotImplementedException();
-        }
-
-        public override void ReorderArgumentArray(ref object[] args, object state) {
-            throw new NotImplementedException();
-        }
-
-        public override MethodBase SelectMethod(BindingFlags bindingAttr, MethodBase[] match, Type[] types, ParameterModifier[] modifiers) {
-            throw new NotImplementedException();
-        }
-
-        public override PropertyInfo SelectProperty(BindingFlags bindingAttr, PropertyInfo[] match, Type returnType, Type[] indexes, ParameterModifier[] modifiers) {
-            if (match == null)
-                throw new ArgumentNullException("match");
-
-            if (match.Length == 0)
-                return null;
-
-            return match[0];
-        }
-    }
-     */
 }
