@@ -1,35 +1,51 @@
-﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.50727</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{18FEDA0C-D147-4286-B39A-01204808106A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>BrightIdeasSoftware</RootNamespace>
     <AssemblyName>ObjectListView</AssemblyName>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>olv-keyfile.snk</AssemblyOriginatorKeyFile>
+    <TargetFrameworkProfile />
+    <SccProjectName>%24/ObjectListView/trunk/ObjectListView</SccProjectName>
+    <SccLocalPath>.</SccLocalPath>
+    <SccAuxPath>https://grammarian.visualstudio.com/defaultcollection</SccAuxPath>
+    <SccProvider>{4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}</SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <WarningLevel>1</WarningLevel>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <DocumentationFile>bin\Debug\ObjectListView.XML</DocumentationFile>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <DocumentationFile>bin\Release\ObjectListView.XML</DocumentationFile>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Accessibility" />
@@ -46,7 +62,6 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="DragDrop\OLVDataObject.cs" />
-    <Compile Include="Filtering\ClustersFromGroupsStrategy.cs" />
     <Compile Include="Filtering\DateTimeClusteringStrategy.cs" />
     <Compile Include="Filtering\FlagClusteringStrategy.cs" />
     <Compile Include="Filtering\TextMatchFilter.cs" />
@@ -89,6 +104,7 @@
     </Compile>
     <Compile Include="Filtering\ClusteringStrategy.cs" />
     <Compile Include="Filtering\Cluster.cs" />
+    <Compile Include="Filtering\ClustersFromGroupsStrategy.cs" />
     <Compile Include="FastObjectListView.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -146,9 +162,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="CustomDictionary.xml" />
+    <None Include="CustomDictionary.xml" />
     <None Include="FullClassDiagram.cd" />
-    <None Include="ObjectListView2012.nuspec">
+    <None Include="ObjectListView2022.nuspec">
       <SubType>Designer</SubType>
     </None>
     <None Include="Resources\sort-descending.png" />
