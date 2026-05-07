@@ -296,7 +296,8 @@ namespace BrightIdeasSoftware.Rendering
         /// Gets or sets the padding that will be added to the bounds of the item
         /// before drawing the border and fill.
         /// </summary>
-        public Size BoundsPadding { get => boundsPadding; set => boundsPadding = value;
+        public Size BoundsPadding {
+            get => boundsPadding; set => boundsPadding = value;
         }
 
         private Size boundsPadding = new Size(-1, 2);
@@ -513,8 +514,6 @@ namespace BrightIdeasSoftware.Rendering
         }
 
         #endregion Life and death
-
-
 
         #region Configuration properties
 

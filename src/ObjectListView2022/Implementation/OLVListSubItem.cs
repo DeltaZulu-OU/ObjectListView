@@ -25,7 +25,6 @@
  * If you wish to use this code in a closed source application, please contact phillip.piper@gmail.com.
  */
 
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -67,7 +66,8 @@ namespace BrightIdeasSoftware.Implementation
         /// Gets or sets how many pixels will be left blank around this cell
         /// </summary>
         /// <remarks>This setting only takes effect when the control is owner drawn.</remarks>
-        public Rectangle? CellPadding { get => cellPadding; set => cellPadding = value;
+        public Rectangle? CellPadding {
+            get => cellPadding; set => cellPadding = value;
         }
 
         private Rectangle? cellPadding;

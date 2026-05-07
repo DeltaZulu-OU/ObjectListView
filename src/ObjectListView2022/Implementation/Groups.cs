@@ -267,13 +267,15 @@ namespace BrightIdeasSoftware.Implementation
         /// <summary>
         /// Gets or sets whether or not this group is collapsed
         /// </summary>
-        public bool Collapsed { get => GetOneState(GroupState.LVGS_COLLAPSED); set => SetOneState(value, GroupState.LVGS_COLLAPSED);
+        public bool Collapsed {
+            get => GetOneState(GroupState.LVGS_COLLAPSED); set => SetOneState(value, GroupState.LVGS_COLLAPSED);
         }
 
         /// <summary>
         /// Gets or sets whether or not this group can be collapsed
         /// </summary>
-        public bool Collapsible { get => GetOneState(GroupState.LVGS_COLLAPSIBLE); set => SetOneState(value, GroupState.LVGS_COLLAPSIBLE);
+        public bool Collapsible {
+            get => GetOneState(GroupState.LVGS_COLLAPSIBLE); set => SetOneState(value, GroupState.LVGS_COLLAPSIBLE);
         }
 
         /// <summary>
@@ -365,13 +367,15 @@ namespace BrightIdeasSoftware.Implementation
         /// <summary>
         /// Gets or sets whether this group is focused
         /// </summary>
-        public bool Focused { get => GetOneState(GroupState.LVGS_FOCUSED); set => SetOneState(value, GroupState.LVGS_FOCUSED);
+        public bool Focused {
+            get => GetOneState(GroupState.LVGS_FOCUSED); set => SetOneState(value, GroupState.LVGS_FOCUSED);
         }
 
         /// <summary>
         /// Gets or sets whether this group is selected
         /// </summary>
-        public bool Selected { get => GetOneState(GroupState.LVGS_SELECTED); set => SetOneState(value, GroupState.LVGS_SELECTED);
+        public bool Selected {
+            get => GetOneState(GroupState.LVGS_SELECTED); set => SetOneState(value, GroupState.LVGS_SELECTED);
         }
 
         /// <summary>
@@ -409,7 +413,8 @@ namespace BrightIdeasSoftware.Implementation
         /// <remarks>
         /// As of WinSDK v7.0, this property officially does nothing.
         /// </remarks>
-        public bool Subseted { get => GetOneState(GroupState.LVGS_SUBSETED); set => SetOneState(value, GroupState.LVGS_SUBSETED);
+        public bool Subseted {
+            get => GetOneState(GroupState.LVGS_SUBSETED); set => SetOneState(value, GroupState.LVGS_SUBSETED);
         }
 
         /// <summary>

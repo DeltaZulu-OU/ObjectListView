@@ -82,7 +82,8 @@ namespace BrightIdeasSoftware.Rendering
         [Category("ObjectListView"),
          Description("The offset by which the position of the adornment will be adjusted"),
          DefaultValue(typeof(Size), "0,0")]
-        public Size Offset { get => offset; set => offset = value;
+        public Size Offset {
+            get => offset; set => offset = value;
         }
 
         private Size offset = new Size();
@@ -111,7 +112,8 @@ namespace BrightIdeasSoftware.Rendering
         [Category("ObjectListView"),
          Description("The transparency of this adornment. 0 is completely transparent, 255 is completely opaque."),
          DefaultValue(128)]
-        public int Transparency { get => transparency; set => transparency = Math.Min(255, Math.Max(0, value));
+        public int Transparency {
+            get => transparency; set => transparency = Math.Min(255, Math.Max(0, value));
         }
 
         private int transparency = 128;

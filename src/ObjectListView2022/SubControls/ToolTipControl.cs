@@ -166,7 +166,8 @@ namespace BrightIdeasSoftware.SubControls
         /// <summary>
         /// Get or set if the style of the tooltip control
         /// </summary>
-        internal int WindowStyle { get => NativeMethods.GetWindowLong(Handle, GWL_STYLE); set => NativeMethods.SetWindowLong(Handle, GWL_STYLE, value);
+        internal int WindowStyle {
+            get => NativeMethods.GetWindowLong(Handle, GWL_STYLE); set => NativeMethods.SetWindowLong(Handle, GWL_STYLE, value);
         }
 
         /// <summary>
@@ -347,19 +348,22 @@ namespace BrightIdeasSoftware.SubControls
         /// Gets or sets how many milliseconds the tooltip will remain visible while the mouse
         /// is still.
         /// </summary>
-        public int AutoPopDelay { get => GetDelayTime(TTDT_AUTOPOP); set => SetDelayTime(TTDT_AUTOPOP, value);
+        public int AutoPopDelay {
+            get => GetDelayTime(TTDT_AUTOPOP); set => SetDelayTime(TTDT_AUTOPOP, value);
         }
 
         /// <summary>
         /// Gets or sets how many milliseconds the mouse must be still before the tooltip is shown.
         /// </summary>
-        public int InitialDelay { get => GetDelayTime(TTDT_INITIAL); set => SetDelayTime(TTDT_INITIAL, value);
+        public int InitialDelay {
+            get => GetDelayTime(TTDT_INITIAL); set => SetDelayTime(TTDT_INITIAL, value);
         }
 
         /// <summary>
         /// Gets or sets how many milliseconds the mouse must be still before the tooltip is shown again.
         /// </summary>
-        public int ReshowDelay { get => GetDelayTime(TTDT_RESHOW); set => SetDelayTime(TTDT_RESHOW, value);
+        public int ReshowDelay {
+            get => GetDelayTime(TTDT_RESHOW); set => SetDelayTime(TTDT_RESHOW, value);
         }
 
         private int GetDelayTime(int which) => (int)NativeMethods.SendMessage(Handle, TTM_GETDELAYTIME, which, 0);

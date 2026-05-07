@@ -133,8 +133,6 @@ namespace BrightIdeasSoftware
 
         #endregion Life and death
 
-
-
         #region Public Properties
 
         /// <summary>
@@ -265,7 +263,8 @@ namespace BrightIdeasSoftware
         [Category("ObjectListView"),
          Description("When a cell is edited, should the whole cell be used?"),
          DefaultValue(null)]
-        public virtual bool? CellEditUseWholeCell { get => cellEditUseWholeCell; set => cellEditUseWholeCell = value;
+        public virtual bool? CellEditUseWholeCell {
+            get => cellEditUseWholeCell; set => cellEditUseWholeCell = value;
         }
 
         private bool? cellEditUseWholeCell;
@@ -290,7 +289,8 @@ namespace BrightIdeasSoftware
         [Category("ObjectListView"),
          Description("How many pixels will be left blank around the cells in this column?"),
          DefaultValue(null)]
-        public Rectangle? CellPadding { get => cellPadding; set => cellPadding = value;
+        public Rectangle? CellPadding {
+            get => cellPadding; set => cellPadding = value;
         }
 
         private Rectangle? cellPadding;
@@ -309,7 +309,8 @@ namespace BrightIdeasSoftware
         [Category("ObjectListView"),
          Description("How will cell values be vertically aligned?"),
          DefaultValue(null)]
-        public virtual StringAlignment? CellVerticalAlignment { get => cellVerticalAlignment; set => cellVerticalAlignment = value;
+        public virtual StringAlignment? CellVerticalAlignment {
+            get => cellVerticalAlignment; set => cellVerticalAlignment = value;
         }
 
         private StringAlignment? cellVerticalAlignment;
@@ -415,7 +416,8 @@ namespace BrightIdeasSoftware
         [Category("ObjectListView"),
          Description("Will this column resize to fill unoccupied horizontal space in the listview?"),
          DefaultValue(false)]
-        public bool FillsFreeSpace { get => FreeSpaceProportion > 0; set => FreeSpaceProportion = value ? 1 : 0;
+        public bool FillsFreeSpace {
+            get => FreeSpaceProportion > 0; set => FreeSpaceProportion = value ? 1 : 0;
         }
 
         /// <summary>
@@ -451,7 +453,8 @@ namespace BrightIdeasSoftware
         /// </remarks>
         [Browsable(false),
          DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public int FreeSpaceProportion { get => freeSpaceProportion; set => freeSpaceProportion = Math.Max(0, value);
+        public int FreeSpaceProportion {
+            get => freeSpaceProportion; set => freeSpaceProportion = Math.Max(0, value);
         }
 
         private int freeSpaceProportion;
@@ -1083,7 +1086,8 @@ namespace BrightIdeasSoftware
         /// New code should implement an IRenderer, though this property will be maintained.</remarks>
         [Browsable(false),
          DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public RenderDelegate RendererDelegate { get => Renderer is Version1Renderer version1Renderer ? version1Renderer.RenderDelegate : null; set => Renderer = value == null ? null : new Version1Renderer(value);
+        public RenderDelegate RendererDelegate {
+            get => Renderer is Version1Renderer version1Renderer ? version1Renderer.RenderDelegate : null; set => Renderer = value == null ? null : new Version1Renderer(value);
         }
 
         /// <summary>
@@ -1321,7 +1325,6 @@ namespace BrightIdeasSoftware
                 {
                     Renderer = new HighlightTextRenderer();
                 }
-
 
                 // If there is a custom renderer (not descended from BaseRenderer),
                 // we leave it up to them to implement wrapping

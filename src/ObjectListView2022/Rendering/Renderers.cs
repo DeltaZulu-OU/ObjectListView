@@ -309,7 +309,8 @@ namespace BrightIdeasSoftware.Rendering
         [Category("ObjectListView"),
          Description("The number of pixels that renderer will leave empty around the edge of the cell"),
          DefaultValue(null)]
-        public Rectangle? CellPadding { get => cellPadding; set => cellPadding = value;
+        public Rectangle? CellPadding {
+            get => cellPadding; set => cellPadding = value;
         }
 
         private Rectangle? cellPadding;
@@ -331,7 +332,8 @@ namespace BrightIdeasSoftware.Rendering
         [Category("ObjectListView"),
          Description("How will cell values be vertically aligned?"),
          DefaultValue(null)]
-        public virtual StringAlignment? CellVerticalAlignment { get => cellVerticalAlignment; set => cellVerticalAlignment = value;
+        public virtual StringAlignment? CellVerticalAlignment {
+            get => cellVerticalAlignment; set => cellVerticalAlignment = value;
         }
 
         private StringAlignment? cellVerticalAlignment;
@@ -431,7 +433,8 @@ namespace BrightIdeasSoftware.Rendering
         [Category("Appearance"),
          Description("Should text be rendered using GDI routines?"),
          DefaultValue(true)]
-        public virtual bool UseGdiTextRendering { get =>
+        public virtual bool UseGdiTextRendering {
+            get =>
                                                       // Can't use GDI routines on a GDI+ printer context
                                                       !IsPrinting && useGdiTextRendering; set => useGdiTextRendering = value;
         }
@@ -467,7 +470,8 @@ namespace BrightIdeasSoftware.Rendering
         /// </summary>
         [Browsable(false),
          DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Rectangle Bounds { get => bounds; set => bounds = value;
+        public Rectangle Bounds {
+            get => bounds; set => bounds = value;
         }
 
         private Rectangle bounds;
@@ -1996,7 +2000,8 @@ namespace BrightIdeasSoftware.Rendering
         /// <summary>
         /// When a filter changes, keep track of the text matching filters
         /// </summary>
-        IModelFilter IFilterAwareRenderer.Filter { get => Filter; set => RegisterNewFilter(value);
+        IModelFilter IFilterAwareRenderer.Filter {
+            get => Filter; set => RegisterNewFilter(value);
         }
 
         internal void RegisterNewFilter(IModelFilter newFilter)
@@ -3377,7 +3382,8 @@ namespace BrightIdeasSoftware.Rendering
         [Category("Behavior"),
          Description("The index of the image that should be drawn"),
          DefaultValue(null)]
-        public string ImageName { get => ImageSelector as string; set => ImageSelector = value;
+        public string ImageName {
+            get => ImageSelector as string; set => ImageSelector = value;
         }
 
         /// <summary>
@@ -3750,13 +3756,15 @@ namespace BrightIdeasSoftware.Rendering
         /// </summary>
         [Browsable(false),
          DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public TextMatchFilter Filter { get => highlightTextRenderer.Filter; set => highlightTextRenderer.Filter = value;
+        public TextMatchFilter Filter {
+            get => highlightTextRenderer.Filter; set => highlightTextRenderer.Filter = value;
         }
 
         /// <summary>
         /// When a filter changes, keep track of the text matching filters
         /// </summary>
-        IModelFilter IFilterAwareRenderer.Filter { get => Filter; set => highlightTextRenderer.RegisterNewFilter(value);
+        IModelFilter IFilterAwareRenderer.Filter {
+            get => Filter; set => highlightTextRenderer.RegisterNewFilter(value);
         }
 
         #endregion Text highlighting
@@ -3904,7 +3912,8 @@ namespace BrightIdeasSoftware.Rendering
         [Category("ObjectListView"),
         Description("The size of the button when the SizingMode is FixedBounds"),
         DefaultValue(null)]
-        public Size? ButtonSize { get => buttonSize; set => buttonSize = value;
+        public Size? ButtonSize {
+            get => buttonSize; set => buttonSize = value;
         }
 
         private Size? buttonSize;
@@ -3914,7 +3923,8 @@ namespace BrightIdeasSoftware.Rendering
         /// </summary>
         [Category("ObjectListView"),
         Description("The extra space that surrounds the cell when the SizingMode is TextBounds")]
-        public Size? ButtonPadding { get => buttonPadding; set => buttonPadding = value;
+        public Size? ButtonPadding {
+            get => buttonPadding; set => buttonPadding = value;
         }
 
         private Size? buttonPadding = new Size(10, 10);

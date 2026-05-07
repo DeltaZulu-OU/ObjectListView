@@ -60,7 +60,8 @@ namespace BrightIdeasSoftware.SubControls
         /// <summary>
         /// Gets or sets whether an item should be checked when it is clicked
         /// </summary>
-        public bool CheckedOnClick { get => CheckedListBoxControl.CheckOnClick; set => CheckedListBoxControl.CheckOnClick = value;
+        public bool CheckedOnClick {
+            get => CheckedListBoxControl.CheckOnClick; set => CheckedListBoxControl.CheckOnClick = value;
         }
 
         /// <summary>

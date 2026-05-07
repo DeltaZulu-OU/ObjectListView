@@ -99,7 +99,8 @@ namespace BrightIdeasSoftware.Rendering
          Description("How transparent should this overlay be"),
          DefaultValue(128),
          NotifyParentProperty(true)]
-        public int Transparency { get => transparency; set => transparency = Math.Min(255, Math.Max(0, value));
+        public int Transparency {
+            get => transparency; set => transparency = Math.Min(255, Math.Max(0, value));
         }
 
         private int transparency = 128;
@@ -130,7 +131,8 @@ namespace BrightIdeasSoftware.Rendering
          Description("The horizontal inset by which the position of the overlay will be adjusted"),
          DefaultValue(20),
          NotifyParentProperty(true)]
-        public int InsetX { get => insetX; set => insetX = Math.Max(0, value);
+        public int InsetX {
+            get => insetX; set => insetX = Math.Max(0, value);
         }
 
         private int insetX = 20;
@@ -142,7 +144,8 @@ namespace BrightIdeasSoftware.Rendering
          Description("Gets or sets the vertical inset by which the position of the overlay will be adjusted"),
          DefaultValue(20),
          NotifyParentProperty(true)]
-        public int InsetY { get => insetY; set => insetY = Math.Max(0, value);
+        public int InsetY {
+            get => insetY; set => insetY = Math.Max(0, value);
         }
 
         private int insetY = 20;
@@ -192,7 +195,8 @@ namespace BrightIdeasSoftware.Rendering
          Description("The horizontal inset by which the position of the overlay will be adjusted"),
          DefaultValue(20),
          NotifyParentProperty(true)]
-        public int InsetX { get => insetX; set => insetX = Math.Max(0, value);
+        public int InsetX {
+            get => insetX; set => insetX = Math.Max(0, value);
         }
 
         private int insetX = 20;
@@ -204,7 +208,8 @@ namespace BrightIdeasSoftware.Rendering
          Description("Gets or sets the vertical inset by which the position of the overlay will be adjusted"),
          DefaultValue(20),
          NotifyParentProperty(true)]
-        public int InsetY { get => insetY; set => insetY = Math.Max(0, value);
+        public int InsetY {
+            get => insetY; set => insetY = Math.Max(0, value);
         }
 
         private int insetY = 20;
@@ -275,7 +280,8 @@ namespace BrightIdeasSoftware.Rendering
         /// <summary>
         /// Gets or sets where should the top left of the billboard be placed
         /// </summary>
-        public Point Location { get => location; set => location = value;
+        public Point Location {
+            get => location; set => location = value;
         }
 
         private Point location;

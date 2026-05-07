@@ -92,7 +92,8 @@ namespace BrightIdeasSoftware
         [Category("Data"),
          Description("Should the control automatically generate columns from the DataSource"),
          DefaultValue(true)]
-        public bool AutoGenerateColumns { get => Adapter.AutoGenerateColumns; set => Adapter.AutoGenerateColumns = value;
+        public bool AutoGenerateColumns {
+            get => Adapter.AutoGenerateColumns; set => Adapter.AutoGenerateColumns = value;
         }
 
         /// <summary>
@@ -122,7 +123,8 @@ namespace BrightIdeasSoftware
         /// </remarks>
         [Category("Data"),
         TypeConverter("System.Windows.Forms.Design.DataSourceConverter, System.Design")]
-        public virtual Object DataSource { get => Adapter.DataSource; set => Adapter.DataSource = value;
+        public virtual Object DataSource {
+            get => Adapter.DataSource; set => Adapter.DataSource = value;
         }
 
         /// <summary>
@@ -132,7 +134,8 @@ namespace BrightIdeasSoftware
         [Category("Data"),
          Editor("System.Windows.Forms.Design.DataMemberListEditor, System.Design", typeof(UITypeEditor)),
          DefaultValue("")]
-        public virtual string DataMember { get => Adapter.DataMember; set => Adapter.DataMember = value;
+        public virtual string DataMember {
+            get => Adapter.DataMember; set => Adapter.DataMember = value;
         }
 
         #endregion Public Properties

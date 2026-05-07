@@ -132,7 +132,8 @@ namespace BrightIdeasSoftware.DragDrop
         /// <summary>
         /// Gets or sets the ObjectListView that is the drop sink
         /// </summary>
-        public virtual ObjectListView ListView { get => listView; set => listView = value;
+        public virtual ObjectListView ListView {
+            get => listView; set => listView = value;
         }
 
         private ObjectListView listView;
@@ -1377,7 +1378,8 @@ namespace BrightIdeasSoftware.DragDrop
         /// <summary>
         /// Get the location of the mouse (in target ListView co-ords)
         /// </summary>
-        public Point MouseLocation { get => mouseLocation; internal set => mouseLocation = value;
+        public Point MouseLocation {
+            get => mouseLocation; internal set => mouseLocation = value;
         }
 
         private Point mouseLocation;

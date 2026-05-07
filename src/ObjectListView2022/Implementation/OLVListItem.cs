@@ -91,7 +91,8 @@ namespace BrightIdeasSoftware.Implementation
         /// Gets or sets how many pixels will be left blank around each cell of this item
         /// </summary>
         /// <remarks>This setting only takes effect when the control is owner drawn.</remarks>
-        public Rectangle? CellPadding { get => cellPadding; set => cellPadding = value;
+        public Rectangle? CellPadding {
+            get => cellPadding; set => cellPadding = value;
         }
 
         private Rectangle? cellPadding;

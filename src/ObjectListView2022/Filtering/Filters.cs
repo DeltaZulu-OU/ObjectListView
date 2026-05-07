@@ -283,7 +283,8 @@ namespace BrightIdeasSoftware.Filtering
         /// Gets or sets the delegate that will be used to extract values
         /// from model objects
         /// </summary>
-        public virtual AspectGetterDelegate ValueGetter { get => valueGetter; set => valueGetter = value;
+        public virtual AspectGetterDelegate ValueGetter {
+            get => valueGetter; set => valueGetter = value;
         }
 
         private AspectGetterDelegate valueGetter;
@@ -292,7 +293,8 @@ namespace BrightIdeasSoftware.Filtering
         /// Gets or sets the list of values that the value extracted from
         /// the model object must match in order to be included.
         /// </summary>
-        public virtual IList PossibleValues { get => possibleValues; set => possibleValues = value;
+        public virtual IList PossibleValues {
+            get => possibleValues; set => possibleValues = value;
         }
 
         private IList possibleValues;

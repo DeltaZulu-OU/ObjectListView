@@ -75,7 +75,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Drawing;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
@@ -342,7 +341,8 @@ namespace BrightIdeasSoftware
         /// <remarks>Only use this property if you are not using a VirtualListDataSource.</remarks>
         [Browsable(false),
          DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public virtual RowGetterDelegate RowGetter { get => ((VirtualListVersion1DataSource)virtualListDataSource).RowGetter; set => ((VirtualListVersion1DataSource)virtualListDataSource).RowGetter = value;
+        public virtual RowGetterDelegate RowGetter {
+            get => ((VirtualListVersion1DataSource)virtualListDataSource).RowGetter; set => ((VirtualListVersion1DataSource)virtualListDataSource).RowGetter = value;
         }
 
         /// <summary>

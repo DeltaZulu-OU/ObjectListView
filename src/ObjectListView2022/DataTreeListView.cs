@@ -73,7 +73,8 @@ namespace BrightIdeasSoftware
         [Category("Data"),
          Description("Should the control automatically generate columns from the DataSource"),
          DefaultValue(true)]
-        public bool AutoGenerateColumns { get => Adapter.AutoGenerateColumns; set => Adapter.AutoGenerateColumns = value;
+        public bool AutoGenerateColumns {
+            get => Adapter.AutoGenerateColumns; set => Adapter.AutoGenerateColumns = value;
         }
 
         /// <summary>
@@ -98,7 +99,8 @@ namespace BrightIdeasSoftware
         /// </remarks>
         [Category("Data"),
         TypeConverter("System.Windows.Forms.Design.DataSourceConverter, System.Design")]
-        public virtual Object DataSource { get => Adapter.DataSource; set => Adapter.DataSource = value;
+        public virtual Object DataSource {
+            get => Adapter.DataSource; set => Adapter.DataSource = value;
         }
 
         /// <summary>
@@ -108,7 +110,8 @@ namespace BrightIdeasSoftware
         [Category("Data"),
          Editor("System.Windows.Forms.Design.DataMemberListEditor, System.Design", typeof(UITypeEditor)),
          DefaultValue("")]
-        public virtual string DataMember { get => Adapter.DataMember; set => Adapter.DataMember = value;
+        public virtual string DataMember {
+            get => Adapter.DataMember; set => Adapter.DataMember = value;
         }
 
         /// <summary>
@@ -125,7 +128,8 @@ namespace BrightIdeasSoftware
         [Category("Data"),
          Description("The name of the property/column that holds the key of a row"),
          DefaultValue(null)]
-        public virtual string KeyAspectName { get => Adapter.KeyAspectName; set => Adapter.KeyAspectName = value;
+        public virtual string KeyAspectName {
+            get => Adapter.KeyAspectName; set => Adapter.KeyAspectName = value;
         }
 
         /// <summary>
@@ -146,7 +150,8 @@ namespace BrightIdeasSoftware
         [Category("Data"),
          Description("The name of the property/column that holds the key of the parent of a row"),
          DefaultValue(null)]
-        public virtual string ParentKeyAspectName { get => Adapter.ParentKeyAspectName; set => Adapter.ParentKeyAspectName = value;
+        public virtual string ParentKeyAspectName {
+            get => Adapter.ParentKeyAspectName; set => Adapter.ParentKeyAspectName = value;
         }
 
         /// <summary>
@@ -169,7 +174,8 @@ namespace BrightIdeasSoftware
         /// </remarks>
         [Browsable(false),
         DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public virtual object RootKeyValue { get => Adapter.RootKeyValue; set => Adapter.RootKeyValue = value;
+        public virtual object RootKeyValue {
+            get => Adapter.RootKeyValue; set => Adapter.RootKeyValue = value;
         }
 
         /// <summary>
@@ -185,7 +191,8 @@ namespace BrightIdeasSoftware
         [Category("Data"),
         Description("The parent id value that identifies a row as a root object"),
         DefaultValue(null)]
-        public virtual string RootKeyValueString { get => Convert.ToString(Adapter.RootKeyValue); set => Adapter.RootKeyValue = value;
+        public virtual string RootKeyValueString {
+            get => Convert.ToString(Adapter.RootKeyValue); set => Adapter.RootKeyValue = value;
         }
 
         /// <summary>
@@ -197,7 +204,8 @@ namespace BrightIdeasSoftware
         [Category("Data"),
          Description("Should the keys columns (id and parent id) be shown to the user?"),
          DefaultValue(true)]
-        public virtual bool ShowKeyColumns { get => Adapter.ShowKeyColumns; set => Adapter.ShowKeyColumns = value;
+        public virtual bool ShowKeyColumns {
+            get => Adapter.ShowKeyColumns; set => Adapter.ShowKeyColumns = value;
         }
 
         #endregion Public Properties

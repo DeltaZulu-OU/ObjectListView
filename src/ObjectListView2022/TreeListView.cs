@@ -219,7 +219,8 @@ namespace BrightIdeasSoftware
         /// </remarks>
         [Browsable(false),
         DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public virtual CanExpandGetterDelegate CanExpandGetter { get => TreeModel.CanExpandGetter; set => TreeModel.CanExpandGetter = value;
+        public virtual CanExpandGetterDelegate CanExpandGetter {
+            get => TreeModel.CanExpandGetter; set => TreeModel.CanExpandGetter = value;
         }
 
         /// <summary>
@@ -243,7 +244,8 @@ namespace BrightIdeasSoftware
         /// </remarks>
         [Browsable(false),
         DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public virtual ChildrenGetterDelegate ChildrenGetter { get => TreeModel.ChildrenGetter; set => TreeModel.ChildrenGetter = value;
+        public virtual ChildrenGetterDelegate ChildrenGetter {
+            get => TreeModel.ChildrenGetter; set => TreeModel.ChildrenGetter = value;
         }
 
         /// <summary>
@@ -327,7 +329,8 @@ namespace BrightIdeasSoftware
         /// </summary>
         [Browsable(false),
         DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public override IListFilter ListFilter { get => null; set => System.Diagnostics.Debug.Assert(value == null, "TreeListView do not support ListFilters");
+        public override IListFilter ListFilter {
+            get => null; set => System.Diagnostics.Debug.Assert(value == null, "TreeListView do not support ListFilters");
         }
 
         /// <summary>
@@ -371,7 +374,8 @@ namespace BrightIdeasSoftware
         /// </summary>
         [Browsable(false),
         DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public override IEnumerable Objects { get => Roots; set => Roots = value;
+        public override IEnumerable Objects {
+            get => Roots; set => Roots = value;
         }
 
         /// <summary>
@@ -482,7 +486,8 @@ namespace BrightIdeasSoftware
         [Category("ObjectListView"),
         Description("Should a wait cursor be shown when a branch is being expanded?"),
         DefaultValue(true)]
-        public virtual bool UseWaitCursorWhenExpanding { get => useWaitCursorWhenExpanding; set => useWaitCursorWhenExpanding = value;
+        public virtual bool UseWaitCursorWhenExpanding {
+            get => useWaitCursorWhenExpanding; set => useWaitCursorWhenExpanding = value;
         }
 
         private bool useWaitCursorWhenExpanding = true;
@@ -2139,7 +2144,8 @@ namespace BrightIdeasSoftware
             /// <summary>
             /// Gets or set whether this branch is expanded
             /// </summary>
-            public bool IsExpanded { get => Tree.IsModelExpanded(Model); set => Tree.SetModelExpanded(Model, value);
+            public bool IsExpanded {
+                get => Tree.IsModelExpanded(Model); set => Tree.SetModelExpanded(Model, value);
             }
 
             /// <summary>

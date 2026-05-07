@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.ComponentModel;
 
@@ -122,7 +121,8 @@ namespace BrightIdeasSoftware.Implementation
         /// </summary>
         /// <remarks>This must be set before the DataSource is set. It has no effect
         /// afterwards.</remarks>
-        public virtual bool ShowKeyColumns { get => showKeyColumns; set => showKeyColumns = value;
+        public virtual bool ShowKeyColumns {
+            get => showKeyColumns; set => showKeyColumns = value;
         }
 
         private bool showKeyColumns = true;

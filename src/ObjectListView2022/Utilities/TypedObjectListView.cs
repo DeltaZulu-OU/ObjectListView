@@ -113,7 +113,8 @@ namespace BrightIdeasSoftware.Utilities
         /// <summary>
         /// The ObjectListView that is being wrapped
         /// </summary>
-        public virtual ObjectListView ListView { get => olv; set => olv = value;
+        public virtual ObjectListView ListView {
+            get => olv; set => olv = value;
         }
 
         private ObjectListView olv;
@@ -139,7 +140,8 @@ namespace BrightIdeasSoftware.Utilities
         /// Return the model object that is selected, if only one row is selected.
         /// If zero rows are selected, or more than one row, null is returned.
         /// </summary>
-        public virtual T SelectedObject { get => (T)olv.SelectedObject; set => olv.SelectedObject = value;
+        public virtual T SelectedObject {
+            get => (T)olv.SelectedObject; set => olv.SelectedObject = value;
         }
 
         /// <summary>
@@ -325,7 +327,8 @@ namespace BrightIdeasSoftware.Utilities
         /// <summary>
         /// Gets or sets the header tool tip getter
         /// </summary>
-        public virtual HeaderToolTipGetterDelegate HeaderToolTipGetter { get => olv.HeaderToolTipGetter; set => olv.HeaderToolTipGetter = value;
+        public virtual HeaderToolTipGetterDelegate HeaderToolTipGetter {
+            get => olv.HeaderToolTipGetter; set => olv.HeaderToolTipGetter = value;
         }
 
         //--------------------------------------------------------------------------------------

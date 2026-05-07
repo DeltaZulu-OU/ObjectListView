@@ -1246,7 +1246,8 @@ namespace BrightIdeasSoftware
         /// <summary>
         /// Gets the location of the mouse at the time of the event
         /// </summary>
-        public Point Location { get => location; internal set => location = value;
+        public Point Location {
+            get => location; internal set => location = value;
         }
 
         private Point location;
@@ -1602,7 +1603,8 @@ namespace BrightIdeasSoftware
         /// <summary>
         /// Gets an extended indication of the part of item/subitem/group that the mouse is currently over
         /// </summary>
-        public virtual HitTestLocationEx HotCellHitLocationEx { get => hotCellHitLocationEx; internal set => hotCellHitLocationEx = value;
+        public virtual HitTestLocationEx HotCellHitLocationEx {
+            get => hotCellHitLocationEx; internal set => hotCellHitLocationEx = value;
         }
 
         private HitTestLocationEx hotCellHitLocationEx;
@@ -1631,7 +1633,8 @@ namespace BrightIdeasSoftware
         /// <summary>
         /// Gets an extended indication of the part of item/subitem/group that the mouse used to be over
         /// </summary>
-        public virtual HitTestLocationEx OldHotCellHitLocationEx { get => oldHotCellHitLocationEx; internal set => oldHotCellHitLocationEx = value;
+        public virtual HitTestLocationEx OldHotCellHitLocationEx {
+            get => oldHotCellHitLocationEx; internal set => oldHotCellHitLocationEx = value;
         }
 
         private HitTestLocationEx oldHotCellHitLocationEx;

@@ -160,7 +160,8 @@ namespace BrightIdeasSoftware.CellEditing
         /// <summary>
         /// Gets or sets the value shown by this editor
         /// </summary>
-        public new int Value { get => decimal.ToInt32(base.Value); set => base.Value = new decimal(value);
+        public new int Value {
+            get => decimal.ToInt32(base.Value); set => base.Value = new decimal(value);
         }
     }
 
@@ -180,7 +181,8 @@ namespace BrightIdeasSoftware.CellEditing
             Maximum = 9999999;
         }
 
-        public new uint Value { get => decimal.ToUInt32(base.Value); set => base.Value = new decimal(value);
+        public new uint Value {
+            get => decimal.ToUInt32(base.Value); set => base.Value = new decimal(value);
         }
     }
 
@@ -291,7 +293,8 @@ namespace BrightIdeasSoftware.CellEditing
         /// <summary>
         /// Gets or sets the value shown by this editor
         /// </summary>
-        public new double Value { get => Convert.ToDouble(base.Value); set => base.Value = Convert.ToDecimal(value);
+        public new double Value {
+            get => Convert.ToDouble(base.Value); set => base.Value = Convert.ToDecimal(value);
         }
     }
 }

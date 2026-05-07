@@ -428,13 +428,16 @@ namespace BrightIdeasSoftware
             //    EditValue(this.designer, base.Component, "Items");
             //}
 
-            public ImageList LargeImageList { get => ((ListView)Component).LargeImageList; set => SetValue(Component, "LargeImageList", value);
+            public ImageList LargeImageList {
+                get => ((ListView)Component).LargeImageList; set => SetValue(Component, "LargeImageList", value);
             }
 
-            public ImageList SmallImageList { get => ((ListView)Component).SmallImageList; set => SetValue(Component, "SmallImageList", value);
+            public ImageList SmallImageList {
+                get => ((ListView)Component).SmallImageList; set => SetValue(Component, "SmallImageList", value);
             }
 
-            public View View { get => ((ListView)Component).View; set => SetValue(Component, "View", value);
+            public View View {
+                get => ((ListView)Component).View; set => SetValue(Component, "View", value);
             }
 
             private readonly ObjectListViewDesigner designer;
