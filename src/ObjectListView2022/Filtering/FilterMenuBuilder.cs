@@ -13,7 +13,7 @@
  * v2.5
  * 2011-04-12  JPP  - Added some images to menu
  * 2011-03-04  JPP  - First version
- * 
+ *
  * Copyright (C) 2011-2014 Phillip Piper
  *
  * This program is free software: you can redistribute it and/or modify
@@ -33,14 +33,13 @@
  */
 
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows.Forms;
 using System.Collections;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Windows.Forms;
 
-namespace BrightIdeasSoftware {
-
+namespace BrightIdeasSoftware
+{
     /// <summary>
     /// Instances of this class know how to build a Filter menu.
     /// It is responsible for clustering the values in the target column,
@@ -51,46 +50,46 @@ namespace BrightIdeasSoftware {
     /// Almost all of the methods in this class are declared as "virtual protected"
     /// so that subclasses can provide alternative behaviours.
     /// </remarks>
-    public class FilterMenuBuilder {
-
+    public class FilterMenuBuilder
+    {
         #region Static properties
 
         /// <summary>
         /// Gets or sets the string that labels the Apply button.
         /// Exposed so it can be localized.
         /// </summary>
-        static public string APPLY_LABEL = "Apply";
+        public static string APPLY_LABEL = "Apply";
 
         /// <summary>
         /// Gets or sets the string that labels the Clear All menu item.
         /// Exposed so it can be localized.
         /// </summary>
-        static public string CLEAR_ALL_FILTERS_LABEL = "Clear All Filters";
+        public static string CLEAR_ALL_FILTERS_LABEL = "Clear All Filters";
 
         /// <summary>
         /// Gets or sets the string that labels the Filtering menu as a whole..
         /// Exposed so it can be localized.
         /// </summary>
-        static public string FILTERING_LABEL = "Filtering";
+        public static string FILTERING_LABEL = "Filtering";
 
         /// <summary>
         /// Gets or sets the string that represents Select All values.
         /// If this is set to null or empty, no Select All option will be included.
         /// Exposed so it can be localized.
         /// </summary>
-        static public string SELECT_ALL_LABEL = "Select All";
+        public static string SELECT_ALL_LABEL = "Select All";
 
         /// <summary>
         /// Gets or sets the image that will be placed next to the Clear Filtering menu item
         /// </summary>
-        static public Bitmap ClearFilteringImage = BrightIdeasSoftware.Properties.Resources.ClearFiltering;
+        public static Bitmap ClearFilteringImage = BrightIdeasSoftware.Properties.Resources.ClearFiltering;
 
         /// <summary>
         /// Gets or sets the image that will be placed next to all "Apply" menu items on the filtering menu
         /// </summary>
-        static public Bitmap FilteringImage = BrightIdeasSoftware.Properties.Resources.Filtering;
+        public static Bitmap FilteringImage = BrightIdeasSoftware.Properties.Resources.Filtering;
 
-        #endregion
+        #endregion Static properties
 
         #region Public properties
 
@@ -103,6 +102,7 @@ namespace BrightIdeasSoftware {
             get { return treatNullAsDataValue; }
             set { treatNullAsDataValue = value; }
         }
+
         private bool treatNullAsDataValue = true;
 
         /// <summary>
@@ -116,9 +116,10 @@ namespace BrightIdeasSoftware {
             get { return maxObjectsToConsider; }
             set { maxObjectsToConsider = value; }
         }
+
         private int maxObjectsToConsider = 10000;
 
-        #endregion
+        #endregion Public properties
 
         /// <summary>
         /// Create a Filter menu on the given tool tip for the given column in the given ObjectListView.
@@ -128,7 +129,8 @@ namespace BrightIdeasSoftware {
         /// <param name="listView"></param>
         /// <param name="column"></param>
         /// <returns>The strip that should be shown to the user</returns>
-        virtual public ToolStripDropDown MakeFilterMenu(ToolStripDropDown strip, ObjectListView listView, OLVColumn column) {
+        public virtual ToolStripDropDown MakeFilterMenu(ToolStripDropDown strip, ObjectListView listView, OLVColumn column)
+        {
             if (strip == null) throw new ArgumentNullException("strip");
             if (listView == null) throw new ArgumentNullException("listView");
             if (column == null) throw new ArgumentNullException("column");
@@ -137,7 +139,8 @@ namespace BrightIdeasSoftware {
                 return strip;
 
             List<ICluster> clusters = this.Cluster(column.ClusteringStrategy, listView, column);
-            if (clusters.Count > 0) {
+            if (clusters.Count > 0)
+            {
                 this.SortClusters(column.ClusteringStrategy, clusters);
                 strip.Items.Add(this.CreateFilteringMenuItem(column, clusters));
             }
@@ -152,11 +155,13 @@ namespace BrightIdeasSoftware {
         /// <param name="listView"></param>
         /// <param name="column"></param>
         /// <returns></returns>
-        virtual protected List<ICluster> Cluster(IClusteringStrategy strategy, ObjectListView listView, OLVColumn column) {
+        protected virtual List<ICluster> Cluster(IClusteringStrategy strategy, ObjectListView listView, OLVColumn column)
+        {
             // Build a map that correlates cluster key to clusters
             NullableDictionary<object, ICluster> map = new NullableDictionary<object, ICluster>();
             int count = 0;
-            foreach (object model in listView.ObjectsForClustering) {
+            foreach (object model in listView.ObjectsForClustering)
+            {
                 this.ClusterOneModel(strategy, map, model);
 
                 if (count++ > this.MaxObjectsToConsider)
@@ -170,25 +175,30 @@ namespace BrightIdeasSoftware {
             return new List<ICluster>(map.Values);
         }
 
-        private void ClusterOneModel(IClusteringStrategy strategy, NullableDictionary<object, ICluster> map, object model) {
+        private void ClusterOneModel(IClusteringStrategy strategy, NullableDictionary<object, ICluster> map, object model)
+        {
             object clusterKey = strategy.GetClusterKey(model);
 
             // If the returned value is an IEnumerable, that means the given model can belong to more than one cluster
             IEnumerable keyEnumerable = clusterKey as IEnumerable;
             if (clusterKey is string || keyEnumerable == null)
-                keyEnumerable = new object[] {clusterKey};
+                keyEnumerable = new object[] { clusterKey };
 
             // Deal with nulls and DBNulls
             ArrayList nullCorrected = new ArrayList();
-            foreach (object key in keyEnumerable) {
-                if (key == null || key == System.DBNull.Value) {
+            foreach (object key in keyEnumerable)
+            {
+                if (key == null || key == System.DBNull.Value)
+                {
                     if (this.TreatNullAsDataValue)
                         nullCorrected.Add(null);
-                } else nullCorrected.Add(key);
+                }
+                else nullCorrected.Add(key);
             }
 
             // Group by key
-            foreach (object key in nullCorrected) {
+            foreach (object key in nullCorrected)
+            {
                 if (map.ContainsKey(key))
                     map[key].Count += 1;
                 else
@@ -201,7 +211,8 @@ namespace BrightIdeasSoftware {
         /// </summary>
         /// <param name="strategy"></param>
         /// <param name="clusters"></param>
-        virtual protected void SortClusters(IClusteringStrategy strategy, List<ICluster> clusters) {
+        protected virtual void SortClusters(IClusteringStrategy strategy, List<ICluster> clusters)
+        {
             clusters.Sort();
         }
 
@@ -211,12 +222,14 @@ namespace BrightIdeasSoftware {
         /// <param name="column"></param>
         /// <param name="clusters"></param>
         /// <returns></returns>
-        virtual protected ToolStripMenuItem CreateFilteringMenuItem(OLVColumn column, List<ICluster> clusters) {
+        protected virtual ToolStripMenuItem CreateFilteringMenuItem(OLVColumn column, List<ICluster> clusters)
+        {
             ToolStripCheckedListBox checkedList = new ToolStripCheckedListBox();
             checkedList.Tag = column;
             foreach (ICluster cluster in clusters)
                 checkedList.AddItem(cluster, column.ValuesChosenForFiltering.Contains(cluster.ClusterKey));
-            if (!String.IsNullOrEmpty(SELECT_ALL_LABEL)) {
+            if (!String.IsNullOrEmpty(SELECT_ALL_LABEL))
+            {
                 int checkedCount = checkedList.CheckedItems.Count;
                 if (checkedCount == 0)
                     checkedList.AddItem(SELECT_ALL_LABEL, CheckState.Unchecked);
@@ -225,46 +238,50 @@ namespace BrightIdeasSoftware {
             }
             checkedList.ItemCheck += new ItemCheckEventHandler(HandleItemCheckedWrapped);
 
-            ToolStripMenuItem clearAll = new ToolStripMenuItem(CLEAR_ALL_FILTERS_LABEL, ClearFilteringImage, delegate(object sender, EventArgs args) {
+            ToolStripMenuItem clearAll = new ToolStripMenuItem(CLEAR_ALL_FILTERS_LABEL, ClearFilteringImage, delegate (object sender, EventArgs args) {
                 this.ClearAllFilters(column);
             });
-            ToolStripMenuItem apply = new ToolStripMenuItem(APPLY_LABEL, FilteringImage, delegate(object sender, EventArgs args) {
+            ToolStripMenuItem apply = new ToolStripMenuItem(APPLY_LABEL, FilteringImage, delegate (object sender, EventArgs args) {
                 this.EnactFilter(checkedList, column);
             });
-            ToolStripMenuItem subMenu = new ToolStripMenuItem(FILTERING_LABEL, null, new ToolStripItem[] { 
+            ToolStripMenuItem subMenu = new ToolStripMenuItem(FILTERING_LABEL, null, new ToolStripItem[] {
                 clearAll, new ToolStripSeparator(), checkedList, apply });
             return subMenu;
         }
 
         /// <summary>
         /// Wrap a protected section around the real HandleItemChecked method, so that if
-        /// that method tries to change a "checkedness" of an item, we don't get a recursive 
+        /// that method tries to change a "checkedness" of an item, we don't get a recursive
         /// stack error. Effectively, this ensure that HandleItemChecked is only called
         /// in response to a user action.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void HandleItemCheckedWrapped(object sender, ItemCheckEventArgs e) {
+        private void HandleItemCheckedWrapped(object sender, ItemCheckEventArgs e)
+        {
             if (alreadyInHandleItemChecked)
                 return;
 
-            try {
+            try
+            {
                 alreadyInHandleItemChecked = true;
                 this.HandleItemChecked(sender, e);
             }
-            finally {
+            finally
+            {
                 alreadyInHandleItemChecked = false;
             }
         }
-        bool alreadyInHandleItemChecked = false;
+
+        private bool alreadyInHandleItemChecked = false;
 
         /// <summary>
         /// Handle a user-generated ItemCheck event
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        virtual protected void HandleItemChecked(object sender, ItemCheckEventArgs e) {
-
+        protected virtual void HandleItemChecked(object sender, ItemCheckEventArgs e)
+        {
             ToolStripCheckedListBox checkedList = sender as ToolStripCheckedListBox;
             if (checkedList == null) return;
             OLVColumn column = checkedList.Tag as OLVColumn;
@@ -285,9 +302,11 @@ namespace BrightIdeasSoftware {
         /// <param name="e"></param>
         /// <param name="checkedList"></param>
         /// <param name="selectAllIndex"></param>
-        virtual protected void HandleSelectAllItem(ItemCheckEventArgs e, ToolStripCheckedListBox checkedList, int selectAllIndex) {
+        protected virtual void HandleSelectAllItem(ItemCheckEventArgs e, ToolStripCheckedListBox checkedList, int selectAllIndex)
+        {
             // Did they check/uncheck the "Select All"?
-            if (e.Index == selectAllIndex) {
+            if (e.Index == selectAllIndex)
+            {
                 if (e.NewValue == CheckState.Checked)
                     checkedList.CheckAll();
                 if (e.NewValue == CheckState.Unchecked)
@@ -301,7 +320,7 @@ namespace BrightIdeasSoftware {
             // If no clusters are checked, the uncheck the Select All.
             // For everything else, Select All is set to indeterminate.
 
-            // How many items are currenty checked? 
+            // How many items are currenty checked?
             int count = checkedList.CheckedItems.Count;
 
             // First complication.
@@ -313,7 +332,8 @@ namespace BrightIdeasSoftware {
             // CheckedItems does not yet know about the item the user has just
             // clicked, so we have to adjust the count of checked items to what
             // it is going to be
-            if (e.NewValue != e.CurrentValue) {
+            if (e.NewValue != e.CurrentValue)
+            {
                 if (e.NewValue == CheckState.Checked)
                     count += 1;
                 else
@@ -333,8 +353,8 @@ namespace BrightIdeasSoftware {
         /// Clear all the filters that are applied to the given column
         /// </summary>
         /// <param name="column">The column from which filters are to be removed</param>
-        virtual protected void ClearAllFilters(OLVColumn column) {
-
+        protected virtual void ClearAllFilters(OLVColumn column)
+        {
             ObjectListView olv = column.ListView as ObjectListView;
             if (olv == null || olv.IsDisposed)
                 return;
@@ -347,17 +367,19 @@ namespace BrightIdeasSoftware {
         /// </summary>
         /// <param name="checkedList">A list in which the checked items should be used as filters</param>
         /// <param name="column">The column for which a filter should be generated</param>
-        virtual protected void EnactFilter(ToolStripCheckedListBox checkedList, OLVColumn column) {
-            
+        protected virtual void EnactFilter(ToolStripCheckedListBox checkedList, OLVColumn column)
+        {
             ObjectListView olv = column.ListView as ObjectListView;
             if (olv == null || olv.IsDisposed)
                 return;
 
             // Collect all the checked values
             ArrayList chosenValues = new ArrayList();
-            foreach (object x in checkedList.CheckedItems) {
+            foreach (object x in checkedList.CheckedItems)
+            {
                 ICluster cluster = x as ICluster;
-                if (cluster != null) {
+                if (cluster != null)
+                {
                     chosenValues.Add(cluster.ClusterKey);
                 }
             }

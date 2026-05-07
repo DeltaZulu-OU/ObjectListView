@@ -11,12 +11,12 @@
  *                     can be used by FastDataListView too)
  * v2.3
  * 2009-01-18   JPP  - Boolean columns are now handled as checkboxes
- *                   - Auto-generated columns would fail if the data source was 
+ *                   - Auto-generated columns would fail if the data source was
  *                     reseated, even to the same data source
  * v2.0.1
- * 2009-01-07   JPP  - Made all public and protected methods virtual 
+ * 2009-01-07   JPP  - Made all public and protected methods virtual
  * 2008-10-03   JPP  - Separated from ObjectListView.cs
- * 
+ *
  * Copyright (C) 2006-2015 Phillip Piper
  *
  * This program is free software: you can redistribute it and/or modify
@@ -45,7 +45,6 @@ using System.Windows.Forms;
 
 namespace BrightIdeasSoftware
 {
-
     /// <summary>
     /// A DataListView is a ListView that can be bound to a datasource (which would normally be a DataTable or DataView).
     /// </summary>
@@ -74,18 +73,19 @@ namespace BrightIdeasSoftware
             this.Adapter = new DataSourceAdapter(this);
         }
 
-        protected override void Dispose(bool disposing) {
+        protected override void Dispose(bool disposing)
+        {
             this.Adapter.Dispose();
             base.Dispose(disposing);
         }
 
-        #endregion
+        #endregion Life and death
 
         #region Public Properties
 
         /// <summary>
         /// Gets or sets whether or not columns will be automatically generated to show the
-        /// columns when the DataSource is set. 
+        /// columns when the DataSource is set.
         /// </summary>
         /// <remarks>This must be set before the DataSource is set. It has no effect afterwards.</remarks>
         [Category("Data"),
@@ -123,8 +123,7 @@ namespace BrightIdeasSoftware
         /// </remarks>
         [Category("Data"),
         TypeConverter("System.Windows.Forms.Design.DataSourceConverter, System.Design")]
-        public virtual Object DataSource
-        {
+        public virtual Object DataSource {
             get { return this.Adapter.DataSource; }
             set { this.Adapter.DataSource = value; }
         }
@@ -136,13 +135,12 @@ namespace BrightIdeasSoftware
         [Category("Data"),
          Editor("System.Windows.Forms.Design.DataMemberListEditor, System.Design", typeof(UITypeEditor)),
          DefaultValue("")]
-        public virtual string DataMember
-        {
+        public virtual string DataMember {
             get { return this.Adapter.DataMember; }
             set { this.Adapter.DataMember = value; }
         }
 
-        #endregion
+        #endregion Public Properties
 
         #region Implementation properties
 
@@ -156,13 +154,14 @@ namespace BrightIdeasSoftware
         protected DataSourceAdapter Adapter {
             get {
                 Debug.Assert(adapter != null, "Data adapter should not be null");
-                return adapter; 
+                return adapter;
             }
             set { adapter = value; }
         }
+
         private DataSourceAdapter adapter;
 
-        #endregion
+        #endregion Implementation properties
 
         #region Object manipulations
 
@@ -185,7 +184,8 @@ namespace BrightIdeasSoftware
         /// <remarks>This is a no-op for data lists, since the data
         /// is controlled by the DataSource. Manipulate the data source
         /// rather than this view of the data source.</remarks>
-        public override void InsertObjects(int index, ICollection modelObjects) {
+        public override void InsertObjects(int index, ICollection modelObjects)
+        {
         }
 
         /// <summary>
@@ -198,20 +198,20 @@ namespace BrightIdeasSoftware
         {
         }
 
-        #endregion
+        #endregion Object manipulations
 
         #region Event Handlers
 
         /// <summary>
-        /// Change the Unfreeze behaviour 
+        /// Change the Unfreeze behaviour
         /// </summary>
-        protected override void DoUnfreeze() {
-
+        protected override void DoUnfreeze()
+        {
             // Copied from base method, but we don't need to BuildList() since we know that our
             // data adaptor is going to do that immediately after this method exits.
             this.EndUpdate();
             this.ResizeFreeSpaceFillingColumns();
-           // this.BuildList();
+            // this.BuildList();
         }
 
         /// <summary>
@@ -231,6 +231,6 @@ namespace BrightIdeasSoftware
             // THINK: Do we need to forward this to the adapter?
         }
 
-        #endregion
+        #endregion Event Handlers
     }
 }

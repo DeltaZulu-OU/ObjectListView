@@ -29,11 +29,10 @@
 
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Data;
 using System.ComponentModel;
-using System.Windows.Forms;
+using System.Data;
 using System.Drawing.Design;
+using System.Windows.Forms;
 
 namespace BrightIdeasSoftware
 {
@@ -52,7 +51,8 @@ namespace BrightIdeasSoftware
     {
         protected override void Dispose(bool disposing)
         {
-            if (this.adapter != null) {
+            if (this.adapter != null)
+            {
                 this.adapter.Dispose();
                 this.adapter = null;
             }
@@ -64,14 +64,13 @@ namespace BrightIdeasSoftware
 
         /// <summary>
         /// Gets or sets whether or not columns will be automatically generated to show the
-        /// columns when the DataSource is set. 
+        /// columns when the DataSource is set.
         /// </summary>
         /// <remarks>This must be set before the DataSource is set. It has no effect afterwards.</remarks>
         [Category("Data"),
          Description("Should the control automatically generate columns from the DataSource"),
          DefaultValue(true)]
-        public bool AutoGenerateColumns
-        {
+        public bool AutoGenerateColumns {
             get { return this.Adapter.AutoGenerateColumns; }
             set { this.Adapter.AutoGenerateColumns = value; }
         }
@@ -115,7 +114,7 @@ namespace BrightIdeasSoftware
             set { this.Adapter.DataMember = value; }
         }
 
-        #endregion
+        #endregion Public Properties
 
         #region Implementation properties
 
@@ -131,11 +130,12 @@ namespace BrightIdeasSoftware
             }
             set { adapter = value; }
         }
+
         private DataSourceAdapter adapter;
 
-        #endregion
+        #endregion Implementation properties
 
-        #region Implementation 
+        #region Implementation
 
         /// <summary>
         /// Create the DataSourceAdapter that this control will use.
@@ -143,16 +143,16 @@ namespace BrightIdeasSoftware
         /// <returns>A DataSourceAdapter configured for this list</returns>
         /// <remarks>Subclasses should override this to create their
         /// own specialized adapters</remarks>
-        protected virtual DataSourceAdapter CreateDataSourceAdapter() {
+        protected virtual DataSourceAdapter CreateDataSourceAdapter()
+        {
             return new DataSourceAdapter(this);
         }
 
         /// <summary>
-        /// Change the Unfreeze behaviour 
+        /// Change the Unfreeze behaviour
         /// </summary>
         protected override void DoUnfreeze()
         {
-
             // Copied from base method, but we don't need to BuildList() since we know that our
             // data adaptor is going to do that immediately after this method exits.
             this.EndUpdate();
@@ -160,6 +160,6 @@ namespace BrightIdeasSoftware
             // this.BuildList();
         }
 
-        #endregion
+        #endregion Implementation
     }
 }

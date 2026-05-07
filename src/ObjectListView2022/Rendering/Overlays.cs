@@ -41,8 +41,6 @@
 using System;
 using System.ComponentModel;
 using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
 
 namespace BrightIdeasSoftware
 {
@@ -67,7 +65,7 @@ namespace BrightIdeasSoftware
     public interface ITransparentOverlay : IOverlay
     {
         /// <summary>
-        /// Gets or sets the transparency of the overlay. 
+        /// Gets or sets the transparency of the overlay.
         /// 0 is completely transparent, 255 is completely opaque.
         /// </summary>
         int Transparency { get; set; }
@@ -86,10 +84,11 @@ namespace BrightIdeasSoftware
         /// <param name="olv">The ObjectListView that is being overlaid</param>
         /// <param name="g">The Graphics onto the given OLV</param>
         /// <param name="r">The content area of the OLV</param>
-        public virtual void Draw(ObjectListView olv, Graphics g, Rectangle r) {
+        public virtual void Draw(ObjectListView olv, Graphics g, Rectangle r)
+        {
         }
 
-        #endregion
+        #endregion IOverlay Members
 
         #region ITransparentOverlay Members
 
@@ -104,11 +103,12 @@ namespace BrightIdeasSoftware
             get { return this.transparency; }
             set { this.transparency = Math.Min(255, Math.Max(0, value)); }
         }
+
         private int transparency = 128;
 
-        #endregion
+        #endregion ITransparentOverlay Members
     }
-    
+
     /// <summary>
     /// An overlay that will draw an image over the top of the ObjectListView
     /// </summary>
@@ -118,7 +118,8 @@ namespace BrightIdeasSoftware
         /// <summary>
         /// Create an ImageOverlay
         /// </summary>
-        public ImageOverlay() {
+        public ImageOverlay()
+        {
             this.Alignment = System.Drawing.ContentAlignment.BottomRight;
         }
 
@@ -135,6 +136,7 @@ namespace BrightIdeasSoftware
             get { return this.insetX; }
             set { this.insetX = Math.Max(0, value); }
         }
+
         private int insetX = 20;
 
         /// <summary>
@@ -148,9 +150,10 @@ namespace BrightIdeasSoftware
             get { return this.insetY; }
             set { this.insetY = Math.Max(0, value); }
         }
+
         private int insetY = 20;
 
-        #endregion
+        #endregion Public properties
 
         #region Commands
 
@@ -160,7 +163,8 @@ namespace BrightIdeasSoftware
         /// <param name="olv">The ObjectListView being decorated</param>
         /// <param name="g">The Graphics used for drawing</param>
         /// <param name="r">The bounds of the rendering</param>
-        public virtual void Draw(ObjectListView olv, Graphics g, Rectangle r) {
+        public virtual void Draw(ObjectListView olv, Graphics g, Rectangle r)
+        {
             Rectangle insetRect = r;
             insetRect.Inflate(-this.InsetX, -this.InsetY);
 
@@ -168,7 +172,7 @@ namespace BrightIdeasSoftware
             this.DrawImage(g, insetRect, this.Image, 255);
         }
 
-        #endregion
+        #endregion Commands
     }
 
     /// <summary>
@@ -180,7 +184,8 @@ namespace BrightIdeasSoftware
         /// <summary>
         /// Create a TextOverlay
         /// </summary>
-        public TextOverlay() {
+        public TextOverlay()
+        {
             this.Alignment = System.Drawing.ContentAlignment.BottomRight;
         }
 
@@ -197,6 +202,7 @@ namespace BrightIdeasSoftware
             get { return this.insetX; }
             set { this.insetX = Math.Max(0, value); }
         }
+
         private int insetX = 20;
 
         /// <summary>
@@ -210,6 +216,7 @@ namespace BrightIdeasSoftware
             get { return this.insetY; }
             set { this.insetY = Math.Max(0, value); }
         }
+
         private int insetY = 20;
 
         /// <summary>
@@ -228,7 +235,7 @@ namespace BrightIdeasSoftware
             }
         }
 
-        #endregion
+        #endregion Public properties
 
         #region Commands
 
@@ -238,7 +245,8 @@ namespace BrightIdeasSoftware
         /// <param name="olv">The ObjectListView being decorated</param>
         /// <param name="g">The Graphics used for drawing</param>
         /// <param name="r">The bounds of the rendering</param>
-        public virtual void Draw(ObjectListView olv, Graphics g, Rectangle r) {
+        public virtual void Draw(ObjectListView olv, Graphics g, Rectangle r)
+        {
             if (String.IsNullOrEmpty(this.Text))
                 return;
 
@@ -248,7 +256,7 @@ namespace BrightIdeasSoftware
             this.DrawText(g, insetRect, this.Text, 255);
         }
 
-        #endregion
+        #endregion Commands
     }
 
     /// <summary>
@@ -259,7 +267,8 @@ namespace BrightIdeasSoftware
         /// <summary>
         /// Create a BillboardOverlay
         /// </summary>
-        public BillboardOverlay() {
+        public BillboardOverlay()
+        {
             this.Transparency = 255;
             this.BackColor = Color.PeachPuff;
             this.TextColor = Color.Black;
@@ -274,6 +283,7 @@ namespace BrightIdeasSoftware
             get { return this.location; }
             set { this.location = value; }
         }
+
         private Point location;
 
         /// <summary>
@@ -282,7 +292,8 @@ namespace BrightIdeasSoftware
         /// <param name="olv">The ObjectListView being decorated</param>
         /// <param name="g">The Graphics used for drawing</param>
         /// <param name="r">The bounds of the rendering</param>
-        public override void Draw(ObjectListView olv, Graphics g, Rectangle r) {
+        public override void Draw(ObjectListView olv, Graphics g, Rectangle r)
+        {
             if (String.IsNullOrEmpty(this.Text))
                 return;
 

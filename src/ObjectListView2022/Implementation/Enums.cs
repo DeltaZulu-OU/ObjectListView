@@ -6,7 +6,7 @@
  *
  * Change log:
  * 2011-03-31  JPP  - Split into its own file
- * 
+ *
  * Copyright (C) 2011-2014 Phillip Piper
  *
  * This program is free software: you can redistribute it and/or modify
@@ -25,17 +25,15 @@
  * If you wish to use this code in a closed source application, please contact phillip.piper@gmail.com.
  */
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BrightIdeasSoftware {
-
-    public partial class ObjectListView {
+namespace BrightIdeasSoftware
+{
+    public partial class ObjectListView
+    {
         /// <summary>
         /// How does a user indicate that they want to edit cells?
         /// </summary>
-        public enum CellEditActivateMode {
+        public enum CellEditActivateMode
+        {
             /// <summary>
             /// This list cannot be edited. F2 does nothing.
             /// </summary>
@@ -68,9 +66,10 @@ namespace BrightIdeasSoftware {
         /// <summary>
         /// These values specify how column selection will be presented to the user
         /// </summary>
-        public enum ColumnSelectBehaviour {
+        public enum ColumnSelectBehaviour
+        {
             /// <summary>
-            /// No column selection will be presented 
+            /// No column selection will be presented
             /// </summary>
             None,
 
@@ -92,12 +91,12 @@ namespace BrightIdeasSoftware {
             /*
              * NonModelDialog is just a little bit tricky since the OLV can change views while the dialog is showing
              * So, just comment this out for the time being.
-             
+
             /// <summary>
             /// A non-model dialog will be presented to allow the user to choose columns
             /// </summary>
             NonModelDialog
-             * 
+             *
              */
         }
     }

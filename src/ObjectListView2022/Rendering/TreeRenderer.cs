@@ -2,33 +2,34 @@
  * TreeRenderer - Draw the major column in a TreeListView
  *
  * Author: Phillip Piper
- * Date: 27/06/2015 
+ * Date: 27/06/2015
  *
  * Change log:
  * 2016-07-17  JPP  - Added TreeRenderer.UseTriangles and IsShowGlyphs
  * 2015-06-27  JPP  - Split out from TreeListView.cs
- * 
+ *
  */
 
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
-using System.Drawing.Drawing2D;
 
-namespace BrightIdeasSoftware {
-
-    public partial class TreeListView {
+namespace BrightIdeasSoftware
+{
+    public partial class TreeListView
+    {
         /// <summary>
         /// This class handles drawing the tree structure of the primary column.
         /// </summary>
-        public class TreeRenderer : HighlightTextRenderer {
+        public class TreeRenderer : HighlightTextRenderer
+        {
             /// <summary>
             /// Create a TreeRenderer
             /// </summary>
-            public TreeRenderer() {
+            public TreeRenderer()
+            {
                 this.LinePen = new Pen(Color.Blue, 1.0f);
                 this.LinePen.DashStyle = DashStyle.Dot;
             }
@@ -39,31 +40,31 @@ namespace BrightIdeasSoftware {
             /// Should the renderer draw glyphs at the expansion points?
             /// </summary>
             /// <remarks>The expansion points will still function to expand/collapse even if this is false.</remarks>
-            public bool IsShowGlyphs
-            {
+            public bool IsShowGlyphs {
                 get { return isShowGlyphs; }
                 set { isShowGlyphs = value; }
             }
+
             private bool isShowGlyphs = true;
 
             /// <summary>
             /// Should the renderer draw lines connecting siblings?
             /// </summary>
-            public bool IsShowLines
-            {
+            public bool IsShowLines {
                 get { return isShowLines; }
                 set { isShowLines = value; }
             }
+
             private bool isShowLines = true;
 
             /// <summary>
             /// Return the pen that will be used to draw the lines between branches
             /// </summary>
-            public Pen LinePen
-            {
+            public Pen LinePen {
                 get { return linePen; }
                 set { linePen = value; }
             }
+
             private Pen linePen;
 
             /// <summary>
@@ -72,14 +73,14 @@ namespace BrightIdeasSoftware {
             /// <remarks>
             /// This looks best with ShowLines = false
             /// </remarks>
-            public bool UseTriangles
-            {
+            public bool UseTriangles {
                 get { return useTriangles; }
                 set { useTriangles = value; }
             }
+
             private bool useTriangles = false;
 
-            #endregion
+            #endregion Configuration properties
 
             /// <summary>
             /// Return the branch that the renderer is currently drawing.
@@ -109,7 +110,8 @@ namespace BrightIdeasSoftware {
             /// </summary>
             /// <param name="g"></param>
             /// <param name="r"></param>
-            public override void Render(System.Drawing.Graphics g, System.Drawing.Rectangle r) {
+            public override void Render(System.Drawing.Graphics g, System.Drawing.Rectangle r)
+            {
                 this.DrawBackground(g, r);
 
                 Branch br = this.Branch;
@@ -121,12 +123,12 @@ namespace BrightIdeasSoftware {
                 expandGlyphRectangle.Width = PIXELS_PER_LEVEL;
                 expandGlyphRectangle.Height = PIXELS_PER_LEVEL;
                 expandGlyphRectangle.Y = this.AlignVertically(paddedRectangle, expandGlyphRectangle);
-                int expandGlyphRectangleMidVertical = expandGlyphRectangle.Y + (expandGlyphRectangle.Height/2);
+                int expandGlyphRectangleMidVertical = expandGlyphRectangle.Y + (expandGlyphRectangle.Height / 2);
 
                 if (this.IsShowLines)
                     this.DrawLines(g, r, this.LinePen, br, expandGlyphRectangleMidVertical);
 
-                if (br.CanExpand && this.IsShowGlyphs) 
+                if (br.CanExpand && this.IsShowGlyphs)
                     this.DrawExpansionGlyph(g, expandGlyphRectangle, br.IsExpanded);
 
                 int indent = br.Level * PIXELS_PER_LEVEL;
@@ -142,10 +144,14 @@ namespace BrightIdeasSoftware {
             /// <param name="g"></param>
             /// <param name="r"></param>
             /// <param name="isExpanded"></param>
-            protected virtual void DrawExpansionGlyph(Graphics g, Rectangle r, bool isExpanded) {
-                if (this.UseStyles) {
+            protected virtual void DrawExpansionGlyph(Graphics g, Rectangle r, bool isExpanded)
+            {
+                if (this.UseStyles)
+                {
                     this.DrawExpansionGlyphStyled(g, r, isExpanded);
-                } else {
+                }
+                else
+                {
                     this.DrawExpansionGlyphManual(g, r, isExpanded);
                 }
             }
@@ -165,9 +171,12 @@ namespace BrightIdeasSoftware {
             /// <param name="g"></param>
             /// <param name="r"></param>
             /// <param name="isExpanded"></param>
-            protected virtual void DrawExpansionGlyphStyled(Graphics g, Rectangle r, bool isExpanded) {
-                if (this.UseTriangles && this.IsShowLines) {
-                    using (SolidBrush b = new SolidBrush(GetBackgroundColor())) {
+            protected virtual void DrawExpansionGlyphStyled(Graphics g, Rectangle r, bool isExpanded)
+            {
+                if (this.UseTriangles && this.IsShowLines)
+                {
+                    using (SolidBrush b = new SolidBrush(GetBackgroundColor()))
+                    {
                         Rectangle r2 = r;
                         r2.Inflate(-2, -2);
                         g.FillRectangle(b, r2);
@@ -178,7 +187,8 @@ namespace BrightIdeasSoftware {
                 renderer.DrawBackground(g, r);
             }
 
-            private VisualStyleElement DecideVisualElement(bool isExpanded) {
+            private VisualStyleElement DecideVisualElement(bool isExpanded)
+            {
                 string klass = this.UseTriangles ? "Explorer::TreeView" : "TREEVIEW";
                 int part = this.UseTriangles && this.IsExpansionHot ? 4 : 2;
                 int state = isExpanded ? 2 : 1;
@@ -198,7 +208,8 @@ namespace BrightIdeasSoftware {
             /// <param name="g"></param>
             /// <param name="r"></param>
             /// <param name="isExpanded"></param>
-            protected virtual void DrawExpansionGlyphManual(Graphics g, Rectangle r, bool isExpanded) {
+            protected virtual void DrawExpansionGlyphManual(Graphics g, Rectangle r, bool isExpanded)
+            {
                 int h = 8;
                 int w = 8;
                 int x = r.X + 4;
@@ -220,7 +231,8 @@ namespace BrightIdeasSoftware {
             /// <param name="p"></param>
             /// <param name="br"></param>
             /// <param name="glyphMidVertical"> </param>
-            protected virtual void DrawLines(Graphics g, Rectangle r, Pen p, Branch br, int glyphMidVertical) {
+            protected virtual void DrawLines(Graphics g, Rectangle r, Pen p, Branch br, int glyphMidVertical)
+            {
                 Rectangle r2 = r;
                 r2.Width = PIXELS_PER_LEVEL;
 
@@ -233,8 +245,10 @@ namespace BrightIdeasSoftware {
                 // Draw lines for ancestors
                 int midX;
                 IList<Branch> ancestors = br.Ancestors;
-                foreach (Branch ancestor in ancestors) {
-                    if (!ancestor.IsLastChild && !ancestor.IsOnlyBranch) {
+                foreach (Branch ancestor in ancestors)
+                {
+                    if (!ancestor.IsLastChild && !ancestor.IsOnlyBranch)
+                    {
                         midX = r2.Left + r2.Width / 2;
                         g.DrawLine(p, midX, top, midX, r2.Bottom);
                     }
@@ -248,10 +262,13 @@ namespace BrightIdeasSoftware {
                 g.DrawLine(p, midX, glyphMidVertical, r2.Right, glyphMidVertical);
 
                 // Vertical line second
-                if (br.IsFirstBranch) {
+                if (br.IsFirstBranch)
+                {
                     if (!br.IsLastChild && !br.IsOnlyBranch)
                         g.DrawLine(p, midX, glyphMidVertical, midX, r2.Bottom);
-                } else {
+                }
+                else
+                {
                     if (br.IsLastChild)
                         g.DrawLine(p, midX, top, midX, glyphMidVertical);
                     else
@@ -266,14 +283,17 @@ namespace BrightIdeasSoftware {
             /// <param name="hti"></param>
             /// <param name="x"></param>
             /// <param name="y"></param>
-            protected override void HandleHitTest(Graphics g, OlvListViewHitTestInfo hti, int x, int y) {
+            protected override void HandleHitTest(Graphics g, OlvListViewHitTestInfo hti, int x, int y)
+            {
                 Branch br = this.Branch;
 
                 Rectangle r = this.ApplyCellPadding(this.Bounds);
-                if (br.CanExpand) {
+                if (br.CanExpand)
+                {
                     r.Offset((br.Level - 1) * PIXELS_PER_LEVEL, 0);
                     r.Width = PIXELS_PER_LEVEL;
-                    if (r.Contains(x, y)) {
+                    if (r.Contains(x, y))
+                    {
                         hti.HitTestLocation = HitTestLocation.ExpandButton;
                         return;
                     }
@@ -285,9 +305,12 @@ namespace BrightIdeasSoftware {
                 r.Width -= indent;
 
                 // Ignore events in the indent zone
-                if (x < r.Left) {
+                if (x < r.Left)
+                {
                     hti.HitTestLocation = HitTestLocation.Nothing;
-                } else {
+                }
+                else
+                {
                     this.StandardHitTest(g, hti, r, x, y);
                 }
             }
@@ -301,7 +324,8 @@ namespace BrightIdeasSoftware {
             /// <param name="subItemIndex"></param>
             /// <param name="preferredSize"> </param>
             /// <returns></returns>
-            protected override Rectangle HandleGetEditRectangle(Graphics g, Rectangle cellBounds, OLVListItem item, int subItemIndex, Size preferredSize) {
+            protected override Rectangle HandleGetEditRectangle(Graphics g, Rectangle cellBounds, OLVListItem item, int subItemIndex, Size preferredSize)
+            {
                 return this.StandardGetEditRectangle(g, cellBounds, preferredSize);
             }
         }

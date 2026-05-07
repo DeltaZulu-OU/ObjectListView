@@ -1,5 +1,5 @@
 /*
- * FlagClusteringStrategy - Implements a clustering strategy for a field which is a single integer 
+ * FlagClusteringStrategy - Implements a clustering strategy for a field which is a single integer
  *                          containing an XOR'ed collection of bit flags
  *
  * Author: Phillip Piper
@@ -7,7 +7,7 @@
  *
  * Change log:
  * 2012-03-23  JPP  - First version
- * 
+ *
  * Copyright (C) 2012 Phillip Piper
  *
  * This program is free software: you can redistribute it and/or modify
@@ -31,8 +31,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 
-namespace BrightIdeasSoftware {
-
+namespace BrightIdeasSoftware
+{
     /// <summary>
     /// Instances of this class cluster model objects on the basis of a
     /// property that holds an xor-ed collection of bit flags.
@@ -45,7 +45,8 @@ namespace BrightIdeasSoftware {
         /// Create a clustering strategy that operates on the flags of the given enum
         /// </summary>
         /// <param name="enumType"></param>
-        public FlagClusteringStrategy(Type enumType) {
+        public FlagClusteringStrategy(Type enumType)
+        {
             if (enumType == null) throw new ArgumentNullException("enumType");
             if (!enumType.IsEnum) throw new ArgumentException("Type must be enum", "enumType");
             if (enumType.GetCustomAttributes(typeof(FlagsAttribute), false) == null) throw new ArgumentException("Type must have [Flags] attribute", "enumType");
@@ -67,11 +68,12 @@ namespace BrightIdeasSoftware {
         /// </summary>
         /// <param name="values">The list of flags. </param>
         /// <param name="labels"></param>
-        public FlagClusteringStrategy(long[] values, string[] labels) {
+        public FlagClusteringStrategy(long[] values, string[] labels)
+        {
             this.SetValues(values, labels);
         }
 
-        #endregion
+        #endregion Life and death
 
         #region Implementation
 
@@ -82,6 +84,7 @@ namespace BrightIdeasSoftware {
             get { return this.values; }
             private set { this.values = value; }
         }
+
         private long[] values;
 
         /// <summary>
@@ -91,9 +94,11 @@ namespace BrightIdeasSoftware {
             get { return this.labels; }
             private set { this.labels = value; }
         }
+
         private string[] labels;
 
-        private void SetValues(long[] flags, string[] flagLabels) {
+        private void SetValues(long[] flags, string[] flagLabels)
+        {
             if (flags == null || flags.Length == 0) throw new ArgumentNullException("flags");
             if (flagLabels == null || flagLabels.Length == 0) throw new ArgumentNullException("flagLabels");
             if (flags.Length != flagLabels.Length) throw new ArgumentException("values and labels must have the same number of entries", "flags");
@@ -102,7 +107,7 @@ namespace BrightIdeasSoftware {
             this.Labels = flagLabels;
         }
 
-        #endregion
+        #endregion Implementation
 
         #region Implementation of IClusteringStrategy
 
@@ -111,21 +116,26 @@ namespace BrightIdeasSoftware {
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public override object GetClusterKey(object model) {
+        public override object GetClusterKey(object model)
+        {
             List<long> flags = new List<long>();
-            try {
+            try
+            {
                 long modelValue = Convert.ToInt64(this.Column.GetValue(model));
-                foreach (long x in this.Values) {
+                foreach (long x in this.Values)
+                {
                     if ((x & modelValue) == x)
                         flags.Add(x);
                 }
                 return flags;
             }
-            catch (InvalidCastException ex) {
+            catch (InvalidCastException ex)
+            {
                 System.Diagnostics.Debug.Write(ex);
                 return flags;
             }
-            catch (FormatException ex) {
+            catch (FormatException ex)
+            {
                 System.Diagnostics.Debug.Write(ex);
                 return flags;
             }
@@ -136,9 +146,11 @@ namespace BrightIdeasSoftware {
         /// </summary>
         /// <param name="cluster"></param>
         /// <returns></returns>
-        public override string GetClusterDisplayLabel(ICluster cluster) {
+        public override string GetClusterDisplayLabel(ICluster cluster)
+        {
             long clusterKeyAsUlong = Convert.ToInt64(cluster.ClusterKey);
-            for (int i = 0; i < this.Values.Length; i++ ) {
+            for (int i = 0; i < this.Values.Length; i++)
+            {
                 if (clusterKeyAsUlong == this.Values[i])
                     return this.ApplyDisplayFormat(cluster, this.Labels[i]);
             }
@@ -151,10 +163,11 @@ namespace BrightIdeasSoftware {
         /// </summary>
         /// <param name="valuesChosenForFiltering"></param>
         /// <returns></returns>
-        public override IModelFilter CreateFilter(IList valuesChosenForFiltering) {
+        public override IModelFilter CreateFilter(IList valuesChosenForFiltering)
+        {
             return new FlagBitSetFilter(this.GetClusterKey, valuesChosenForFiltering);
         }
 
-        #endregion
+        #endregion Implementation of IClusteringStrategy
     }
 }

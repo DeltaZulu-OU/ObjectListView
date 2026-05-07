@@ -12,7 +12,7 @@
  *                   - Added CSV to formats exported to Clipboard
  * v2.4
  * 2011-03-29   JPP  - Initial version
- * 
+ *
  * Copyright (C) 2011-2014 Phillip Piper
  *
  * This program is free software: you can redistribute it and/or modify
@@ -35,13 +35,14 @@ using System;
 using System.Collections;
 using System.Windows.Forms;
 
-namespace BrightIdeasSoftware {
-    
+namespace BrightIdeasSoftware
+{
     /// <summary>
     /// A data transfer object that knows how to transform a list of model
     /// objects into a text and HTML representation.
     /// </summary>
-    public class OLVDataObject : DataObject {
+    public class OLVDataObject : DataObject
+    {
         #region Life and death
 
         /// <summary>
@@ -49,16 +50,18 @@ namespace BrightIdeasSoftware {
         /// </summary>
         /// <param name="olv">The source of the data object</param>
         public OLVDataObject(ObjectListView olv)
-            : this(olv, olv.SelectedObjects) {
+            : this(olv, olv.SelectedObjects)
+        {
         }
 
         /// <summary>
-        /// Create a data object which operates on the given model objects 
+        /// Create a data object which operates on the given model objects
         /// in the given ObjectListView
         /// </summary>
         /// <param name="olv">The source of the data object</param>
         /// <param name="modelObjects">The model objects to be put into the data object</param>
-        public OLVDataObject(ObjectListView olv, IList modelObjects) {
+        public OLVDataObject(ObjectListView olv, IList modelObjects)
+        {
             this.objectListView = olv;
             this.modelObjects = modelObjects;
             this.includeHiddenColumns = olv.IncludeHiddenColumnsInDataTransfer;
@@ -66,7 +69,7 @@ namespace BrightIdeasSoftware {
             this.CreateTextFormats();
         }
 
-        #endregion
+        #endregion Life and death
 
         #region Properties
 
@@ -78,6 +81,7 @@ namespace BrightIdeasSoftware {
         public bool IncludeHiddenColumns {
             get { return includeHiddenColumns; }
         }
+
         private readonly bool includeHiddenColumns;
 
         /// <summary>
@@ -87,6 +91,7 @@ namespace BrightIdeasSoftware {
         public bool IncludeColumnHeaders {
             get { return includeColumnHeaders; }
         }
+
         private readonly bool includeColumnHeaders;
 
         /// <summary>
@@ -95,6 +100,7 @@ namespace BrightIdeasSoftware {
         public ObjectListView ListView {
             get { return objectListView; }
         }
+
         private readonly ObjectListView objectListView;
 
         /// <summary>
@@ -103,16 +109,17 @@ namespace BrightIdeasSoftware {
         public IList ModelObjects {
             get { return modelObjects; }
         }
+
         private readonly IList modelObjects;
 
-        #endregion
+        #endregion Properties
 
         /// <summary>
         /// Put a text and HTML representation of our model objects
         /// into the data object.
         /// </summary>
-        public void CreateTextFormats() {
-
+        public void CreateTextFormats()
+        {
             OLVExporter exporter = this.CreateExporter();
 
             // Put both the text and html versions onto the clipboard.
@@ -130,7 +137,8 @@ namespace BrightIdeasSoftware {
         /// Create an exporter for the data contained in this object
         /// </summary>
         /// <returns></returns>
-        protected OLVExporter CreateExporter() {
+        protected OLVExporter CreateExporter()
+        {
             OLVExporter exporter = new OLVExporter(this.ListView);
             exporter.IncludeColumnHeaders = this.IncludeColumnHeaders;
             exporter.IncludeHiddenColumns = this.IncludeHiddenColumns;
@@ -142,7 +150,8 @@ namespace BrightIdeasSoftware {
         /// Make a HTML representation of our model objects
         /// </summary>
         [Obsolete("Use OLVExporter directly instead", false)]
-        public string CreateHtml() {
+        public string CreateHtml()
+        {
             OLVExporter exporter = this.CreateExporter();
             return exporter.ExportTo(OLVExporter.ExportFormat.HTML);
         }
@@ -154,7 +163,8 @@ namespace BrightIdeasSoftware {
         /// </remarks>
         /// <param name="fragment">The HTML to put onto the clipboard. It must be valid HTML!</param>
         /// <returns>A string that can be put onto the clipboard and will be recognized as HTML</returns>
-        private string ConvertToHtmlFragment(string fragment) {
+        private string ConvertToHtmlFragment(string fragment)
+        {
             // Minimal implementation of HTML clipboard format
             const string SOURCE = "http://www.codeproject.com/Articles/16009/A-Much-Easier-to-Use-ListView";
 

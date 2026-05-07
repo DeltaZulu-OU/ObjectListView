@@ -6,7 +6,7 @@
  *
  * Change log:
  * 2011-03-31  JPP  - Split into its own file
- * 
+ *
  * Copyright (C) 2011-2014 Phillip Piper
  *
  * This program is free software: you can redistribute it and/or modify
@@ -25,17 +25,16 @@
  * If you wish to use this code in a closed source application, please contact phillip.piper@gmail.com.
  */
 
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Windows.Forms;
 
-namespace BrightIdeasSoftware {
-
+namespace BrightIdeasSoftware
+{
     /// <summary>
     /// This class contains all the settings used when groups are created
     /// </summary>
-    public class GroupingParameters {
+    public class GroupingParameters
+    {
         /// <summary>
         /// Create a GroupingParameters
         /// </summary>
@@ -51,7 +50,8 @@ namespace BrightIdeasSoftware {
         /// <param name="sortItemsByPrimaryColumn"></param>
         public GroupingParameters(ObjectListView olv, OLVColumn groupByColumn, SortOrder groupByOrder,
             OLVColumn column, SortOrder order, OLVColumn secondaryColumn, SortOrder secondaryOrder,
-            string titleFormat, string titleSingularFormat, bool sortItemsByPrimaryColumn) {
+            string titleFormat, string titleSingularFormat, bool sortItemsByPrimaryColumn)
+        {
             this.ListView = olv;
             this.GroupByColumn = groupByColumn;
             this.GroupByOrder = groupByOrder;
@@ -71,6 +71,7 @@ namespace BrightIdeasSoftware {
             get { return this.listView; }
             set { this.listView = value; }
         }
+
         private ObjectListView listView;
 
         /// <summary>
@@ -80,6 +81,7 @@ namespace BrightIdeasSoftware {
             get { return this.groupByColumn; }
             set { this.groupByColumn = value; }
         }
+
         private OLVColumn groupByColumn;
 
         /// <summary>
@@ -89,6 +91,7 @@ namespace BrightIdeasSoftware {
             get { return this.groupByOrder; }
             set { this.groupByOrder = value; }
         }
+
         private SortOrder groupByOrder;
 
         /// <summary>
@@ -98,6 +101,7 @@ namespace BrightIdeasSoftware {
             get { return this.groupComparer; }
             set { this.groupComparer = value; }
         }
+
         private IComparer<OLVGroup> groupComparer;
 
         /// <summary>
@@ -107,6 +111,7 @@ namespace BrightIdeasSoftware {
             get { return this.itemComparer; }
             set { this.itemComparer = value; }
         }
+
         private IComparer<OLVListItem> itemComparer;
 
         /// <summary>
@@ -116,6 +121,7 @@ namespace BrightIdeasSoftware {
             get { return this.primarySort; }
             set { this.primarySort = value; }
         }
+
         private OLVColumn primarySort;
 
         /// <summary>
@@ -125,6 +131,7 @@ namespace BrightIdeasSoftware {
             get { return this.primarySortOrder; }
             set { this.primarySortOrder = value; }
         }
+
         private SortOrder primarySortOrder;
 
         /// <summary>
@@ -134,6 +141,7 @@ namespace BrightIdeasSoftware {
             get { return this.secondarySort; }
             set { this.secondarySort = value; }
         }
+
         private OLVColumn secondarySort;
 
         /// <summary>
@@ -143,6 +151,7 @@ namespace BrightIdeasSoftware {
             get { return this.secondarySortOrder; }
             set { this.secondarySortOrder = value; }
         }
+
         private SortOrder secondarySortOrder;
 
         /// <summary>
@@ -152,6 +161,7 @@ namespace BrightIdeasSoftware {
             get { return this.titleFormat; }
             set { this.titleFormat = value; }
         }
+
         private string titleFormat;
 
         /// <summary>
@@ -161,6 +171,7 @@ namespace BrightIdeasSoftware {
             get { return this.titleSingularFormat; }
             set { this.titleSingularFormat = value; }
         }
+
         private string titleSingularFormat;
 
         /// <summary>
@@ -170,6 +181,7 @@ namespace BrightIdeasSoftware {
             get { return this.sortItemsByPrimaryColumn; }
             set { this.sortItemsByPrimaryColumn = value; }
         }
+
         private bool sortItemsByPrimaryColumn;
     }
 }

@@ -6,7 +6,7 @@
  *
  * Change log:
  * 2011-03-03  JPP  - First version
- * 
+ *
  * Copyright (C) 2011-2014 Phillip Piper
  *
  * This program is free software: you can redistribute it and/or modify
@@ -26,28 +26,27 @@
  */
 
 using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace BrightIdeasSoftware {
-
+namespace BrightIdeasSoftware
+{
     /// <summary>
     /// Concrete implementation of the ICluster interface.
     /// </summary>
-    public class Cluster : ICluster {
-
+    public class Cluster : ICluster
+    {
         #region Life and death
 
         /// <summary>
         /// Create a cluster
         /// </summary>
         /// <param name="key">The key for the cluster</param>
-        public Cluster(object key) {
+        public Cluster(object key)
+        {
             this.Count = 1;
             this.ClusterKey = key;
         }
 
-        #endregion
+        #endregion Life and death
 
         #region Public overrides
 
@@ -55,11 +54,12 @@ namespace BrightIdeasSoftware {
         /// Return a string representation of this cluster
         /// </summary>
         /// <returns></returns>
-        public override string ToString() {
+        public override string ToString()
+        {
             return this.DisplayLabel ?? "[empty]";
         }
 
-        #endregion
+        #endregion Public overrides
 
         #region Implementation of ICluster
 
@@ -70,6 +70,7 @@ namespace BrightIdeasSoftware {
             get { return count; }
             set { count = value; }
         }
+
         private int count;
 
         /// <summary>
@@ -80,6 +81,7 @@ namespace BrightIdeasSoftware {
             get { return displayLabel; }
             set { displayLabel = value; }
         }
+
         private string displayLabel;
 
         /// <summary>
@@ -90,9 +92,10 @@ namespace BrightIdeasSoftware {
             get { return clusterKey; }
             set { clusterKey = value; }
         }
+
         private object clusterKey;
 
-        #endregion
+        #endregion Implementation of ICluster
 
         #region Implementation of IComparable
 
@@ -101,7 +104,8 @@ namespace BrightIdeasSoftware {
         /// </summary>
         /// <param name="other"></param>
         /// <returns></returns>
-        public int CompareTo(object other) {
+        public int CompareTo(object other)
+        {
             if (other == null || other == System.DBNull.Value)
                 return 1;
 
@@ -120,6 +124,6 @@ namespace BrightIdeasSoftware {
             return -1;
         }
 
-        #endregion
+        #endregion Implementation of IComparable
     }
 }

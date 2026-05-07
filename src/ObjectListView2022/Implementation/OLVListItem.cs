@@ -12,7 +12,7 @@
  * 2014-05-06  JPP  - Added OLVListItem.Enabled flag
  * vOld
  * 2011-03-31  JPP  - Split into its own file
- * 
+ *
  * Copyright (C) 2011-2015 Phillip Piper
  *
  * This program is free software: you can redistribute it and/or modify
@@ -33,25 +33,25 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
-using System.Windows.Forms;
 using System.Drawing;
+using System.Windows.Forms;
 
-namespace BrightIdeasSoftware {
-
+namespace BrightIdeasSoftware
+{
     /// <summary>
     /// OLVListItems are specialized ListViewItems that know which row object they came from,
     /// and the row index at which they are displayed, even when in group view mode. They
     /// also know the image they should draw against themselves
     /// </summary>
-    public class OLVListItem : ListViewItem {
+    public class OLVListItem : ListViewItem
+    {
         #region Constructors
 
         /// <summary>
         /// Create a OLVListItem for the given row object
         /// </summary>
-        public OLVListItem(object rowObject) {
+        public OLVListItem(object rowObject)
+        {
             this.rowObject = rowObject;
         }
 
@@ -59,24 +59,27 @@ namespace BrightIdeasSoftware {
         /// Create a OLVListItem for the given row object, represented by the given string and image
         /// </summary>
         public OLVListItem(object rowObject, string text, Object image)
-            : base(text, -1) {
+            : base(text, -1)
+        {
             this.rowObject = rowObject;
             this.imageSelector = image;
         }
 
-        #endregion.
+        #endregion Constructors
 
         #region Properties
 
         /// <summary>
         /// Gets the bounding rectangle of the item, including all subitems
         /// </summary>
-        new public Rectangle Bounds {
+        public new Rectangle Bounds {
             get {
-                try {
+                try
+                {
                     return base.Bounds;
                 }
-                catch (System.ArgumentException) {
+                catch (System.ArgumentException)
+                {
                     // If the item is part of a collapsed group, Bounds will throw an exception
                     return Rectangle.Empty;
                 }
@@ -91,6 +94,7 @@ namespace BrightIdeasSoftware {
             get { return this.cellPadding; }
             set { this.cellPadding = value; }
         }
+
         private Rectangle? cellPadding;
 
         /// <summary>
@@ -101,6 +105,7 @@ namespace BrightIdeasSoftware {
             get { return this.cellVerticalAlignment; }
             set { this.cellVerticalAlignment = value; }
         }
+
         private StringAlignment? cellVerticalAlignment;
 
         /// <summary>
@@ -112,12 +117,13 @@ namespace BrightIdeasSoftware {
         /// Unfortunately, this won't work if this property is set through the base class, since
         /// the property is not declared as virtual.
         /// </remarks>
-        new public bool Checked {
+        public new bool Checked {
             get {
                 return base.Checked;
             }
             set {
-                if (this.Checked != value) {
+                if (this.Checked != value)
+                {
                     if (value)
                         ((ObjectListView)this.ListView).CheckObject(this.RowObject);
                     else
@@ -133,25 +139,32 @@ namespace BrightIdeasSoftware {
         /// and will return True for both Checked and Indeterminate states.</remarks>
         public CheckState CheckState {
             get {
-                switch (this.StateImageIndex) {
+                switch (this.StateImageIndex)
+                {
                     case 0:
                         return System.Windows.Forms.CheckState.Unchecked;
+
                     case 1:
                         return System.Windows.Forms.CheckState.Checked;
+
                     case 2:
                         return System.Windows.Forms.CheckState.Indeterminate;
+
                     default:
                         return System.Windows.Forms.CheckState.Unchecked;
                 }
             }
             set {
-                switch (value) {
+                switch (value)
+                {
                     case System.Windows.Forms.CheckState.Unchecked:
                         this.StateImageIndex = 0;
                         break;
+
                     case System.Windows.Forms.CheckState.Checked:
                         this.StateImageIndex = 1;
                         break;
+
                     case System.Windows.Forms.CheckState.Indeterminate:
                         this.StateImageIndex = 2;
                         break;
@@ -196,16 +209,17 @@ namespace BrightIdeasSoftware {
                 return this.decorations;
             }
         }
+
         private IList<IDecoration> decorations;
 
         /// <summary>
         /// Gets whether or not this row can be selected and activated
         /// </summary>
-        public bool Enabled
-        {
+        public bool Enabled {
             get { return this.enabled; }
             internal set { this.enabled = value; }
         }
+
         private bool enabled;
 
         /// <summary>
@@ -213,7 +227,8 @@ namespace BrightIdeasSoftware {
         /// </summary>
         public bool HasAnyHyperlinks {
             get {
-                foreach (OLVListSubItem subItem in this.SubItems) {
+                foreach (OLVListSubItem subItem in this.SubItems)
+                {
                     if (!String.IsNullOrEmpty(subItem.Url))
                         return true;
                 }
@@ -238,6 +253,7 @@ namespace BrightIdeasSoftware {
                     this.ImageIndex = -1;
             }
         }
+
         private Object imageSelector;
 
         /// <summary>
@@ -247,10 +263,11 @@ namespace BrightIdeasSoftware {
             get { return rowObject; }
             set { rowObject = value; }
         }
+
         private object rowObject;
 
         /// <summary>
-        /// Gets or sets the color that will be used for this row's background when it is selected and 
+        /// Gets or sets the color that will be used for this row's background when it is selected and
         /// the control is focused.
         /// </summary>
         /// <remarks>
@@ -263,10 +280,11 @@ namespace BrightIdeasSoftware {
             get { return this.selectedBackColor; }
             set { this.selectedBackColor = value; }
         }
+
         private Color? selectedBackColor;
 
         /// <summary>
-        /// Gets or sets the color that will be used for this row's foreground when it is selected and 
+        /// Gets or sets the color that will be used for this row's foreground when it is selected and
         /// the control is focused.
         /// </summary>
         /// <remarks>
@@ -275,14 +293,14 @@ namespace BrightIdeasSoftware {
         /// If this is not set, the normal selection ForeColor will be used.
         /// </para>
         /// </remarks>
-        public Color? SelectedForeColor
-        {
+        public Color? SelectedForeColor {
             get { return this.selectedForeColor; }
             set { this.selectedForeColor = value; }
         }
+
         private Color? selectedForeColor;
 
-        #endregion
+        #endregion Properties
 
         #region Accessing
 
@@ -291,20 +309,22 @@ namespace BrightIdeasSoftware {
         /// </summary>
         /// <param name="index">Index of the subitem to be returned</param>
         /// <returns>An OLVListSubItem</returns>
-        public virtual OLVListSubItem GetSubItem(int index) {
+        public virtual OLVListSubItem GetSubItem(int index)
+        {
             if (index >= 0 && index < this.SubItems.Count)
                 return (OLVListSubItem)this.SubItems[index];
-            
+
             return null;
         }
-
 
         /// <summary>
         /// Return bounds of the given subitem
         /// </summary>
         /// <remarks>This correctly calculates the bounds even for column 0.</remarks>
-        public virtual Rectangle GetSubItemBounds(int subItemIndex) {
-            if (subItemIndex == 0) {
+        public virtual Rectangle GetSubItemBounds(int subItemIndex)
+        {
+            if (subItemIndex == 0)
+            {
                 Rectangle r = this.Bounds;
                 Point sides = NativeMethods.GetScrolledColumnSides(this.ListView, subItemIndex);
                 r.X = sides.X + 1;
@@ -316,6 +336,6 @@ namespace BrightIdeasSoftware {
             return subItem == null ? new Rectangle() : subItem.Bounds;
         }
 
-        #endregion
+        #endregion Accessing
     }
 }

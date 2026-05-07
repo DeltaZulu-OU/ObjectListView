@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.ComponentModel;
-using System.Diagnostics;
 
 namespace BrightIdeasSoftware
 {
@@ -18,13 +17,14 @@ namespace BrightIdeasSoftware
         /// </summary>
         /// <param name="tlv"></param>
         public TreeDataSourceAdapter(DataTreeListView tlv)
-            : base(tlv) {
+            : base(tlv)
+        {
             this.treeListView = tlv;
-            this.treeListView.CanExpandGetter = delegate(object model) { return this.CalculateHasChildren(model); };
-            this.treeListView.ChildrenGetter = delegate(object model) { return this.CalculateChildren(model); };
+            this.treeListView.CanExpandGetter = delegate (object model) { return this.CalculateHasChildren(model); };
+            this.treeListView.ChildrenGetter = delegate (object model) { return this.CalculateChildren(model); };
         }
 
-        #endregion
+        #endregion Life and death
 
         #region Properties
 
@@ -33,7 +33,7 @@ namespace BrightIdeasSoftware
         /// </summary>
         /// <remarks>
         /// <para>
-        /// The value contained by this column must be unique across all rows 
+        /// The value contained by this column must be unique across all rows
         /// in the data source. Odd and unpredictable things will happen if two
         /// rows have the same id.
         /// </para>
@@ -49,6 +49,7 @@ namespace BrightIdeasSoftware
                 this.InitializeDataSource();
             }
         }
+
         private string keyAspectName;
 
         /// <summary>
@@ -76,6 +77,7 @@ namespace BrightIdeasSoftware
                 this.InitializeDataSource();
             }
         }
+
         private string parentKeyAspectName;
 
         /// <summary>
@@ -102,6 +104,7 @@ namespace BrightIdeasSoftware
                 this.InitializeDataSource();
             }
         }
+
         private object rootKeyValue;
 
         /// <summary>
@@ -114,46 +117,50 @@ namespace BrightIdeasSoftware
             get { return showKeyColumns; }
             set { showKeyColumns = value; }
         }
+
         private bool showKeyColumns = true;
 
-
-        #endregion
+        #endregion Properties
 
         #region Implementation properties
 
         /// <summary>
-        /// Gets the DataTreeListView that is being managed 
+        /// Gets the DataTreeListView that is being managed
         /// </summary>
         protected DataTreeListView TreeListView {
             get { return treeListView; }
         }
+
         private readonly DataTreeListView treeListView;
 
-        #endregion
+        #endregion Implementation properties
 
         #region Implementation
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
-        protected override void InitializeDataSource() {
+        protected override void InitializeDataSource()
+        {
             base.InitializeDataSource();
             this.TreeListView.RebuildAll(true);
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
-        protected override void SetListContents() {
+        protected override void SetListContents()
+        {
             this.TreeListView.Roots = this.CalculateRoots();
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="property"></param>
         /// <returns></returns>
-        protected override bool ShouldCreateColumn(PropertyDescriptor property) {
+        protected override bool ShouldCreateColumn(PropertyDescriptor property)
+        {
             // If the property is a key column, and we aren't supposed to show keys, don't show it
             if (!this.ShowKeyColumns && (property.Name == this.KeyAspectName || property.Name == this.ParentKeyAspectName))
                 return false;
@@ -162,16 +169,17 @@ namespace BrightIdeasSoftware
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="e"></param>
-        protected override void HandleListChangedItemChanged(System.ComponentModel.ListChangedEventArgs e) {
+        protected override void HandleListChangedItemChanged(System.ComponentModel.ListChangedEventArgs e)
+        {
             // If the id or the parent id of a row changes, we just rebuild everything.
-            // We can't do anything more specific. We don't know what the previous values, so we can't 
+            // We can't do anything more specific. We don't know what the previous values, so we can't
             // tell the previous parent to refresh itself. If the id itself has changed, things that used
             // to be children will no longer be children. Just rebuild everything.
             // It seems PropertyDescriptor is only filled in .NET 4 :(
-            if (e.PropertyDescriptor != null && 
+            if (e.PropertyDescriptor != null &&
                 (e.PropertyDescriptor.Name == this.KeyAspectName ||
                  e.PropertyDescriptor.Name == this.ParentKeyAspectName))
                 this.InitializeDataSource();
@@ -180,10 +188,11 @@ namespace BrightIdeasSoftware
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="index"></param>
-        protected override void ChangePosition(int index) {
+        protected override void ChangePosition(int index)
+        {
             // We can't use our base method directly, since the normal position management
             // doesn't know about our tree structure. They treat our dataset as a flat list
             // but we have a collapsable structure. This means that the 5'th row to them
@@ -193,7 +202,8 @@ namespace BrightIdeasSoftware
             // are expanded. Then we will be able to select it.
             object model = this.CurrencyManager.List[index];
             object parent = this.CalculateParent(model);
-            while (parent != null && !this.TreeListView.IsExpanded(parent)) {
+            while (parent != null && !this.TreeListView.IsExpanded(parent))
+            {
                 this.TreeListView.Expand(parent);
                 parent = this.CalculateParent(parent);
             }
@@ -201,20 +211,24 @@ namespace BrightIdeasSoftware
             base.ChangePosition(index);
         }
 
-        private IEnumerable CalculateRoots() {
-            foreach (object x in this.CurrencyManager.List) {
+        private IEnumerable CalculateRoots()
+        {
+            foreach (object x in this.CurrencyManager.List)
+            {
                 object parentKey = this.GetParentValue(x);
                 if (Object.Equals(this.RootKeyValue, parentKey))
                     yield return x;
             }
         }
 
-        private bool CalculateHasChildren(object model) {
+        private bool CalculateHasChildren(object model)
+        {
             object keyValue = this.GetKeyValue(model);
             if (keyValue == null)
                 return false;
 
-            foreach (object x in this.CurrencyManager.List) {
+            foreach (object x in this.CurrencyManager.List)
+            {
                 object parentKey = this.GetParentValue(x);
                 if (Object.Equals(keyValue, parentKey))
                     return true;
@@ -222,10 +236,13 @@ namespace BrightIdeasSoftware
             return false;
         }
 
-        private IEnumerable CalculateChildren(object model) {
+        private IEnumerable CalculateChildren(object model)
+        {
             object keyValue = this.GetKeyValue(model);
-            if (keyValue != null) {
-                foreach (object x in this.CurrencyManager.List) {
+            if (keyValue != null)
+            {
+                foreach (object x in this.CurrencyManager.List)
+                {
                     object parentKey = this.GetParentValue(x);
                     if (Object.Equals(keyValue, parentKey))
                         yield return x;
@@ -233,12 +250,14 @@ namespace BrightIdeasSoftware
             }
         }
 
-        private object CalculateParent(object model) {
+        private object CalculateParent(object model)
+        {
             object parentValue = this.GetParentValue(model);
-            if (parentValue == null) 
+            if (parentValue == null)
                 return null;
 
-            foreach (object x in this.CurrencyManager.List) {
+            foreach (object x in this.CurrencyManager.List)
+            {
                 object key = this.GetKeyValue(x);
                 if (Object.Equals(parentValue, key))
                     return x;
@@ -246,15 +265,17 @@ namespace BrightIdeasSoftware
             return null;
         }
 
-        private object GetKeyValue(object model) {
+        private object GetKeyValue(object model)
+        {
             return this.keyMunger == null ? null : this.keyMunger.GetValue(model);
         }
 
-        private object GetParentValue(object model) {
+        private object GetParentValue(object model)
+        {
             return this.parentKeyMunger == null ? null : this.parentKeyMunger.GetValue(model);
         }
 
-        #endregion
+        #endregion Implementation
 
         private Munger keyMunger;
         private Munger parentKeyMunger;

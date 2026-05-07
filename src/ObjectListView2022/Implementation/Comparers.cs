@@ -2,7 +2,7 @@
  * Comparers - Various Comparer classes used within ObjectListView
  *
  * Author: Phillip Piper
- * Date: 25/11/2008 17:15 
+ * Date: 25/11/2008 17:15
  *
  * Change log:
  * v2.8.1
@@ -56,11 +56,11 @@ namespace BrightIdeasSoftware
         /// Gets or sets the method that will be used to compare two strings.
         /// The default is to compare on the current culture, case-insensitive
         /// </summary>
-        public static StringCompareDelegate StringComparer
-        {
+        public static StringCompareDelegate StringComparer {
             get { return stringComparer; }
             set { stringComparer = value; }
         }
+
         private static StringCompareDelegate stringComparer;
 
         /// <summary>
@@ -121,12 +121,15 @@ namespace BrightIdeasSoftware
             // Handle nulls. Null values come last
             bool xIsNull = (x1 == null || x1 == System.DBNull.Value);
             bool yIsNull = (y1 == null || y1 == System.DBNull.Value);
-            if (xIsNull || yIsNull) {
+            if (xIsNull || yIsNull)
+            {
                 if (xIsNull && yIsNull)
                     result = 0;
                 else
                     result = (xIsNull ? -1 : 1);
-            } else {
+            }
+            else
+            {
                 result = this.CompareValues(x1, y1);
             }
 
@@ -152,7 +155,7 @@ namespace BrightIdeasSoftware
             String xAsString = x as String;
             if (xAsString != null)
                 return CompareStrings(xAsString, y as String);
-            
+
             IComparable comparable = x as IComparable;
             return comparable != null ? comparable.CompareTo(y) : 0;
         }
@@ -170,7 +173,6 @@ namespace BrightIdeasSoftware
         private ColumnComparer secondComparer;
     }
 
-
     /// <summary>
     /// This comparer sort list view groups. OLVGroups have a "SortValue" property,
     /// which is used if present. Otherwise, the titles of the groups will be compared.
@@ -181,7 +183,8 @@ namespace BrightIdeasSoftware
         /// Create a group comparer
         /// </summary>
         /// <param name="order">The ordering for column values</param>
-        public OLVGroupComparer(SortOrder order) {
+        public OLVGroupComparer(SortOrder order)
+        {
             this.sortOrder = order;
         }
 
@@ -192,7 +195,8 @@ namespace BrightIdeasSoftware
         /// <param name="x">group1</param>
         /// <param name="y">group2</param>
         /// <returns>An ordering indication: -1, 0, 1</returns>
-        public int Compare(OLVGroup x, OLVGroup y) {
+        public int Compare(OLVGroup x, OLVGroup y)
+        {
             // If we can compare the sort values, do that.
             // Otherwise do a case insensitive compare on the group header.
             int result;
@@ -223,11 +227,11 @@ namespace BrightIdeasSoftware
         /// Gets or sets the method that will be used to compare two strings.
         /// The default is to compare on the current culture, case-insensitive
         /// </summary>
-        public static StringCompareDelegate StringComparer
-        {
+        public static StringCompareDelegate StringComparer {
             get { return stringComparer; }
             set { stringComparer = value; }
         }
+
         private static StringCompareDelegate stringComparer;
 
         /// <summary>
@@ -274,12 +278,15 @@ namespace BrightIdeasSoftware
             // Handle nulls. Null values come last
             bool xIsNull = (x1 == null || x1 == System.DBNull.Value);
             bool yIsNull = (y1 == null || y1 == System.DBNull.Value);
-            if (xIsNull || yIsNull) {
+            if (xIsNull || yIsNull)
+            {
                 if (xIsNull && yIsNull)
                     result = 0;
                 else
                     result = (xIsNull ? -1 : 1);
-            } else {
+            }
+            else
+            {
                 result = this.CompareValues(x1, y1);
             }
 
@@ -305,7 +312,7 @@ namespace BrightIdeasSoftware
             String xStr = x as String;
             if (xStr != null)
                 return CompareStrings(xStr, y as String);
-            
+
             IComparable comparable = x as IComparable;
             return comparable != null ? comparable.CompareTo(y) : 0;
         }
@@ -321,10 +328,5 @@ namespace BrightIdeasSoftware
         private OLVColumn column;
         private SortOrder sortOrder;
         private ModelObjectComparer secondComparer;
-
-        #region IComparer<object> Members
-
-        #endregion
     }
-
 }

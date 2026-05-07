@@ -6,7 +6,7 @@
  *
  * Change log:
  * 2011-03-31  JPP  - Split into its own file
- * 
+ *
  * Copyright (C) 2011-2014 Phillip Piper
  *
  * This program is free software: you can redistribute it and/or modify
@@ -25,13 +25,11 @@
  * If you wish to use this code in a closed source application, please contact phillip.piper@gmail.com.
  */
 
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Collections;
+using System.Collections.Generic;
 
-namespace BrightIdeasSoftware {
-
+namespace BrightIdeasSoftware
+{
     /// <summary>
     /// A simple-minded implementation of a Dictionary that can handle null as a key.
     /// </summary>
@@ -39,13 +37,14 @@ namespace BrightIdeasSoftware {
     /// <typeparam name="TValue">The type of the values to be stored</typeparam>
     /// <remarks>This is not a full implementation and is only meant to handle
     /// collecting groups by their keys, since groups can have null as a key value.</remarks>
-    internal class NullableDictionary<TKey, TValue> : Dictionary<TKey, TValue> {
+    internal class NullableDictionary<TKey, TValue> : Dictionary<TKey, TValue>
+    {
         private bool hasNullKey;
         private TValue nullValue;
 
-        new public TValue this[TKey key] {
+        public new TValue this[TKey key] {
             get {
-                if (key != null) 
+                if (key != null)
                     return base[key];
 
                 if (this.hasNullKey)
@@ -54,19 +53,22 @@ namespace BrightIdeasSoftware {
                 throw new KeyNotFoundException();
             }
             set {
-                if (key == null) {
+                if (key == null)
+                {
                     this.hasNullKey = true;
                     this.nullValue = value;
-                } else
+                }
+                else
                     base[key] = value;
             }
         }
 
-        new public bool ContainsKey(TKey key) {
+        public new bool ContainsKey(TKey key)
+        {
             return key == null ? this.hasNullKey : base.ContainsKey(key);
         }
 
-        new public IList Keys {
+        public new IList Keys {
             get {
                 ArrayList list = new ArrayList(base.Keys);
                 if (this.hasNullKey)
@@ -75,7 +77,7 @@ namespace BrightIdeasSoftware {
             }
         }
 
-        new public IList<TValue> Values {
+        public new IList<TValue> Values {
             get {
                 List<TValue> list = new List<TValue>(base.Values);
                 if (this.hasNullKey)

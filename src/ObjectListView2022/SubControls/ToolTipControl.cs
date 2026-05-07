@@ -4,9 +4,9 @@
  * For some reason, the ToolTip class in the .NET framework is implemented in a significantly
  * different manner to other controls. For our purposes, the worst of these problems
  * is that we cannot get the Handle, so we cannot send Windows level messages to the control.
- * 
+ *
  * Author: Phillip Piper
- * Date: 2009-05-17 7:22PM 
+ * Date: 2009-05-17 7:22PM
  *
  * Change log:
  * v2.3
@@ -37,11 +37,10 @@
 
 using System;
 using System.Collections;
-using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.InteropServices;
-using System.Windows.Forms;
 using System.Security.Permissions;
+using System.Windows.Forms;
 
 namespace BrightIdeasSoftware
 {
@@ -93,70 +92,73 @@ namespace BrightIdeasSoftware
             ErrorLarge = 6
         }
 
-        const int GWL_STYLE = -16;
-        const int WM_GETFONT = 0x31;
-        const int WM_SETFONT = 0x30;
-        const int WS_BORDER = 0x800000;
-        const int WS_EX_TOPMOST = 8;
+        private const int GWL_STYLE = -16;
+        private const int WM_GETFONT = 0x31;
+        private const int WM_SETFONT = 0x30;
+        private const int WS_BORDER = 0x800000;
+        private const int WS_EX_TOPMOST = 8;
 
-        const int TTM_ADDTOOL = 0x432;
-        const int TTM_ADJUSTRECT = 0x400 + 31;
-        const int TTM_DELTOOL = 0x433;
-        const int TTM_GETBUBBLESIZE = 0x400 + 30;
-        const int TTM_GETCURRENTTOOL = 0x400 + 59;
-        const int TTM_GETTIPBKCOLOR = 0x400 + 22;
-        const int TTM_GETTIPTEXTCOLOR = 0x400 + 23;
-        const int TTM_GETDELAYTIME = 0x400 + 21;
-        const int TTM_NEWTOOLRECT = 0x400 + 52;
-        const int TTM_POP = 0x41c;
-        const int TTM_SETDELAYTIME = 0x400 + 3;
-        const int TTM_SETMAXTIPWIDTH = 0x400 + 24;
-        const int TTM_SETTIPBKCOLOR = 0x400 + 19;
-        const int TTM_SETTIPTEXTCOLOR = 0x400 + 20;
-        const int TTM_SETTITLE = 0x400 + 33;
-        const int TTM_SETTOOLINFO = 0x400 + 54;
+        private const int TTM_ADDTOOL = 0x432;
+        private const int TTM_ADJUSTRECT = 0x400 + 31;
+        private const int TTM_DELTOOL = 0x433;
+        private const int TTM_GETBUBBLESIZE = 0x400 + 30;
+        private const int TTM_GETCURRENTTOOL = 0x400 + 59;
+        private const int TTM_GETTIPBKCOLOR = 0x400 + 22;
+        private const int TTM_GETTIPTEXTCOLOR = 0x400 + 23;
+        private const int TTM_GETDELAYTIME = 0x400 + 21;
+        private const int TTM_NEWTOOLRECT = 0x400 + 52;
+        private const int TTM_POP = 0x41c;
+        private const int TTM_SETDELAYTIME = 0x400 + 3;
+        private const int TTM_SETMAXTIPWIDTH = 0x400 + 24;
+        private const int TTM_SETTIPBKCOLOR = 0x400 + 19;
+        private const int TTM_SETTIPTEXTCOLOR = 0x400 + 20;
+        private const int TTM_SETTITLE = 0x400 + 33;
+        private const int TTM_SETTOOLINFO = 0x400 + 54;
 
-        const int TTF_IDISHWND = 1;
+        private const int TTF_IDISHWND = 1;
+
         //const int TTF_ABSOLUTE = 0x80;
-        const int TTF_CENTERTIP = 2;
-        const int TTF_RTLREADING = 4;
-        const int TTF_SUBCLASS = 0x10;
+        private const int TTF_CENTERTIP = 2;
+
+        private const int TTF_RTLREADING = 4;
+        private const int TTF_SUBCLASS = 0x10;
+
         //const int TTF_TRACK = 0x20;
         //const int TTF_TRANSPARENT = 0x100;
-        const int TTF_PARSELINKS = 0x1000;
+        private const int TTF_PARSELINKS = 0x1000;
 
-        const int TTS_NOPREFIX = 2;
-        const int TTS_BALLOON = 0x40;
-        const int TTS_USEVISUALSTYLE = 0x100;
+        private const int TTS_NOPREFIX = 2;
+        private const int TTS_BALLOON = 0x40;
+        private const int TTS_USEVISUALSTYLE = 0x100;
 
-        const int TTN_FIRST = -520;
+        private const int TTN_FIRST = -520;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public const int TTN_SHOW = (TTN_FIRST - 1);
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public const int TTN_POP = (TTN_FIRST - 2);
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public const int TTN_LINKCLICK = (TTN_FIRST - 3);
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public const int TTN_GETDISPINFO = (TTN_FIRST - 10);
 
-        const int TTDT_AUTOMATIC = 0;
-        const int TTDT_RESHOW = 1;
-        const int TTDT_AUTOPOP = 2;
-        const int TTDT_INITIAL = 3;
+        private const int TTDT_AUTOMATIC = 0;
+        private const int TTDT_RESHOW = 1;
+        private const int TTDT_AUTOPOP = 2;
+        private const int TTDT_INITIAL = 3;
 
-        #endregion
+        #endregion Constants
 
         #region Properties
 
@@ -184,14 +186,18 @@ namespace BrightIdeasSoftware
                     return;
 
                 int windowStyle = this.WindowStyle;
-                if (value) {
+                if (value)
+                {
                     windowStyle |= (TTS_BALLOON | TTS_USEVISUALSTYLE);
                     // On XP, a border makes the ballon look wrong
                     if (!ObjectListView.IsVistaOrLater)
-                        windowStyle &= ~WS_BORDER; 
-                } else {
+                        windowStyle &= ~WS_BORDER;
+                }
+                else
+                {
                     windowStyle &= ~(TTS_BALLOON | TTS_USEVISUALSTYLE);
-                    if (!ObjectListView.IsVistaOrLater) {
+                    if (!ObjectListView.IsVistaOrLater)
+                    {
                         if (this.hasBorder)
                             windowStyle |= WS_BORDER;
                         else
@@ -213,13 +219,17 @@ namespace BrightIdeasSoftware
                 if (this.hasBorder == value)
                     return;
 
-                if (value) {
+                if (value)
+                {
                     this.WindowStyle |= WS_BORDER;
-                } else {
+                }
+                else
+                {
                     this.WindowStyle &= ~WS_BORDER;
                 }
             }
         }
+
         private bool hasBorder = true;
 
         /// <summary>
@@ -233,7 +243,8 @@ namespace BrightIdeasSoftware
             set {
                 // For some reason, setting the color fails on Vista and messes up later ops.
                 // So we don't even try to set it.
-                if (!ObjectListView.IsVistaOrLater) {
+                if (!ObjectListView.IsVistaOrLater)
+                {
                     int color = ColorTranslator.ToWin32(value);
                     NativeMethods.SendMessage(this.Handle, TTM_SETTIPBKCOLOR, color, 0);
                     //int x2 = Marshal.GetLastWin32Error();
@@ -252,7 +263,8 @@ namespace BrightIdeasSoftware
             set {
                 // For some reason, setting the color fails on Vista and messes up later ops.
                 // So we don't even try to set it.
-                if (!ObjectListView.IsVistaOrLater) {
+                if (!ObjectListView.IsVistaOrLater)
+                {
                     int color = ColorTranslator.ToWin32(value);
                     NativeMethods.SendMessage(this.Handle, TTM_SETTIPTEXTCOLOR, color, 0);
                 }
@@ -271,12 +283,13 @@ namespace BrightIdeasSoftware
                     this.title = String.Empty;
                 else
                     if (value.Length >= 100)
-                        this.title = value.Substring(0, 99);
-                    else
-                        this.title = value;
+                    this.title = value.Substring(0, 99);
+                else
+                    this.title = value;
                 NativeMethods.SendMessageString(this.Handle, TTM_SETTITLE, (int)this.standardIcon, this.title);
             }
         }
+
         private string title;
 
         /// <summary>
@@ -291,6 +304,7 @@ namespace BrightIdeasSoftware
                 NativeMethods.SendMessageString(this.Handle, TTM_SETTITLE, (int)this.standardIcon, this.title);
             }
         }
+
         private StandardIcons standardIcon;
 
         /// <summary>
@@ -316,6 +330,7 @@ namespace BrightIdeasSoftware
                 NativeMethods.SendMessage(this.Handle, WM_SETFONT, hfont, 0);
             }
         }
+
         private Font font;
 
         /// <summary>
@@ -343,15 +358,17 @@ namespace BrightIdeasSoftware
             set { this.SetDelayTime(TTDT_RESHOW, value); }
         }
 
-        private int GetDelayTime(int which) {
+        private int GetDelayTime(int which)
+        {
             return (int)NativeMethods.SendMessage(this.Handle, TTM_GETDELAYTIME, which, 0);
         }
 
-        private void SetDelayTime(int which, int value) {
+        private void SetDelayTime(int which, int value)
+        {
             NativeMethods.SendMessage(this.Handle, TTM_SETDELAYTIME, which, value);
         }
 
-        #endregion
+        #endregion Properties
 
         #region Commands
 
@@ -360,7 +377,8 @@ namespace BrightIdeasSoftware
         /// </summary>
         /// <param name="parentHandle">The parent of the tooltip</param>
         /// <remarks>This does nothing if the control has already been created</remarks>
-        public void Create(IntPtr parentHandle) {
+        public void Create(IntPtr parentHandle)
+        {
             if (this.Handle != IntPtr.Zero)
                 return;
 
@@ -370,20 +388,21 @@ namespace BrightIdeasSoftware
             cp.ExStyle = WS_EX_TOPMOST;
             cp.Parent = parentHandle;
             this.CreateHandle(cp);
-            
+
             // Ensure that multiline tooltips work correctly
             this.SetMaxWidth();
         }
 
         /// <summary>
-        /// Take a copy of the current settings and restore them when the 
+        /// Take a copy of the current settings and restore them when the
         /// tooltip is poppped.
         /// </summary>
         /// <remarks>
         /// This call cannot be nested. Subsequent calls to this method will be ignored
         /// until PopSettings() is called.
         /// </remarks>
-        public void PushSettings() {
+        public void PushSettings()
+        {
             // Ignore any nested calls
             if (this.settings != null)
                 return;
@@ -399,13 +418,15 @@ namespace BrightIdeasSoftware
             this.settings["ReshowDelay"] = this.ReshowDelay;
             this.settings["Font"] = this.Font;
         }
+
         private Hashtable settings;
 
         /// <summary>
         /// Restore the settings of the tooltip as they were when PushSettings()
         /// was last called.
         /// </summary>
-        public void PopSettings() {
+        public void PopSettings()
+        {
             if (this.settings == null)
                 return;
 
@@ -427,7 +448,8 @@ namespace BrightIdeasSoftware
         /// Add the given window to those for whom this tooltip will show tips
         /// </summary>
         /// <param name="window">The window</param>
-        public void AddTool(IWin32Window window) {
+        public void AddTool(IWin32Window window)
+        {
             NativeMethods.TOOLINFO lParam = this.MakeToolInfoStruct(window);
             NativeMethods.SendMessageTOOLINFO(this.Handle, TTM_ADDTOOL, 0, lParam);
         }
@@ -436,7 +458,8 @@ namespace BrightIdeasSoftware
         /// Hide any currently visible tooltip
         /// </summary>
         /// <param name="window"></param>
-        public void PopToolTip(IWin32Window window) {
+        public void PopToolTip(IWin32Window window)
+        {
             NativeMethods.SendMessage(this.Handle, TTM_POP, 0, 0);
         }
 
@@ -449,7 +472,7 @@ namespace BrightIdeasSoftware
         //    System.Diagnostics.Trace.WriteLine(String.Format("{0} {1}", result.ToInt32() >> 16, result.ToInt32() & 0xFFFF));
         //    NativeMethods.ChangeSize(this, result.ToInt32() & 0xFFFF, result.ToInt32() >> 16);
         //    //NativeMethods.RECT r = new NativeMethods.RECT();
-        //    //r.right 
+        //    //r.right
         //    //IntPtr x = NativeMethods.SendMessageRECT(this.Handle, TTM_ADJUSTRECT, true, ref r);
 
         //    //System.Diagnostics.Trace.WriteLine(String.Format("{0} {1} {2} {3}", r.left, r.top, r.right, r.bottom));
@@ -459,7 +482,8 @@ namespace BrightIdeasSoftware
         /// Remove the given window from those managed by this tooltip
         /// </summary>
         /// <param name="window"></param>
-        public void RemoveToolTip(IWin32Window window) {
+        public void RemoveToolTip(IWin32Window window)
+        {
             NativeMethods.TOOLINFO lParam = this.MakeToolInfoStruct(window);
             NativeMethods.SendMessageTOOLINFO(this.Handle, TTM_DELTOOL, 0, lParam);
         }
@@ -467,7 +491,8 @@ namespace BrightIdeasSoftware
         /// <summary>
         /// Set the maximum width of a tooltip string.
         /// </summary>
-        public void SetMaxWidth() {
+        public void SetMaxWidth()
+        {
             this.SetMaxWidth(SystemInformation.MaxWindowTrackSize.Width);
         }
 
@@ -475,11 +500,12 @@ namespace BrightIdeasSoftware
         /// Set the maximum width of a tooltip string.
         /// </summary>
         /// <remarks>Setting this ensures that line breaks in the tooltip are honoured.</remarks>
-        public void SetMaxWidth(int maxWidth) {
+        public void SetMaxWidth(int maxWidth)
+        {
             NativeMethods.SendMessage(this.Handle, TTM_SETMAXTIPWIDTH, 0, maxWidth);
         }
 
-        #endregion
+        #endregion Commands
 
         #region Implementation
 
@@ -488,8 +514,8 @@ namespace BrightIdeasSoftware
         /// </summary>
         /// <param name="window"></param>
         /// <returns>A filled in TOOLINFO</returns>
-        private NativeMethods.TOOLINFO MakeToolInfoStruct(IWin32Window window) {
-
+        private NativeMethods.TOOLINFO MakeToolInfoStruct(IWin32Window window)
+        {
             NativeMethods.TOOLINFO toolinfo_tooltip = new NativeMethods.TOOLINFO();
             toolinfo_tooltip.hwnd = window.Handle;
             toolinfo_tooltip.uFlags = TTF_IDISHWND | TTF_SUBCLASS;
@@ -504,8 +530,8 @@ namespace BrightIdeasSoftware
         /// </summary>
         /// <param name="msg">The msg</param>
         /// <returns>True if the message has been handled</returns>
-        protected virtual bool HandleNotify(ref Message msg) {
-
+        protected virtual bool HandleNotify(ref Message msg)
+        {
             //THINK: What do we have to do here? Nothing it seems :)
 
             //NativeMethods.NMHEADER nmheader = (NativeMethods.NMHEADER)msg.GetLParam(typeof(NativeMethods.NMHEADER));
@@ -523,7 +549,8 @@ namespace BrightIdeasSoftware
         /// </summary>
         /// <param name="msg">The msg</param>
         /// <returns>True if the message has been handled</returns>
-        public virtual bool HandleGetDispInfo(ref Message msg) {
+        public virtual bool HandleGetDispInfo(ref Message msg)
+        {
             //System.Diagnostics.Trace.WriteLine("HandleGetDispInfo");
             this.SetMaxWidth();
             ToolTipShowingEventArgs args = new ToolTipShowingEventArgs();
@@ -544,7 +571,8 @@ namespace BrightIdeasSoftware
             return true;
         }
 
-        private void ApplyEventFormatting(ToolTipShowingEventArgs args) {
+        private void ApplyEventFormatting(ToolTipShowingEventArgs args)
+        {
             if (!args.IsBalloon.HasValue &&
                 !args.BackColor.HasValue &&
                 !args.ForeColor.HasValue &&
@@ -577,7 +605,8 @@ namespace BrightIdeasSoftware
         /// <param name="msg">The msg</param>
         /// <returns>True if the message has been handled</returns>
         /// <remarks>This cannot call base.WndProc() since the msg may have come from another control.</remarks>
-        public virtual bool HandleLinkClick(ref Message msg) {
+        public virtual bool HandleLinkClick(ref Message msg)
+        {
             //System.Diagnostics.Trace.WriteLine("HandleLinkClick");
             return false;
         }
@@ -588,7 +617,8 @@ namespace BrightIdeasSoftware
         /// <param name="msg">The msg</param>
         /// <returns>True if the message has been handled</returns>
         /// <remarks>This cannot call base.WndProc() since the msg may have come from another control.</remarks>
-        public virtual bool HandlePop(ref Message msg) {
+        public virtual bool HandlePop(ref Message msg)
+        {
             //System.Diagnostics.Trace.WriteLine("HandlePop");
             this.PopSettings();
             return true;
@@ -600,7 +630,8 @@ namespace BrightIdeasSoftware
         /// <param name="msg">The msg</param>
         /// <returns>True if the message has been handled</returns>
         /// <remarks>This cannot call base.WndProc() since the msg may have come from another control.</remarks>
-        public virtual bool HandleShow(ref Message msg) {
+        public virtual bool HandleShow(ref Message msg)
+        {
             //System.Diagnostics.Trace.WriteLine("HandleShow");
             return false;
         }
@@ -610,25 +641,29 @@ namespace BrightIdeasSoftware
         /// </summary>
         /// <param name="msg">The msg</param>
         /// <returns>True if the message has been handled</returns>
-        protected virtual bool HandleReflectNotify(ref Message msg) {
-
+        protected virtual bool HandleReflectNotify(ref Message msg)
+        {
             NativeMethods.NMHEADER nmheader = (NativeMethods.NMHEADER)msg.GetLParam(typeof(NativeMethods.NMHEADER));
-            switch (nmheader.nhdr.code) {
+            switch (nmheader.nhdr.code)
+            {
                 case TTN_SHOW:
                     //System.Diagnostics.Trace.WriteLine("reflect TTN_SHOW");
                     if (this.HandleShow(ref msg))
                         return true;
                     break;
+
                 case TTN_POP:
                     //System.Diagnostics.Trace.WriteLine("reflect TTN_POP");
                     if (this.HandlePop(ref msg))
                         return true;
                     break;
+
                 case TTN_LINKCLICK:
                     //System.Diagnostics.Trace.WriteLine("reflect TTN_LINKCLICK");
                     if (this.HandleLinkClick(ref msg))
                         return true;
                     break;
+
                 case TTN_GETDISPINFO:
                     //System.Diagnostics.Trace.WriteLine("reflect TTN_GETDISPINFO");
                     if (this.HandleGetDispInfo(ref msg))
@@ -643,10 +678,12 @@ namespace BrightIdeasSoftware
         /// Mess with the basic message pump of the tooltip
         /// </summary>
         /// <param name="msg"></param>
-        [SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.UnmanagedCode)]       
-        override protected void WndProc(ref Message msg) {
+        [SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.UnmanagedCode)]
+        protected override void WndProc(ref Message msg)
+        {
             //System.Diagnostics.Trace.WriteLine(String.Format("xx {0:x}", msg.Msg));
-            switch (msg.Msg) {
+            switch (msg.Msg)
+            {
                 case 0x4E: // WM_NOTIFY
                     if (!this.HandleNotify(ref msg))
                         return;
@@ -661,7 +698,7 @@ namespace BrightIdeasSoftware
             base.WndProc(ref msg);
         }
 
-        #endregion
+        #endregion Implementation
 
         #region Events
 
@@ -676,24 +713,25 @@ namespace BrightIdeasSoftware
         public event EventHandler<EventArgs> Pop;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="e"></param>
-        protected virtual void OnShowing(ToolTipShowingEventArgs e) {
+        protected virtual void OnShowing(ToolTipShowingEventArgs e)
+        {
             if (this.Showing != null)
                 this.Showing(this, e);
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="e"></param>
-        protected virtual void OnPop(EventArgs e) {
+        protected virtual void OnPop(EventArgs e)
+        {
             if (this.Pop != null)
                 this.Pop(this, e);
         }
 
-        #endregion
+        #endregion Events
     }
-
 }

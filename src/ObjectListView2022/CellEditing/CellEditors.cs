@@ -14,7 +14,7 @@
  * 2008-01-16   JPP  - Added EditorRegistry
  * v2.0.1
  * 2008-10-20   JPP  - Separated from ObjectListView.cs
- * 
+ *
  * Copyright (C) 2006-2014 Phillip Piper
  *
  * This program is free software: you can redistribute it and/or modify
@@ -38,7 +38,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Reflection;
 using System.Windows.Forms;
 
 namespace BrightIdeasSoftware
@@ -49,22 +48,25 @@ namespace BrightIdeasSoftware
     public class ComboBoxItem
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="key"></param>
         /// <param name="description"></param>
-        public ComboBoxItem(Object key, String description) {
+        public ComboBoxItem(Object key, String description)
+        {
             this.key = key;
             this.description = description;
         }
+
         private readonly String description;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public Object Key {
             get { return key; }
         }
+
         private readonly Object key;
 
         /// <summary>
@@ -74,16 +76,17 @@ namespace BrightIdeasSoftware
         /// A string that represents the current object.
         /// </returns>
         /// <filterpriority>2</filterpriority>
-        public override string ToString() {
+        public override string ToString()
+        {
             return this.description;
         }
-    } 
+    }
 
     //-----------------------------------------------------------------------
     // Cell editors
     // These classes are simple cell editors that make it easier to get and set
     // the value that the control is showing.
-    // In many cases, you can intercept the CellEditStarting event to 
+    // In many cases, you can intercept the CellEditStarting event to
     // change the characteristics of the editor. For example, changing
     // the acceptable range for a numeric editor or changing the strings
     // that respresent true and false values for a boolean editor.
@@ -99,13 +102,16 @@ namespace BrightIdeasSoftware
         /// </summary>
         /// <param name="lv"></param>
         /// <param name="column"></param>
-        public AutoCompleteCellEditor(ObjectListView lv, OLVColumn column) {
+        public AutoCompleteCellEditor(ObjectListView lv, OLVColumn column)
+        {
             this.DropDownStyle = ComboBoxStyle.DropDown;
 
             Dictionary<String, bool> alreadySeen = new Dictionary<string, bool>();
-            for (int i = 0; i < Math.Min(lv.GetItemCount(), 1000); i++) {
+            for (int i = 0; i < Math.Min(lv.GetItemCount(), 1000); i++)
+            {
                 String str = column.GetStringValue(lv.GetModelObject(i));
-                if (!alreadySeen.ContainsKey(str)) {
+                if (!alreadySeen.ContainsKey(str))
+                {
                     this.Items.Add(str);
                     alreadySeen[str] = true;
                 }
@@ -124,10 +130,11 @@ namespace BrightIdeasSoftware
     public class EnumCellEditor : ComboBox
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="type"></param>
-        public EnumCellEditor(Type type) {
+        public EnumCellEditor(Type type)
+        {
             this.DropDownStyle = ComboBoxStyle.DropDownList;
             this.ValueMember = "Key";
 
@@ -146,9 +153,10 @@ namespace BrightIdeasSoftware
     public class IntUpDown : NumericUpDown
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
-        public IntUpDown() {
+        public IntUpDown()
+        {
             this.DecimalPlaces = 0;
             this.Minimum = -9999999;
             this.Maximum = 9999999;
@@ -157,7 +165,7 @@ namespace BrightIdeasSoftware
         /// <summary>
         /// Gets or sets the value shown by this editor
         /// </summary>
-        new public int Value {
+        public new int Value {
             get { return Decimal.ToInt32(base.Value); }
             set { base.Value = new Decimal(value); }
         }
@@ -172,13 +180,14 @@ namespace BrightIdeasSoftware
     [ToolboxItem(false)]
     internal class UintUpDown : NumericUpDown
     {
-        public UintUpDown() {
+        public UintUpDown()
+        {
             this.DecimalPlaces = 0;
             this.Minimum = 0;
             this.Maximum = 9999999;
         }
 
-        new public uint Value {
+        public new uint Value {
             get { return Decimal.ToUInt32(base.Value); }
             set { base.Value = new Decimal(value); }
         }
@@ -191,9 +200,10 @@ namespace BrightIdeasSoftware
     public class BooleanCellEditor : ComboBox
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
-        public BooleanCellEditor() {
+        public BooleanCellEditor()
+        {
             this.DropDownStyle = ComboBoxStyle.DropDownList;
             this.ValueMember = "Key";
 
@@ -216,15 +226,16 @@ namespace BrightIdeasSoftware
         /// </summary>
         public bool? Value {
             get {
-                switch (this.CheckState) {
+                switch (this.CheckState)
+                {
                     case CheckState.Checked: return true;
                     case CheckState.Indeterminate: return null;
-                    case CheckState.Unchecked: 
+                    case CheckState.Unchecked:
                     default: return false;
                 }
             }
             set {
-                if (value.HasValue) 
+                if (value.HasValue)
                     this.CheckState = value.Value ? CheckState.Checked : CheckState.Unchecked;
                 else
                     this.CheckState = CheckState.Indeterminate;
@@ -236,21 +247,25 @@ namespace BrightIdeasSoftware
         /// </summary>
         public new HorizontalAlignment TextAlign {
             get {
-                switch (this.CheckAlign) {
+                switch (this.CheckAlign)
+                {
                     case ContentAlignment.MiddleRight: return HorizontalAlignment.Right;
                     case ContentAlignment.MiddleCenter: return HorizontalAlignment.Center;
-                    case ContentAlignment.MiddleLeft: 
+                    case ContentAlignment.MiddleLeft:
                     default: return HorizontalAlignment.Left;
                 }
             }
             set {
-                switch (value) {
+                switch (value)
+                {
                     case HorizontalAlignment.Left:
                         this.CheckAlign = ContentAlignment.MiddleLeft;
                         break;
+
                     case HorizontalAlignment.Center:
                         this.CheckAlign = ContentAlignment.MiddleCenter;
                         break;
+
                     case HorizontalAlignment.Right:
                         this.CheckAlign = ContentAlignment.MiddleRight;
                         break;
@@ -269,9 +284,10 @@ namespace BrightIdeasSoftware
     public class FloatCellEditor : NumericUpDown
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
-        public FloatCellEditor() {
+        public FloatCellEditor()
+        {
             this.DecimalPlaces = 2;
             this.Minimum = -9999999;
             this.Maximum = 9999999;
@@ -280,7 +296,7 @@ namespace BrightIdeasSoftware
         /// <summary>
         /// Gets or sets the value shown by this editor
         /// </summary>
-        new public double Value {
+        public new double Value {
             get { return Convert.ToDouble(base.Value); }
             set { base.Value = Convert.ToDecimal(value); }
         }
