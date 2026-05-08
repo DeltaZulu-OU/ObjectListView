@@ -1,6 +1,6 @@
 # ObjectListView
 
-Fork of the original [ObjectListView](https://objectlistview.sourceforge.net/cs/index.html)
+Fork of the original [ObjectListView](https://objectlistview.sourceforge.net/cs/index.html), used for other DeltaZulu products.
 
 ## Changes
 - Migrated to .NET Framework 4.8.1
