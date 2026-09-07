@@ -109,17 +109,6 @@ namespace BrightIdeasSoftware.SubControls
         //TODO: The Handle property may no longer be necessary. CHECK! 2008/11/28
 
         /// <summary>
-        /// Gets or sets a style that should be applied to the font of the
-        /// column's header text when the mouse is over that column
-        /// </summary>
-        /// <remarks>THIS IS EXPERIMENTAL. USE AT OWN RISK. August 2009</remarks>
-        [Obsolete("Use HeaderStyle.Hot.FontStyle instead")]
-        public FontStyle HotFontStyle {
-            get => FontStyle.Regular;
-            set { }
-        }
-
-        /// <summary>
         /// Gets the index of the column under the cursor if the cursor is over it's checkbox
         /// </summary>
         protected int GetColumnCheckBoxUnderCursor()

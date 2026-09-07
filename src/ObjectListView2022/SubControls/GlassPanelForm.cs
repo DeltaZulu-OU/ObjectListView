@@ -466,14 +466,7 @@ namespace BrightIdeasSoftware.SubControls
 
         internal void UpdateTransparency()
         {
-            if (Overlay is not ITransparentOverlay transparentOverlay)
-            {
-                Opacity = objectListView.OverlayTransparency / 255.0f;
-            }
-            else
-            {
-                Opacity = transparentOverlay.Transparency / 255.0f;
-            }
+                Opacity = (Overlay as ITransparentOverlay).Transparency / 255.0f;
         }
 
         protected override void WndProc(ref Message m)

@@ -1245,14 +1245,6 @@ namespace BrightIdeasSoftware
         public new ListView.ColumnHeaderCollection Columns => base.Columns;
 
         /// <summary>
-        /// Get/set the list of columns that should be used when the list switches to tile view.
-        /// </summary>
-        [Browsable(false),
-        Obsolete("Use GetFilteredColumns() and OLVColumn.IsTileViewColumn instead"),
-        DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public List<OLVColumn> ColumnsForTileView => GetFilteredColumns(View.Tile);
-
-        /// <summary>
         /// Return the visible columns in the order they are displayed to the user
         /// </summary>
         [Browsable(false)]
@@ -1780,27 +1772,6 @@ namespace BrightIdeasSoftware
         private HeaderControl headerControl;
 
         /// <summary>
-        /// Gets or sets the font in which the text of the column headers will be drawn
-        /// </summary>
-        /// <remarks>Individual columns can override this through their HeaderFormatStyle property.</remarks>
-        [DefaultValue(null)]
-        [Browsable(false)]
-        [Obsolete("Use a HeaderFormatStyle instead", false)]
-        public Font HeaderFont {
-            get => HeaderFormatStyle?.Normal.Font;
-            set {
-                if (value == null && HeaderFormatStyle == null)
-                {
-                    return;
-                }
-
-                HeaderFormatStyle ??= new HeaderFormatStyle();
-
-                HeaderFormatStyle.SetFont(value);
-            }
-        }
-
-        /// <summary>
         /// Gets or sets the style that will be used to draw the columm headers of the listview
         /// </summary>
         /// <remarks>
@@ -1940,13 +1911,6 @@ namespace BrightIdeasSoftware
         public OLVGroup HotGroup { get; internal set; }
 
         /// <summary>
-        /// The index of the item that is 'hot', i.e. under the cursor. -1 means no item.
-        /// </summary>
-        [Browsable(false),
-         Obsolete("Use HotRowIndex instead", false)]
-        public virtual int HotItemIndex => HotRowIndex;
-
-        /// <summary>
         /// What sort of formatting should be applied to the row under the cursor?
         /// </summary>
         /// <remarks>
@@ -2031,42 +1995,6 @@ namespace BrightIdeasSoftware
         /// </summary>
         [Browsable(false)]
         public virtual Color SelectedForeColorOrDefault => SelectedForeColor.IsEmpty ? SystemColors.HighlightText : SelectedForeColor;
-
-        /// <inheritdoc/>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        [Obsolete("Use SelectedBackColor instead")]
-        public virtual Color HighlightBackgroundColor { get => SelectedBackColor; set => SelectedBackColor = value; }
-
-        /// <inheritdoc/>
-        [Obsolete("Use SelectedBackColorOrDefault instead")]
-        public virtual Color HighlightBackgroundColorOrDefault => SelectedBackColorOrDefault;
-
-        /// <inheritdoc/>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        [Obsolete("Use SelectedForeColor instead")]
-        public virtual Color HighlightForegroundColor { get => SelectedForeColor; set => SelectedForeColor = value; }
-
-        /// <inheritdoc/>
-        [Obsolete("Use SelectedForeColorOrDefault instead")]
-        public virtual Color HighlightForegroundColorOrDefault => SelectedForeColorOrDefault;
-
-        /// <inheritdoc/>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        [Obsolete("Use UnfocusedSelectedBackColor instead")]
-        public virtual Color UnfocusedHighlightBackgroundColor { get => UnfocusedSelectedBackColor; set => UnfocusedSelectedBackColor = value; }
-
-        /// <inheritdoc/>
-        [Obsolete("Use UnfocusedSelectedBackColorOrDefault instead")]
-        public virtual Color UnfocusedHighlightBackgroundColorOrDefault => UnfocusedSelectedBackColorOrDefault;
-
-        /// <inheritdoc/>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        [Obsolete("Use UnfocusedSelectedForeColor instead")]
-        public virtual Color UnfocusedHighlightForegroundColor { get => UnfocusedSelectedForeColor; set => UnfocusedSelectedForeColor = value; }
-
-        /// <inheritdoc/>
-        [Obsolete("Use UnfocusedSelectedForeColorOrDefault instead")]
-        public virtual Color UnfocusedHighlightForegroundColorOrDefault => UnfocusedSelectedForeColorOrDefault;
 
         /// <summary>
         /// Gets or sets whether or not hidden columns should be included in the text representation
@@ -2405,19 +2333,6 @@ namespace BrightIdeasSoftware
         }
 
         private TextOverlay textOverlay;
-
-        /// <summary>
-        /// Gets or sets the transparency of all the overlays.
-        /// 0 is completely transparent, 255 is completely opaque.
-        /// </summary>
-        /// <remarks>
-        /// This is obsolete. Use Transparency on each overlay.
-        /// </remarks>
-        [Browsable(false),
-         DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public int OverlayTransparency {
-            get => overlayTransparency; set => overlayTransparency = Math.Min(255, Math.Max(0, value));
-        }
 
         private int overlayTransparency = 128;
 
@@ -7505,32 +7420,6 @@ namespace BrightIdeasSoftware
             return m;
         }
 
-        /// <summary>
-        /// The user has right clicked on the column headers. Do whatever is required
-        /// </summary>
-        /// <returns>Return true if this event has been handle</returns>
-        [Obsolete("Use HandleHeaderRightClick(int) instead")]
-        protected virtual bool HandleHeaderRightClick() => false;
-
-        /// <summary>
-        /// Show a popup menu at the given point which will allow the user to choose which columns
-        /// are visible on this listview
-        /// </summary>
-        /// <param name="pt">Where should the menu be placed</param>
-        [Obsolete("Use ShowHeaderRightClickMenu instead")]
-        protected virtual void ShowColumnSelectMenu(Point pt)
-        {
-            var m = MakeColumnSelectMenu(new ContextMenuStrip());
-            m.Show(pt);
-        }
-
-        /// <summary>
-        /// Show a popup menu at the given point which will allow the user to choose which columns
-        /// are visible on this listview
-        /// </summary>
-        /// <param name="columnIndex"></param>
-        /// <param name="pt">Where should the menu be placed</param>
-        [Obsolete("Use ShowHeaderRightClickMenu instead")]
         protected virtual void ShowColumnCommandMenu(int columnIndex, Point pt)
         {
             var m = MakeColumnCommandMenu(new ContextMenuStrip(), columnIndex);
@@ -8563,36 +8452,6 @@ namespace BrightIdeasSoftware
         }
 
         /// <summary>
-        /// Return the model object of the row that is selected or null if there is no selection or more than one selection
-        /// </summary>
-        /// <returns>Model object or null</returns>
-        [Obsolete("Use SelectedObject property instead of this method")]
-        public virtual object GetSelectedObject() => SelectedObject;
-
-        /// <summary>
-        /// Return the model objects of the rows that are selected or an empty collection if there is no selection
-        /// </summary>
-        /// <returns>ArrayList</returns>
-        [Obsolete("Use SelectedObjects property instead of this method")]
-        public virtual ArrayList GetSelectedObjects() => ObjectListView.EnumerableToArray(SelectedObjects, false);
-
-        /// <summary>
-        /// Return the model object of the row that is checked or null if no row is checked
-        /// or more than one row is checked
-        /// </summary>
-        /// <returns>Model object or null</returns>
-        /// <remarks>Use CheckedObject property instead of this method</remarks>
-        [Obsolete("Use CheckedObject property instead of this method")]
-        public virtual object GetCheckedObject() => CheckedObject;
-
-        /// <summary>
-        /// Get the collection of model objects that are checked.
-        /// </summary>
-        /// <remarks>Use CheckedObjects property instead of this method</remarks>
-        [Obsolete("Use CheckedObjects property instead of this method")]
-        public virtual ArrayList GetCheckedObjects() => ObjectListView.EnumerableToArray(CheckedObjects, false);
-
-        /// <summary>
         /// Find the given model object within the listview and return its index
         /// </summary>
         /// <param name="modelObject">The model object to be found</param>
@@ -9495,33 +9354,6 @@ namespace BrightIdeasSoftware
             }
         }
 
-        /// <summary>
-        /// Prepare the listview to show alternate row backcolors
-        /// </summary>
-        /// <remarks>We cannot rely on lvi.Index in this method.
-        /// In a straight list, lvi.Index is the display index, and can be used to determine
-        /// whether the row should be colored. But when organised by groups, lvi.Index is not
-        /// useable because it still refers to the position in the overall list, not the display order.
-        ///</remarks>
-        [Obsolete("This method is no longer used. Override PostProcessOneRow() to achieve a similar result")]
-        protected virtual void PrepareAlternateBackColors()
-        {
-        }
-
-        /// <summary>
-        /// Setup all subitem images on all rows
-        /// </summary>
-        [Obsolete("This method is not longer maintained and will be removed", false)]
-        protected virtual void SetAllSubItemImages()
-        {
-            //if (!this.ShowImagesOnSubItems || this.OwnerDraw)
-            //    return;
-
-            //this.ForceSubItemImagesExStyle();
-
-            //for (int rowIndex = 0; rowIndex < this.GetItemCount(); rowIndex++)
-            //    SetSubItemImages(rowIndex, this.GetItem(rowIndex));
-        }
 
         /// <summary>
         /// Tell the underlying list control which images to show against the subitems
