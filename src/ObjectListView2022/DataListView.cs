@@ -74,6 +74,7 @@ namespace BrightIdeasSoftware
             Adapter = new DataSourceAdapter(this);
         }
 
+        /// <inheritdoc/>
         protected override void Dispose(bool disposing)
         {
             Adapter.Dispose();

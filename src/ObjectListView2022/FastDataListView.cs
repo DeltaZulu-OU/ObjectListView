@@ -50,6 +50,7 @@ namespace BrightIdeasSoftware
     /// </remarks>
     public class FastDataListView : FastObjectListView
     {
+        /// <inheritdoc/>
         protected override void Dispose(bool disposing)
         {
             if (adapter != null)

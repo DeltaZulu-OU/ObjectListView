@@ -2032,31 +2032,39 @@ namespace BrightIdeasSoftware
         [Browsable(false)]
         public virtual Color SelectedForeColorOrDefault => SelectedForeColor.IsEmpty ? SystemColors.HighlightText : SelectedForeColor;
 
+        /// <inheritdoc/>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [Obsolete("Use SelectedBackColor instead")]
         public virtual Color HighlightBackgroundColor { get => SelectedBackColor; set => SelectedBackColor = value; }
 
+        /// <inheritdoc/>
         [Obsolete("Use SelectedBackColorOrDefault instead")]
         public virtual Color HighlightBackgroundColorOrDefault => SelectedBackColorOrDefault;
 
+        /// <inheritdoc/>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [Obsolete("Use SelectedForeColor instead")]
         public virtual Color HighlightForegroundColor { get => SelectedForeColor; set => SelectedForeColor = value; }
 
+        /// <inheritdoc/>
         [Obsolete("Use SelectedForeColorOrDefault instead")]
         public virtual Color HighlightForegroundColorOrDefault => SelectedForeColorOrDefault;
 
+        /// <inheritdoc/>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [Obsolete("Use UnfocusedSelectedBackColor instead")]
         public virtual Color UnfocusedHighlightBackgroundColor { get => UnfocusedSelectedBackColor; set => UnfocusedSelectedBackColor = value; }
 
+        /// <inheritdoc/>
         [Obsolete("Use UnfocusedSelectedBackColorOrDefault instead")]
         public virtual Color UnfocusedHighlightBackgroundColorOrDefault => UnfocusedSelectedBackColorOrDefault;
 
+        /// <inheritdoc/>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [Obsolete("Use UnfocusedSelectedForeColor instead")]
         public virtual Color UnfocusedHighlightForegroundColor { get => UnfocusedSelectedForeColor; set => UnfocusedSelectedForeColor = value; }
 
+        /// <inheritdoc/>
         [Obsolete("Use UnfocusedSelectedForeColorOrDefault instead")]
         public virtual Color UnfocusedHighlightForegroundColorOrDefault => UnfocusedSelectedForeColorOrDefault;
 

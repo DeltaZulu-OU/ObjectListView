@@ -171,6 +171,7 @@ namespace BrightIdeasSoftware.Rendering
     /// </summary>
     public interface IFilterAwareRenderer
     {
+        /// <inheritdoc/>
         IModelFilter Filter { get; set; }
     }
 
@@ -3749,6 +3750,7 @@ namespace BrightIdeasSoftware.Rendering
 
         #region Rendering
 
+        /// <inheritdoc/>
         public override void ConfigureSubItem(DrawListViewSubItemEventArgs e, Rectangle cellBounds, object model)
         {
             base.ConfigureSubItem(e, cellBounds, model);

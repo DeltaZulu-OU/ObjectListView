@@ -66,15 +66,24 @@ namespace BrightIdeasSoftware
         [XmlRoot("ObjectListViewState")]
         public sealed class SerializedObjectListViewState
         {
-            public int VersionNumber = 1;
-            public int NumberOfColumns = 1;
-            public View CurrentView;
-            public int SortColumn = -1;
-            public bool IsShowingGroups;
-            public SortOrder LastSortOrder = SortOrder.None;
-            public bool[] ColumnIsVisible = Array.Empty<bool>();
-            public int[] ColumnDisplayIndicies = Array.Empty<int>();
-            public int[] ColumnWidths = Array.Empty<int>();
+            public int             /// <inheritdoc/>
+VersionNumber = 1;
+            public int             /// <inheritdoc/>
+NumberOfColumns = 1;
+            public View             /// <inheritdoc/>
+CurrentView;
+            public int             /// <inheritdoc/>
+SortColumn = -1;
+            public bool             /// <inheritdoc/>
+IsShowingGroups;
+            public SortOrder             /// <inheritdoc/>
+LastSortOrder = SortOrder.None;
+            public bool[]             /// <inheritdoc/>
+ColumnIsVisible = Array.Empty<bool>();
+            public int[]             /// <inheritdoc/>
+ColumnDisplayIndicies = Array.Empty<int>();
+            public int[]             /// <inheritdoc/>
+ColumnWidths = Array.Empty<int>();
 
             internal static SerializedObjectListViewState FromState(ObjectListViewState state) => new SerializedObjectListViewState
             {
