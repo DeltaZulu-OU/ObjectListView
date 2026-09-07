@@ -1,0 +1,54 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: DevSkim
+
+on:
+  push:
+    branches: [master]
+    paths-ignore:
+      - '**.md'
+      - '**.txt'
+      - '**.ADML'
+      - '**.ADMX'
+      - '**.ico'
+      - '**.reg'
+      - '.github/*'
+
+  pull_request:
+    branches: [master]
+    paths-ignore:
+      - '**.md'
+      - '**.txt'
+      - '**.ADML'
+      - '**.ADMX'
+      - '**.ico'
+      - '**.reg'
+      - '.github/*'
+
+  schedule:
+    - cron: "22 3 * * 4"
+
+jobs:
+  lint:
+    name: DevSkim
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+        with:
+          submodules: recursive
+
+      - name: Run DevSkim scanner
+        uses: microsoft/DevSkim-Action@v1.0.16
+
+      - name: Upload DevSkim scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v4
+        with:
+          sarif_file: devskim-results.sarif

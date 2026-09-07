@@ -1,0 +1,50 @@
+name: Unit tests
+
+on:
+  push:
+    branches:
+      - master
+    paths-ignore: &documentation-only
+      - "**/*.md"
+      - "**/*.avif"
+      - "**/*.bmp"
+      - "**/*.gif"
+      - "**/*.ico"
+      - "**/*.jpeg"
+      - "**/*.jpg"
+      - "**/*.png"
+      - "**/*.svg"
+      - "**/*.tif"
+      - "**/*.tiff"
+      - "**/*.webp"
+  pull_request:
+    branches:
+      - master
+    paths-ignore: *documentation-only
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        configuration:
+          - Debug
+          - Release
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: microsoft/setup-msbuild@v2
+
+      - name: Restore
+        run: msbuild src/ObjectListView2022.Tests/ObjectListView2022.Tests.csproj /t:Restore
+
+      - name: Build
+        run: msbuild src/ObjectListView2022.Tests/ObjectListView2022.Tests.csproj /t:Build /p:Configuration=${{ matrix.configuration }} /p:RestorePackages=false
+
+      - name: Test
+        run: dotnet test src/ObjectListView2022.Tests/ObjectListView2022.Tests.csproj --configuration ${{ matrix.configuration }} --no-build --no-restore --logger "console;verbosity=normal"

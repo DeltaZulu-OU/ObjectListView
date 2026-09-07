@@ -1,0 +1,45 @@
+name: Build helper
+
+on:
+  push:
+    branches:
+      - p7-doc-helper
+    paths:
+      - ".github/workflows/build.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: microsoft/setup-msbuild@v2
+
+      - name: Build Debug
+        shell: pwsh
+        run: |
+          $output = & msbuild src/ObjectListView.sln /restore /t:Rebuild /p:Configuration=Debug 2>&1
+          $exitCode = $LASTEXITCODE
+          $output | ForEach-Object { Write-Host $_ }
+          if ($exitCode -ne 0) { exit $exitCode }
+          $warnings = $output | Select-String -Pattern 'warning CS(1591|1572|1573):'
+          if ($warnings) {
+              $warnings | ForEach-Object { Write-Error $_ }
+              exit 1
+          }
+
+      - name: Build Release
+        shell: pwsh
+        run: |
+          $output = & msbuild src/ObjectListView.sln /restore /t:Rebuild /p:Configuration=Release 2>&1
+          $exitCode = $LASTEXITCODE
+          $output | ForEach-Object { Write-Host $_ }
+          if ($exitCode -ne 0) { exit $exitCode }
+          $warnings = $output | Select-String -Pattern 'warning CS(1591|1572|1573):'
+          if ($warnings) {
+              $warnings | ForEach-Object { Write-Error $_ }
+              exit 1
+          }
