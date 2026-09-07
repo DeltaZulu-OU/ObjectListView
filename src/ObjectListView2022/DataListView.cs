@@ -212,14 +212,20 @@ namespace BrightIdeasSoftware
             // data adaptor is going to do that immediately after this method exits.
             EndUpdate();
             ResizeFreeSpaceFillingColumns();
-            // this.BuildList();
         }
 
         /// <summary>
         /// Handles parent binding context changes
         /// </summary>
         /// <param name="e">Unused EventArgs.</param>
-        protected override void OnParentBindingContextChanged(EventArgs e) => base.OnParentBindingContextChanged(e);// BindingContext is an ambient property - by default it simply picks// up the parent control's context (unless something has explicitly// given us our own). So we must respond to changes in our parent's// binding context in the same way we would changes to our own// binding context.// THINK: Do we need to forward this to the adapter?
+        protected override void OnParentBindingContextChanged(EventArgs e)
+        {
+            base.OnParentBindingContextChanged(e);
+
+            // BindingContext is an ambient property. By default, it inherits the parent control's
+            // context unless something explicitly assigns a local one. Parent changes therefore need
+            // to flow through the normal control lifecycle.
+        }
 
         #endregion Event Handlers
     }

@@ -155,7 +155,6 @@ namespace BrightIdeasSoftware
             // data adaptor is going to do that immediately after this method exits.
             EndUpdate();
             ResizeFreeSpaceFillingColumns();
-            // this.BuildList();
         }
 
         #endregion Implementation

@@ -15,12 +15,6 @@
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <LangVersion>latest</LangVersion>
-    
-    <!-- Source Control Metadata (Legacy) -->
-    <SccProjectName>%24/ObjectListView/trunk/ObjectListView</SccProjectName>
-    <SccLocalPath>.</SccLocalPath>
-    <SccAuxPath>https://grammarian.visualstudio.com/defaultcollection</SccAuxPath>
-    <SccProvider>{4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}</SccProvider>
   </PropertyGroup>
 
   <!-- Global Property Settings -->
@@ -57,11 +51,6 @@
     <EmbeddedResource Update="Utilities\ColumnSelectionForm.resx">
       <DependentUpon>ColumnSelectionForm.cs</DependentUpon>
     </EmbeddedResource>
-  </ItemGroup>
-
-  <!-- File Globbing Fixes (Excluding items that shouldn't be compiled/packed) -->
-  <ItemGroup>
-    <None Include="CustomDictionary.xml" />
   </ItemGroup>
 
 </Project>

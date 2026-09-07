@@ -98,9 +98,11 @@ namespace BrightIdeasSoftware
         [Browsable(false),
          DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public override IEnumerable Objects {
-            get =>
-                                                  // This is much faster than the base method
-                                                  ((FastObjectListDataSource)VirtualListDataSource).ObjectList; set => base.Objects = value;
+            get {
+                // This is much faster than the base method.
+                return ((FastObjectListDataSource)VirtualListDataSource).ObjectList;
+            }
+            set => base.Objects = value;
         }
 
         /// <summary>
