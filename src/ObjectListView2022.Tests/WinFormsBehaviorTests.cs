@@ -11,88 +11,77 @@ namespace ObjectListView2022.Tests
         [TestMethod]
         public void CheckedObjects_TracksCheckedModels()
         {
-            using (var listView = new ObjectListView { CheckBoxes = true })
-            {
-                var first = new Model("first");
-                var second = new Model("second");
-                listView.SetObjects(new[] { first, second });
+            using var listView = new ObjectListView { CheckBoxes = true };
+            var first = new Model("first");
+            var second = new Model("second");
+            listView.SetObjects(new[] { first, second });
 
-                listView.CheckObject(second);
+            listView.CheckObject(second);
 
-                CollectionAssert.AreEqual(new object[] { second },
-                    listView.CheckedObjects.Cast<object>().ToArray());
-                Assert.IsFalse(listView.IsChecked(first));
-                Assert.IsTrue(listView.IsChecked(second));
-            }
+            Assert.AreSequenceEqual(new object[] { second }, listView.CheckedObjects.Cast<object>().ToArray());
+            Assert.IsFalse(listView.IsChecked(first));
+            Assert.IsTrue(listView.IsChecked(second));
         }
 
         [TestMethod]
         public void PersistentCheckState_SurvivesListRebuild()
         {
-            using (var listView = new ObjectListView { CheckBoxes = true, PersistentCheckBoxes = true })
-            {
-                var model = new Model("model");
-                listView.SetObjects(new[] { model });
-                listView.CheckObject(model);
+            using var listView = new ObjectListView { CheckBoxes = true, PersistentCheckBoxes = true };
+            listView.Columns.Add(new OLVColumn("Name", nameof(Model.Name)));
+            var model = new Model("model");
+            listView.SetObjects(new[] { model });
+            listView.CheckObject(model);
 
-                listView.BuildList(true);
+            listView.BuildList(true);
 
-                Assert.IsTrue(listView.IsChecked(model));
-                CollectionAssert.AreEqual(new object[] { model },
-                    listView.CheckedObjects.Cast<object>().ToArray());
-            }
+            Assert.IsTrue(listView.IsChecked(model));
+            Assert.AreSequenceEqual(new object[] { model }, listView.CheckedObjects.Cast<object>().ToArray());
         }
 
         [TestMethod]
         public void FastObjectListView_PreservesObjectIndexMapping()
         {
-            using (var listView = new FastObjectListView())
-            {
-                var models = new[] {
+            using var listView = new FastObjectListView();
+            var models = new[] {
                     new Model("first"),
                     new Model("second"),
                     new Model("third")
                 };
 
-                listView.SetObjects(models);
+            listView.SetObjects(models);
 
-                Assert.AreSame(models[1], listView.GetModelObject(1));
-                Assert.AreEqual(1, listView.IndexOf(models[1]));
-                Assert.AreEqual(-1, listView.IndexOf(new Model("missing")));
-            }
+            Assert.AreSame(models[1], listView.GetModelObject(1));
+            Assert.AreEqual(1, listView.IndexOf(models[1]));
+            Assert.AreEqual(-1, listView.IndexOf(new Model("missing")));
         }
 
         [TestMethod]
         public void TreeListView_ExpandsChildrenIntoVisibleModelList()
         {
-            using (var tree = new TreeListView())
-            {
-                var child1 = new Node("child-1");
-                var child2 = new Node("child-2");
-                var root = new Node("root", child1, child2);
+            using var tree = new TreeListView();
+            var child1 = new Node("child-1");
+            var child2 = new Node("child-2");
+            var root = new Node("root", child1, child2);
 
-                tree.CanExpandGetter = x => ((Node)x).Children.Count > 0;
-                tree.ChildrenGetter = x => ((Node)x).Children;
-                tree.Roots = new[] { root };
+            tree.CanExpandGetter = x => ((Node)x).Children.Count > 0;
+            tree.ChildrenGetter = x => ((Node)x).Children;
+            tree.Roots = new[] { root };
 
-                Assert.AreEqual(1, tree.GetItemCount());
+            Assert.AreEqual(1, tree.GetItemCount());
 
-                tree.Expand(root);
+            tree.Expand(root);
 
-                Assert.AreEqual(3, tree.GetItemCount());
-                Assert.AreSame(root, tree.GetModelObject(0));
-                Assert.AreSame(child1, tree.GetModelObject(1));
-                Assert.AreSame(child2, tree.GetModelObject(2));
-            }
+            Assert.AreEqual(3, tree.GetItemCount());
+            Assert.AreSame(root, tree.GetModelObject(0));
+            Assert.AreSame(child1, tree.GetModelObject(1));
+            Assert.AreSame(child2, tree.GetModelObject(2));
         }
 
         [TestMethod]
         public void PossibleFinishCellEditing_ReturnsTrueWhenNoEditorIsActive()
         {
-            using (var listView = new ObjectListView())
-            {
-                Assert.IsTrue(listView.PossibleFinishCellEditing());
-            }
+            using var listView = new ObjectListView();
+            Assert.IsTrue(listView.PossibleFinishCellEditing());
         }
 
         private sealed class Model
