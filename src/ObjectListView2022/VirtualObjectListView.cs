@@ -582,8 +582,9 @@ namespace BrightIdeasSoftware
         }
 
         /// <summary>
-        /// Inserts the given collection of model objects to this control at hte given location
+        /// Inserts the given collection of model objects to this control at the given location
         /// </summary>
+        /// <param name="index">The index at which to insert the objects</param>
         /// <param name="modelObjects">A collection of model objects</param>
         /// <remarks>
         /// <para>The added objects will appear in their correct sort position, if sorting
@@ -875,8 +876,7 @@ namespace BrightIdeasSoftware
                 return base.GetCheckState(modelObject);
             }
 
-            CheckState state;
-            if (modelObject != null && CheckStateMap.TryGetValue(modelObject, out state))
+            if (modelObject != null && CheckStateMap.TryGetValue(modelObject, out var state))
             {
                 return state;
             }

@@ -19,7 +19,7 @@
 
   <!-- Global Property Settings -->
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">
-    <WarningLevel>1</WarningLevel>
+    <WarningLevel>9999</WarningLevel>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)'=='Release'">

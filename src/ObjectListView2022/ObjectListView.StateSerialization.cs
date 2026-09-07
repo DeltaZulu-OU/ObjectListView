@@ -66,24 +66,50 @@ namespace BrightIdeasSoftware
         [XmlRoot("ObjectListViewState")]
         public sealed class SerializedObjectListViewState
         {
-            public int             /// <inheritdoc/>
-VersionNumber = 1;
-            public int             /// <inheritdoc/>
-NumberOfColumns = 1;
-            public View             /// <inheritdoc/>
-CurrentView;
-            public int             /// <inheritdoc/>
-SortColumn = -1;
-            public bool             /// <inheritdoc/>
-IsShowingGroups;
-            public SortOrder             /// <inheritdoc/>
-LastSortOrder = SortOrder.None;
-            public bool[]             /// <inheritdoc/>
-ColumnIsVisible = Array.Empty<bool>();
-            public int[]             /// <inheritdoc/>
-ColumnDisplayIndicies = Array.Empty<int>();
-            public int[]             /// <inheritdoc/>
-ColumnWidths = Array.Empty<int>();
+            /// <summary>
+            ///     State version number. This is used to detect incompatible changes to the state format.
+            /// </summary>
+            public int VersionNumber = 1;
+
+            /// <summary>
+            ///     Number of columns in the list view. This is used to validate the lengths of the column-related arrays.
+            /// </summary>
+            public int NumberOfColumns = 1;
+
+            /// <summary>
+            ///     View mode of the list view. This is used to restore the view mode when restoring state.
+            /// </summary>
+            public View CurrentView;
+
+            /// <summary>
+            ///     Column index of the last sorted column. This is used to restore the sort order when restoring state.
+            /// </summary>
+            public int SortColumn = -1;
+
+            /// <summary>
+            ///     True if the list view is currently showing groups, false otherwise. This is used to restore the group visibility when restoring state.
+            /// </summary>
+            public bool IsShowingGroups;
+
+            /// <summary>
+            ///     Sort order of the last sorted column. This is used to restore the sort order when restoring state.
+            /// </summary>
+            public SortOrder LastSortOrder = SortOrder.None;
+
+            /// <summary>
+            ///     True if the corresponding column is visible, false otherwise. This is used to restore the column visibility when restoring state.
+            /// </summary>
+            public bool[] ColumnIsVisible = Array.Empty<bool>();
+
+            /// <summary>
+            ///     Index of the corresponding column in the display order. This is used to restore the column display order when restoring state.
+            /// </summary>
+            public int[] ColumnDisplayIndicies = Array.Empty<int>();
+
+            /// <summary>
+            ///     Width of the corresponding column in pixels. This is used to restore the column widths when restoring state.
+            /// </summary>
+            public int[] ColumnWidths = Array.Empty<int>();
 
             internal static SerializedObjectListViewState FromState(ObjectListViewState state) => new SerializedObjectListViewState
             {

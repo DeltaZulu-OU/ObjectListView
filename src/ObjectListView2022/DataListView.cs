@@ -219,14 +219,11 @@ namespace BrightIdeasSoftware
         /// Handles parent binding context changes
         /// </summary>
         /// <param name="e">Unused EventArgs.</param>
-        protected override void OnParentBindingContextChanged(EventArgs e)
-        {
-            base.OnParentBindingContextChanged(e);
-
+        protected override void OnParentBindingContextChanged(EventArgs e) =>
             // BindingContext is an ambient property. By default, it inherits the parent control's
             // context unless something explicitly assigns a local one. Parent changes therefore need
             // to flow through the normal control lifecycle.
-        }
+            base.OnParentBindingContextChanged(e); 
 
         #endregion Event Handlers
     }

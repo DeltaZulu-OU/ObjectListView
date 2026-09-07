@@ -826,9 +826,9 @@ namespace BrightIdeasSoftware.Rendering
             {
                 var selectorAsInt = -1;
 
-                if (imageSelector is int)
+                if (imageSelector is int sel)
                 {
-                    selectorAsInt = (int)imageSelector;
+                    selectorAsInt = sel;
                 }
                 else
                 {
@@ -1000,9 +1000,8 @@ namespace BrightIdeasSoftware.Rendering
             var il = ImageListOrDefault;
             if (il != null)
             {
-                if (imageSelector is int)
+                if (imageSelector is int index)
                 {
-                    var index = (int)imageSelector;
                     if (index < 0 || index >= il.Images.Count)
                     {
                         return null;
@@ -1306,7 +1305,7 @@ namespace BrightIdeasSoftware.Rendering
         /// </summary>
         /// <param name="g"></param>
         /// <param name="hti"></param>
-        /// <param name="bounds"></param>
+        /// <param name="alignedContentRectangle"></param>
         /// <param name="x"></param>
         /// <param name="y"></param>
         protected virtual void StandardHitTest(Graphics g, OlvListViewHitTestInfo hti, Rectangle alignedContentRectangle, int x, int y)
@@ -1423,10 +1422,10 @@ namespace BrightIdeasSoftware.Rendering
         /// Apply any padding to the given bounds, and then align a rectangle of the given
         /// size within that padded area.
         /// </summary>
-        /// <param name="g"></param>
-        /// <param name="cellBounds"></param>
-        /// <param name="preferredSize"></param>
-        /// <returns></returns>
+        /// <param name="g">Graphics context to use for drawing</param>
+        /// <param name="cellBounds">Bounds of the cell</param>
+        /// <param name="preferredSize">Preferred size of the rectangle to align</param>
+        /// <returns>Aligned rectangle within the padded area</returns>
         protected Rectangle CalculatePaddedAlignedBounds(Graphics g, Rectangle cellBounds, Size preferredSize)
         {
             var r = ApplyCellPadding(cellBounds);
@@ -1623,9 +1622,9 @@ namespace BrightIdeasSoftware.Rendering
             {
                 // Try to translate our imageSelector into a valid ImageList index
                 var selectorAsInt = -1;
-                if (imageSelector is int)
+                if (imageSelector is int sel)
                 {
-                    selectorAsInt = (int)imageSelector;
+                    selectorAsInt = sel;
                     if (selectorAsInt >= il.Images.Count)
                     {
                         selectorAsInt = -1;
@@ -1825,17 +1824,14 @@ namespace BrightIdeasSoftware.Rendering
         /// Gets the cell's vertical alignment as a TextFormatFlag
         /// </summary>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
-        protected TextFormatFlags CellVerticalAlignmentAsTextFormatFlag {
-            get {
-                return EffectiveCellVerticalAlignment switch
-                {
-                    StringAlignment.Near => TextFormatFlags.Top,
-                    StringAlignment.Center => TextFormatFlags.VerticalCenter,
-                    StringAlignment.Far => TextFormatFlags.Bottom,
-                    _ => throw new ArgumentOutOfRangeException(),
-                };
-            }
-        }
+        protected TextFormatFlags CellVerticalAlignmentAsTextFormatFlag => 
+            EffectiveCellVerticalAlignment switch
+            {
+                StringAlignment.Near => TextFormatFlags.Top,
+                StringAlignment.Center => TextFormatFlags.VerticalCenter,
+                StringAlignment.Far => TextFormatFlags.Bottom,
+                _ => throw new ArgumentOutOfRangeException(),
+            };
 
         /// <summary>
         /// Gets the StringFormat needed when drawing text using GDI+
@@ -2651,11 +2647,11 @@ namespace BrightIdeasSoftware.Rendering
         protected Image GetImageFromAspect()
         {
             // If we've already figured out the image, don't do it again
-            if (OLVSubItem != null && OLVSubItem.ImageSelector is Image)
+            if (OLVSubItem != null && OLVSubItem.ImageSelector is Image animImage)
             {
                 if (OLVSubItem.AnimationState == null)
                 {
-                    return (Image)OLVSubItem.ImageSelector;
+                    return animImage;
                 }
                 else
                 {
@@ -2673,9 +2669,9 @@ namespace BrightIdeasSoftware.Rendering
             {
                 // Don't do anything else
             }
-            else if (Aspect is byte[])
+            else if (Aspect is byte[] aspect)
             {
-                using var stream = new MemoryStream((byte[])Aspect);
+                using var stream = new MemoryStream(aspect);
                 try
                 {
                     image = Image.FromStream(stream);
@@ -3317,17 +3313,7 @@ namespace BrightIdeasSoftware.Rendering
         [Category("Behavior"),
          Description("The index of the image that should be drawn"),
          DefaultValue(-1)]
-        public int ImageIndex {
-            get {
-                if (ImageSelector is int)
-                {
-                    return (int)ImageSelector;
-                }
-                else
-                {
-                    return -1;
-                }
-            }
+        public int ImageIndex { get => ImageSelector is int sel ? sel : -1;
 
             set => ImageSelector = value;
         }

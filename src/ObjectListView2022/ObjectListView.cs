@@ -9421,12 +9421,7 @@ namespace BrightIdeasSoftware
         /// </summary>
         protected virtual void PostProcessRows()
         {
-            // If this method is called during a BeginUpdate/EndUpdate pair, changes to the
-            // Items collection are cached. Getting the Count flushes that cache.
-            // ReSharper disable once UnusedVariable
-#pragma warning disable IDE0059 // Unnecessary assignment of a value
-            var count = Items.Count;
-#pragma warning restore IDE0059 // Unnecessary assignment of a value
+            FlushCountCache();
             var i = 0;
             if (ShowGroups)
             {
@@ -9447,6 +9442,17 @@ namespace BrightIdeasSoftware
                     i++;
                 }
             }
+        }
+
+        /// <summary>
+        ///     If this method is called during a BeginUpdate/EndUpdate pair, changes to the
+        ///     Items collection are cached. Getting the Count flushes that cache.
+        /// </summary>
+        private void FlushCountCache()
+        {
+#pragma warning disable IDE0059 // Unnecessary assignment of a value
+            var count = Items.Count;
+#pragma warning restore IDE0059 // Unnecessary assignment of a value
         }
 
         /// <summary>
