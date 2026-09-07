@@ -1608,6 +1608,11 @@ namespace BrightIdeasSoftware
                 var index = GetObjectIndex(model);
                 if (count > 0)
                 {
+                    for (var i = index + 1; i <= index + count; i++)
+                    {
+                        mapObjectToIndex.Remove(objectList[i]);
+                    }
+
                     objectList.RemoveRange(index + 1, count);
                 }
 
