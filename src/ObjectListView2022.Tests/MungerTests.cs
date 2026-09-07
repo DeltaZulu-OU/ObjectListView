@@ -7,14 +7,13 @@ namespace ObjectListView2022.Tests
     public class MungerTests
     {
         [TestMethod]
-        public void IgnoreMissingAspects_DefaultMatchesBuildConfiguration()
-        {
+        public void IgnoreMissingAspects_DefaultMatchesBuildConfiguration() =>
 #if DEBUG
             Assert.IsFalse(Munger.IgnoreMissingAspects);
 #else
             Assert.IsTrue(Munger.IgnoreMissingAspects);
 #endif
-        }
+
 
         [TestMethod]
         public void GetValue_ReadsSimpleAspect()
@@ -85,8 +84,8 @@ namespace ObjectListView2022.Tests
                 Munger.IgnoreMissingAspects = false;
                 var value = new Munger("Missing").GetValue(new RootModel());
 
-                StringAssert.Contains(value as string, "Missing");
-                StringAssert.Contains(value as string, typeof(RootModel).FullName);
+                Assert.Contains("Missing", value as string);
+                Assert.Contains(typeof(RootModel).FullName, value as string);
             }
             finally
             {
@@ -103,8 +102,8 @@ namespace ObjectListView2022.Tests
                 Munger.IgnoreMissingAspects = false;
                 var value = new Munger("Missing.Value").GetValue(new RootModel());
 
-                StringAssert.Contains(value as string, "Missing");
-                StringAssert.Contains(value as string, typeof(RootModel).FullName);
+                Assert.Contains("Missing", value as string);
+                Assert.Contains(typeof(RootModel).FullName, value as string);
             }
             finally
             {

@@ -25,16 +25,10 @@ namespace ObjectListView2022.Tests
         }
 
         [TestMethod]
-        public void ImageOverlayConverterTypeResolves()
-        {
-            AssertConverterTypeResolves(typeof(ImageOverlay));
-        }
+        public void ImageOverlayConverterTypeResolves() => AssertConverterTypeResolves(typeof(ImageOverlay));
 
         [TestMethod]
-        public void TextOverlayConverterTypeResolves()
-        {
-            AssertConverterTypeResolves(typeof(TextOverlay));
-        }
+        public void TextOverlayConverterTypeResolves() => AssertConverterTypeResolves(typeof(TextOverlay));
 
         [TestMethod]
         public void ObjectListViewMetadataDoesNotReferenceMissingBrightIdeasSoftwareTypes()
