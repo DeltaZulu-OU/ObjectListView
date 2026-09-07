@@ -452,7 +452,7 @@ namespace BrightIdeasSoftware.Implementation
         /// Poke the given value into the given target indicated by our AspectName.
         /// </summary>
         /// <param name="target">The object that will be poked</param>
-        /// <param name="value">The value to be assigned</param>
+        /// <param name="value">The value that will be poked into the target</param>
         /// <returns>bool indicating if the put worked</returns>
         public bool PutValue(object target, object value)
         {
