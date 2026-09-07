@@ -112,6 +112,18 @@ namespace ObjectListView2022.Tests
         }
 
         [TestMethod]
+        public void GetValue_ReusesMungerAcrossModels()
+        {
+            var munger = new Munger(nameof(RootModel.Name));
+
+            for (var i = 0; i < 512; i++)
+            {
+                var model = new RootModel { Name = "model-" + i };
+                Assert.AreEqual(model.Name, munger.GetValue(model));
+            }
+        }
+
+        [TestMethod]
         public void PutValue_UpdatesNestedAspect()
         {
             var model = new RootModel { Child = new ChildModel { Value = "before" } };
@@ -158,6 +170,21 @@ namespace ObjectListView2022.Tests
 
             Assert.IsFalse(munger.PutValue(model, "after"));
             Assert.AreEqual("readonly", model.ReadOnlyValue);
+        }
+
+        [TestMethod]
+        public void PutValue_ReusesMungerAcrossModels()
+        {
+            var munger = new Munger(nameof(RootModel.Name));
+
+            for (var i = 0; i < 512; i++)
+            {
+                var model = new RootModel();
+                var value = "model-" + i;
+
+                Assert.IsTrue(munger.PutValue(model, value));
+                Assert.AreEqual(value, model.Name);
+            }
         }
 
         private sealed class RootModel

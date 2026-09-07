@@ -1,6 +1,5 @@
 using System.Collections;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Windows.Forms;
 using BrightIdeasSoftware.Implementation;
 
@@ -101,7 +100,6 @@ namespace BrightIdeasSoftware
                 return;
             }
 
-            var sw = Stopwatch.StartNew();
             var checkedLookup = BuildCheckedObjectLookup(value);
 
             BeginUpdate();
@@ -110,13 +108,11 @@ namespace BrightIdeasSoftware
                 SetObjectCheckedness(model, checkedLookup.ContainsKey(model) ? CheckState.Checked : CheckState.Unchecked);
             }
             EndUpdate();
-
-            Debug.WriteLine(string.Format("PERF - Setting CheckedObjects on {2} objects took {0}ms / {1} ticks", sw.ElapsedMilliseconds, sw.ElapsedTicks, GetItemCount()));
         }
 
         private Hashtable BuildCheckedObjectLookup(IList value)
         {
-            var table = new Hashtable(GetItemCount());
+            var table = new Hashtable(value?.Count ?? 0);
             if (value == null)
             {
                 return table;
