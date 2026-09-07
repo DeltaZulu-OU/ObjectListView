@@ -31,6 +31,23 @@ namespace ObjectListView2022.Tests
         public void TextOverlayConverterTypeResolves() => AssertConverterTypeResolves(typeof(TextOverlay));
 
         [TestMethod]
+        [DataRow(typeof(DataListView), nameof(DataListView.DataSource))]
+        [DataRow(typeof(DataListView), nameof(DataListView.DataMember))]
+        [DataRow(typeof(FastDataListView), nameof(FastDataListView.DataSource))]
+        [DataRow(typeof(FastDataListView), nameof(FastDataListView.DataMember))]
+        [DataRow(typeof(DataTreeListView), nameof(DataTreeListView.DataSource))]
+        public void DataBoundPropertiesRemainDesignerSerializable(Type controlType, string propertyName)
+        {
+            var property = TypeDescriptor.GetProperties(controlType)[propertyName];
+            Assert.IsNotNull(property);
+
+            var attribute = property.Attributes[typeof(DesignerSerializationVisibilityAttribute)]
+                as DesignerSerializationVisibilityAttribute;
+            Assert.IsNotNull(attribute);
+            Assert.AreEqual(DesignerSerializationVisibility.Visible, attribute.Visibility);
+        }
+
+        [TestMethod]
         public void ObjectListViewMetadataDoesNotReferenceMissingBrightIdeasSoftwareTypes()
         {
             var assembly = typeof(ObjectListView).Assembly;

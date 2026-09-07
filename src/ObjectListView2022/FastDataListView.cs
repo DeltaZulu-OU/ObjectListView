@@ -97,6 +97,7 @@ namespace BrightIdeasSoftware
         /// </remarks>
         [Category("Data"),
         TypeConverter("System.Windows.Forms.Design.DataSourceConverter, System.Design")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public virtual object DataSource {
             get => Adapter.DataSource; set => Adapter.DataSource = value;
         }
@@ -108,6 +109,7 @@ namespace BrightIdeasSoftware
         [Category("Data"),
          Editor("System.Windows.Forms.Design.DataMemberListEditor, System.Design", typeof(UITypeEditor)),
          DefaultValue("")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public virtual string DataMember {
             get => Adapter.DataMember; set => Adapter.DataMember = value;
         }
