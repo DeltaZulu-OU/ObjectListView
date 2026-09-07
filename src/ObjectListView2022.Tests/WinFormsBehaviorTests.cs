@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using BrightIdeasSoftware;
+using BrightIdeasSoftware.Filtering;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace ObjectListView2022.Tests
@@ -36,6 +37,24 @@ namespace ObjectListView2022.Tests
 
             Assert.IsTrue(listView.IsChecked(model));
             Assert.AreSequenceEqual(new object[] { model }, listView.CheckedObjects.Cast<object>().ToArray());
+        }
+
+        [TestMethod]
+        public void MappedCheckState_IncludesFilteredObjects()
+        {
+            using var listView = new ObjectListView { CheckBoxes = true, PersistentCheckBoxes = true };
+            listView.Columns.Add(new OLVColumn("Name", nameof(Model.Name)));
+            var first = new Model("first");
+            var second = new Model("second");
+            listView.SetObjects(new[] { first, second });
+            listView.CheckObject(second);
+
+            listView.UseFiltering = true;
+            listView.ModelFilter = new ModelFilter(x => ReferenceEquals(x, first));
+
+            Assert.AreEqual(1, listView.GetItemCount());
+            Assert.AreSequenceEqual(new object[] { second },
+                listView.GetAllObjectsWithMappedCheckState(System.Windows.Forms.CheckState.Checked).Cast<object>().ToArray());
         }
 
         [TestMethod]
