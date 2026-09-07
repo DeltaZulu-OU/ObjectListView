@@ -41,6 +41,25 @@ namespace BrightIdeasSoftware
             set => CheckedObjects = EnumerableToArray(value, true);
         }
 
+        /// <summary>
+        /// Get objects with the given mapped check state, including objects that are
+        /// currently filtered out or otherwise not visible in the list.
+        /// </summary>
+        /// <remarks>
+        /// This is meaningful when check state is stored by ObjectListView, such as when
+        /// <see cref="PersistentCheckBoxes"/> is enabled or for virtual lists.
+        /// </remarks>
+        public IEnumerable GetAllObjectsWithMappedCheckState(CheckState state)
+        {
+            foreach (var entry in CheckStateMap)
+            {
+                if (entry.Value == state)
+                {
+                    yield return entry.Key;
+                }
+            }
+        }
+
         private IList CollectCheckedObjects()
         {
             var list = new ArrayList();
