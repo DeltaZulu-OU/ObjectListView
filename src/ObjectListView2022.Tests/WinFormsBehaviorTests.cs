@@ -58,6 +58,20 @@ namespace ObjectListView2022.Tests
         }
 
         [TestMethod]
+        public void FastObjectListView_CheckedObjectsTracksVirtualItems()
+        {
+            using var listView = new FastObjectListView { CheckBoxes = true };
+            listView.Columns.Add(new OLVColumn("Name", nameof(Model.Name)));
+            var first = new Model("first");
+            var second = new Model("second");
+            listView.SetObjects(new[] { first, second });
+
+            listView.CheckObject(second);
+
+            Assert.AreSequenceEqual(new object[] { second }, listView.CheckedObjects.Cast<object>().ToArray());
+        }
+
+        [TestMethod]
         public void FastObjectListView_PreservesObjectIndexMapping()
         {
             using var listView = new FastObjectListView();
