@@ -2,6 +2,7 @@ using System.Collections;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows.Forms;
+using BrightIdeasSoftware.Implementation;
 
 namespace BrightIdeasSoftware
 {
@@ -68,12 +69,25 @@ namespace BrightIdeasSoftware
                 return list;
             }
 
-            for (var i = 0; i < GetItemCount(); i++)
+            if (VirtualMode)
             {
-                var item = GetItem(i);
-                if (item.CheckState == CheckState.Checked)
+                for (var i = 0; i < GetItemCount(); i++)
                 {
-                    list.Add(item.RowObject);
+                    var item = GetItem(i);
+                    if (item.CheckState == CheckState.Checked)
+                    {
+                        list.Add(item.RowObject);
+                    }
+                }
+            }
+            else
+            {
+                foreach (OLVListItem item in Items)
+                {
+                    if (item.CheckState == CheckState.Checked)
+                    {
+                        list.Add(item.RowObject);
+                    }
                 }
             }
 
