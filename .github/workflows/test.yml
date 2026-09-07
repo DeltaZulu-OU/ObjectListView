@@ -38,7 +38,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      - uses: microsoft/setup-msbuild@v2
+      - uses: microsoft/setup-msbuild@v3
 
       - name: Restore
         run: msbuild src/ObjectListView2022.Tests/ObjectListView2022.Tests.csproj /t:Restore
