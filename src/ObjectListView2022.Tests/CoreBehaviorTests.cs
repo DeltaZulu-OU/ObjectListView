@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Linq;
 using System.Windows.Forms;
 using BrightIdeasSoftware;
@@ -53,10 +52,9 @@ namespace ObjectListView2022.Tests
         {
             var values = new[] { "alpha", "beta", "atom" };
             var filter = new ListFilter(items =>
-                ((IEnumerable)items).Cast<string>().Where(x => x.StartsWith("a")).ToArray());
+                items.Cast<string>().Where(x => x.StartsWith("a")).ToArray());
 
-            CollectionAssert.AreEqual(new[] { "alpha", "atom" },
-                filter.Filter(values).Cast<string>().ToArray());
+            Assert.AreSequenceEqual(new[] { "alpha", "atom" }, filter.Filter(values).Cast<string>().ToArray());
         }
 
         [TestMethod]
@@ -67,8 +65,8 @@ namespace ObjectListView2022.Tests
             var alpha = new OLVListItem(new Model { Name = "alpha" });
             var beta = new OLVListItem(new Model { Name = "beta" });
 
-            Assert.IsTrue(comparer.Compare(alpha, beta) < 0);
-            Assert.IsTrue(comparer.Compare(beta, alpha) > 0);
+            Assert.IsLessThan(0, comparer.Compare(alpha, beta));
+            Assert.IsGreaterThan(0, comparer.Compare(beta, alpha));
             Assert.AreEqual(0, comparer.Compare(alpha, alpha));
         }
 
@@ -79,7 +77,7 @@ namespace ObjectListView2022.Tests
             var second = new OLVGroup("a") { SortValue = 2 };
             var comparer = new OLVGroupComparer(SortOrder.Ascending);
 
-            Assert.IsTrue(comparer.Compare(first, second) < 0);
+            Assert.IsLessThan(0, comparer.Compare(first, second));
         }
 
         private sealed class Model

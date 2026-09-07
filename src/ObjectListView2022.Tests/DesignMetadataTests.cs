@@ -54,7 +54,7 @@ namespace ObjectListView2022.Tests
                 }
             }
 
-            Assert.AreEqual(0, unresolved.Count,
+            Assert.IsEmpty(unresolved,
                 "Unresolved ObjectListView metadata type references:" + Environment.NewLine +
                 string.Join(Environment.NewLine, unresolved));
         }
