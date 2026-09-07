@@ -35,6 +35,24 @@ namespace ObjectListView2022.Tests
         }
 
         [TestMethod]
+        public void GetValue_ReadsField()
+        {
+            var model = new RootModel { FieldValue = "field" };
+            var munger = new Munger(nameof(RootModel.FieldValue));
+
+            Assert.AreEqual("field", munger.GetValue(model));
+        }
+
+        [TestMethod]
+        public void GetValue_InvokesParameterlessMethod()
+        {
+            var model = new RootModel { Name = "method" };
+            var munger = new Munger(nameof(RootModel.GetName));
+
+            Assert.AreEqual("method", munger.GetValue(model));
+        }
+
+        [TestMethod]
         public void GetValue_ReturnsNullWhenIntermediateAspectIsNull()
         {
             var model = new RootModel();
@@ -77,6 +95,24 @@ namespace ObjectListView2022.Tests
         }
 
         [TestMethod]
+        public void GetValue_ReturnsDiagnosticForMissingIntermediateAspect()
+        {
+            var previous = Munger.IgnoreMissingAspects;
+            try
+            {
+                Munger.IgnoreMissingAspects = false;
+                var value = new Munger("Missing.Value").GetValue(new RootModel());
+
+                StringAssert.Contains(value as string, "Missing");
+                StringAssert.Contains(value as string, typeof(RootModel).FullName);
+            }
+            finally
+            {
+                Munger.IgnoreMissingAspects = previous;
+            }
+        }
+
+        [TestMethod]
         public void PutValue_UpdatesNestedAspect()
         {
             var model = new RootModel { Child = new ChildModel { Value = "before" } };
@@ -84,6 +120,26 @@ namespace ObjectListView2022.Tests
 
             Assert.IsTrue(munger.PutValue(model, "after"));
             Assert.AreEqual("after", model.Child.Value);
+        }
+
+        [TestMethod]
+        public void PutValue_UpdatesField()
+        {
+            var model = new RootModel { FieldValue = "before" };
+            var munger = new Munger(nameof(RootModel.FieldValue));
+
+            Assert.IsTrue(munger.PutValue(model, "after"));
+            Assert.AreEqual("after", model.FieldValue);
+        }
+
+        [TestMethod]
+        public void PutValue_InvokesSingleParameterMethod()
+        {
+            var model = new RootModel();
+            var munger = new Munger(nameof(RootModel.SetName));
+
+            Assert.IsTrue(munger.PutValue(model, "updated"));
+            Assert.AreEqual("updated", model.Name);
         }
 
         [TestMethod]
@@ -95,10 +151,26 @@ namespace ObjectListView2022.Tests
             Assert.IsFalse(munger.PutValue(model, "after"));
         }
 
+        [TestMethod]
+        public void PutValue_ReturnsFalseForReadOnlyProperty()
+        {
+            var model = new RootModel();
+            var munger = new Munger(nameof(RootModel.ReadOnlyValue));
+
+            Assert.IsFalse(munger.PutValue(model, "after"));
+            Assert.AreEqual("readonly", model.ReadOnlyValue);
+        }
+
         private sealed class RootModel
         {
             public string Name { get; set; }
             public ChildModel Child { get; set; }
+            public string FieldValue;
+            public string ReadOnlyValue => "readonly";
+
+            public string GetName() => Name;
+
+            public void SetName(string value) => Name = value;
         }
 
         private sealed class ChildModel
