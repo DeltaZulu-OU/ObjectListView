@@ -7,4 +7,4 @@
 
 Fork of the original [ObjectListView](https://objectlistview.sourceforge.net/cs/index.html), used for other DeltaZulu products.
 
-See [CHANGELOG.md] for list of changes.
+See [CHANGELOG](CHANGELOG.md) for the list of changes.
