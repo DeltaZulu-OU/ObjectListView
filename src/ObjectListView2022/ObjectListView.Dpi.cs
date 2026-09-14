@@ -33,7 +33,13 @@ namespace BrightIdeasSoftware
                 var targetFontSize = (float)Math.Round(dpiBaseFontSize * deviceDpiNew / DefaultDpi, 1);
                 if (Math.Abs(Font.Size - targetFontSize) > FontSizeTolerance)
                 {
-                    Font = new Font(fontBeforeScale, targetFontSize);
+                    Font = new Font(
+                        fontBeforeScale.FontFamily,
+                        targetFontSize,
+                        fontBeforeScale.Style,
+                        fontBeforeScale.Unit,
+                        fontBeforeScale.GdiCharSet,
+                        fontBeforeScale.GdiVerticalFont);
                 }
 
                 if (VirtualMode)
