@@ -25,6 +25,7 @@ All notable changes to this repository are documented here.
 
 ### Fixed
 
+- Fixed `EditingCellBorderDecoration(bool useLightBox)` so the constructor honors its `useLightBox` argument.
 - Made `OLVListItem` hyperlink and subitem access safe when its WinForms subitem collection contains non-`OLVListSubItem` entries.
 - Fixed stale TreeListView object indexes after refreshing an expanded branch whose children changed.
 - Restored the intended Release-mode default for `Munger.IgnoreMissingAspects`.
