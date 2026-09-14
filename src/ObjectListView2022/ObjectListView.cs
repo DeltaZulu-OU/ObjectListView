@@ -6395,18 +6395,17 @@ namespace BrightIdeasSoftware
             // Recreate the header control when the listview control is destroyed
             headerControl = null;
 
-            // When the underlying control is destroyed, we need to recreate and reconfigure its tooltip
-            if (cellToolTip != null)
+            // Preserve tooltip settings until a replacement native handle exists.
+            if (cellToolTip != null && !Disposing && !IsDisposed)
             {
                 cellToolTip.PushSettings();
-                BeginInvoke((MethodInvoker)delegate {
-                    UpdateCellToolTipHandle();
-                    cellToolTip.PopSettings();
-                });
+                restoreCellToolTipAfterHandleCreated = true;
             }
 
             return false;
         }
+
+        private bool restoreCellToolTipAfterHandleCreated;
 
         /// <summary>
         /// Handle the search for item m if possible.
@@ -10130,6 +10129,13 @@ namespace BrightIdeasSoftware
             base.OnHandleCreated(e);
 
             Invoke((MethodInvoker)OnControlCreated);
+
+            if (restoreCellToolTipAfterHandleCreated && cellToolTip != null && !IsDisposed && !Disposing)
+            {
+                UpdateCellToolTipHandle();
+                cellToolTip.PopSettings();
+                restoreCellToolTipAfterHandleCreated = false;
+            }
         }
 
         /// <summary>
