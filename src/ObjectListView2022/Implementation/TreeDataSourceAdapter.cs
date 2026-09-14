@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.ComponentModel;
 
@@ -191,6 +192,16 @@ namespace BrightIdeasSoftware.Implementation
             {
                 base.HandleListChangedItemChanged(e);
             }
+        }
+
+        protected override void HandleCurrencyManagerPositionChanged(object sender, EventArgs e)
+        {
+            if (!DataSourceSelectionPolicy.ShouldApplyPositionChange(TreeListView, sender, e))
+            {
+                return;
+            }
+
+            base.HandleCurrencyManagerPositionChanged(sender, e);
         }
 
         /// <summary>
