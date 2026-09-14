@@ -11,7 +11,7 @@ namespace ObjectListView2022.Tests
         [TestMethod]
         public void DataListView_InitialBindingPreservesEmptySelection()
         {
-            using var listView = new DataListView
+            using var listView = new RecordingDataListView
             {
                 BindingContext = new BindingContext(),
                 AutoGenerateColumns = false
@@ -20,14 +20,14 @@ namespace ObjectListView2022.Tests
 
             listView.DataSource = rows;
 
-            Assert.IsNull(listView.SelectedObject);
-            Assert.AreEqual(0, listView.SelectedIndices.Count);
+            Assert.AreEqual(0, listView.SelectionAssignmentCount);
+            Assert.IsNull(listView.RecordedSelectedObject);
         }
 
         [TestMethod]
         public void DataListView_PositionChangeAfterBindingUpdatesSelection()
         {
-            using var listView = new DataListView
+            using var listView = new RecordingDataListView
             {
                 BindingContext = new BindingContext(),
                 AutoGenerateColumns = false
@@ -35,16 +35,18 @@ namespace ObjectListView2022.Tests
             var rows = CreateRows();
             listView.DataSource = rows;
             var currencyManager = (CurrencyManager)listView.BindingContext[rows];
+            var targetPosition = currencyManager.Position == 1 ? 0 : 1;
 
-            currencyManager.Position = 1;
+            currencyManager.Position = targetPosition;
 
-            Assert.AreSame(rows[1], listView.SelectedObject);
+            Assert.AreEqual(1, listView.SelectionAssignmentCount);
+            Assert.AreSame(rows[targetPosition], listView.RecordedSelectedObject);
         }
 
         [TestMethod]
         public void FastDataListView_InitialBindingPreservesEmptySelection()
         {
-            using var listView = new FastDataListView
+            using var listView = new RecordingFastDataListView
             {
                 BindingContext = new BindingContext(),
                 AutoGenerateColumns = false
@@ -53,14 +55,14 @@ namespace ObjectListView2022.Tests
 
             listView.DataSource = rows;
 
-            Assert.IsNull(listView.SelectedObject);
-            Assert.AreEqual(0, listView.SelectedIndices.Count);
+            Assert.AreEqual(0, listView.SelectionAssignmentCount);
+            Assert.IsNull(listView.RecordedSelectedObject);
         }
 
         [TestMethod]
         public void FastDataListView_PositionChangeAfterBindingUpdatesSelection()
         {
-            using var listView = new FastDataListView
+            using var listView = new RecordingFastDataListView
             {
                 BindingContext = new BindingContext(),
                 AutoGenerateColumns = false
@@ -68,10 +70,12 @@ namespace ObjectListView2022.Tests
             var rows = CreateRows();
             listView.DataSource = rows;
             var currencyManager = (CurrencyManager)listView.BindingContext[rows];
+            var targetPosition = currencyManager.Position == 1 ? 0 : 1;
 
-            currencyManager.Position = 1;
+            currencyManager.Position = targetPosition;
 
-            Assert.AreSame(rows[1], listView.SelectedObject);
+            Assert.AreEqual(1, listView.SelectionAssignmentCount);
+            Assert.AreSame(rows[targetPosition], listView.RecordedSelectedObject);
         }
 
         [TestMethod]
@@ -82,8 +86,8 @@ namespace ObjectListView2022.Tests
 
             listView.DataSource = rows;
 
-            Assert.IsNull(listView.SelectedObject);
-            Assert.AreEqual(0, listView.SelectedIndices.Count);
+            Assert.AreEqual(0, listView.SelectionAssignmentCount);
+            Assert.IsNull(listView.RecordedSelectedObject);
         }
 
         [TestMethod]
@@ -93,13 +97,15 @@ namespace ObjectListView2022.Tests
             var rows = CreateTreeRows();
             listView.DataSource = rows;
             var currencyManager = (CurrencyManager)listView.BindingContext[rows];
+            var targetPosition = currencyManager.Position == 1 ? 0 : 1;
 
-            currencyManager.Position = 1;
+            currencyManager.Position = targetPosition;
 
-            Assert.AreSame(rows[1], listView.SelectedObject);
+            Assert.AreEqual(1, listView.SelectionAssignmentCount);
+            Assert.AreSame(rows[targetPosition], listView.RecordedSelectedObject);
         }
 
-        private static DataTreeListView CreateTreeListView() => new DataTreeListView
+        private static RecordingDataTreeListView CreateTreeListView() => new RecordingDataTreeListView
         {
             BindingContext = new BindingContext(),
             AutoGenerateColumns = false,
@@ -118,6 +124,48 @@ namespace ObjectListView2022.Tests
             new Row { Id = 1, Name = "root" },
             new Row { Id = 2, ParentId = 1, Name = "child" }
         };
+
+        private sealed class RecordingDataListView : DataListView
+        {
+            public int SelectionAssignmentCount { get; private set; }
+            public object RecordedSelectedObject { get; private set; }
+
+            public override object SelectedObject {
+                get => RecordedSelectedObject;
+                set {
+                    RecordedSelectedObject = value;
+                    SelectionAssignmentCount++;
+                }
+            }
+        }
+
+        private sealed class RecordingFastDataListView : FastDataListView
+        {
+            public int SelectionAssignmentCount { get; private set; }
+            public object RecordedSelectedObject { get; private set; }
+
+            public override object SelectedObject {
+                get => RecordedSelectedObject;
+                set {
+                    RecordedSelectedObject = value;
+                    SelectionAssignmentCount++;
+                }
+            }
+        }
+
+        private sealed class RecordingDataTreeListView : DataTreeListView
+        {
+            public int SelectionAssignmentCount { get; private set; }
+            public object RecordedSelectedObject { get; private set; }
+
+            public override object SelectedObject {
+                get => RecordedSelectedObject;
+                set {
+                    RecordedSelectedObject = value;
+                    SelectionAssignmentCount++;
+                }
+            }
+        }
 
         private sealed class Row
         {
