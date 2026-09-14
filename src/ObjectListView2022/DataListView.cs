@@ -71,7 +71,7 @@ namespace BrightIdeasSoftware
         /// </summary>
         public DataListView()
         {
-            Adapter = new DataSourceAdapter(this);
+            Adapter = new InitialSelectionDataSourceAdapter(this);
         }
 
         /// <inheritdoc/>
