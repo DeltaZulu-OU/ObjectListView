@@ -263,8 +263,8 @@ namespace BrightIdeasSoftware
             if (sortOrder != SortOrder.None)
             {
                 var comparer = new ModelObjectComparer(column, sortOrder, listView.SecondarySortColumn, listView.SecondarySortOrder);
-                ObjectList.Sort(comparer);
-                FilteredObjectList.Sort(comparer);
+                StableSort.Sort(ObjectList, comparer);
+                StableSort.Sort(FilteredObjectList, comparer);
             }
             RebuildIndexMap();
         }

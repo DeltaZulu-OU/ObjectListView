@@ -2446,7 +2446,7 @@ namespace BrightIdeasSoftware
 
                 if (comparer != null)
                 {
-                    ChildBranches.Sort(comparer);
+                    StableSort.Sort(ChildBranches, comparer);
                 }
 
                 foreach (var br in ChildBranches)
