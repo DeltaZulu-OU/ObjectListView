@@ -7089,6 +7089,20 @@ namespace BrightIdeasSoftware
             _ => CheckState.Checked,
         };
 
+        private static bool TryMarshalStructure<T>(Func<T> marshaller, out T value)
+        {
+            try
+            {
+                value = marshaller();
+                return true;
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                value = default;
+                return false;
+            }
+        }
+
         /// <summary>
         /// In the notification messages, we handle attempts to change the width of our columns
         /// </summary>
@@ -7185,7 +7199,13 @@ namespace BrightIdeasSoftware
                 case HDN_TRACKW:
                     if (nmheader.iItem >= 0 && nmheader.iItem < Columns.Count)
                     {
-                        var hditem = (NativeMethods.HDITEM)Marshal.PtrToStructure(nmheader.pHDITEM, typeof(NativeMethods.HDITEM));
+                        if (!TryMarshalStructure(
+                            () => (NativeMethods.HDITEM)Marshal.PtrToStructure(nmheader.pHDITEM, typeof(NativeMethods.HDITEM)),
+                            out NativeMethods.HDITEM hditem))
+                        {
+                            break;
+                        }
+
                         var column = GetColumn(nmheader.iItem);
                         if (hditem.cxy < column.MinimumWidth)
                         {
@@ -7205,7 +7225,13 @@ namespace BrightIdeasSoftware
                     nmheader = (NativeMethods.NMHEADER)m.GetLParam(typeof(NativeMethods.NMHEADER));
                     if (nmheader.iItem >= 0 && nmheader.iItem < Columns.Count)
                     {
-                        var hditem = (NativeMethods.HDITEM)Marshal.PtrToStructure(nmheader.pHDITEM, typeof(NativeMethods.HDITEM));
+                        if (!TryMarshalStructure(
+                            () => (NativeMethods.HDITEM)Marshal.PtrToStructure(nmheader.pHDITEM, typeof(NativeMethods.HDITEM)),
+                            out NativeMethods.HDITEM hditem))
+                        {
+                            break;
+                        }
+
                         var column = GetColumn(nmheader.iItem);
                         // Check the mask to see if the width field is valid, and if it is, make sure it's within range
                         if ((hditem.mask & 1) == 1)
