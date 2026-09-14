@@ -11444,9 +11444,9 @@ namespace BrightIdeasSoftware
                         d.Draw(this, g, contentRectangle);
                     }
                 }
-                foreach (OLVListSubItem subItem in olvi.SubItems)
+                foreach (ListViewItem.ListViewSubItem rawSubItem in olvi.SubItems)
                 {
-                    if (subItem.HasDecoration)
+                    if (rawSubItem is OLVListSubItem subItem && subItem.HasDecoration)
                     {
                         foreach (var d in subItem.Decorations)
                         {
