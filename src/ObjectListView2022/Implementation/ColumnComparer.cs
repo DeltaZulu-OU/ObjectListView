@@ -68,6 +68,7 @@ namespace BrightIdeasSoftware.Implementation
         {
             column = col;
             sortOrder = order;
+            originalOrder = CaptureOriginalOrder(col);
         }
 
         /// <summary>
@@ -144,6 +145,14 @@ namespace BrightIdeasSoftware.Implementation
                 result = secondComparer.Compare(x, y);
             }
 
+            // Preserve the current row order when all configured sort keys compare equally.
+            if (result == 0 && originalOrder != null &&
+                originalOrder.TryGetValue(x, out var xIndex) &&
+                originalOrder.TryGetValue(y, out var yIndex))
+            {
+                result = xIndex.CompareTo(yIndex);
+            }
+
             return result;
         }
 
@@ -176,8 +185,28 @@ namespace BrightIdeasSoftware.Implementation
             }
         }
 
+        private static Dictionary<OLVListItem, int> CaptureOriginalOrder(OLVColumn col)
+        {
+            if (col?.ListView == null || col.ListView.Items.Count == 0)
+            {
+                return null;
+            }
+
+            var order = new Dictionary<OLVListItem, int>();
+            for (var i = 0; i < col.ListView.Items.Count; i++)
+            {
+                if (col.ListView.Items[i] is OLVListItem item)
+                {
+                    order[item] = i;
+                }
+            }
+
+            return order.Count == 0 ? null : order;
+        }
+
         private readonly OLVColumn column;
         private readonly SortOrder sortOrder;
         private readonly ColumnComparer secondComparer;
+        private readonly Dictionary<OLVListItem, int> originalOrder;
     }
 }
