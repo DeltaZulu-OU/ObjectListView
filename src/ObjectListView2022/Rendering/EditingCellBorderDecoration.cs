@@ -62,7 +62,7 @@ namespace BrightIdeasSoftware.Rendering
         /// <param name="useLightBox">Should the decoration use a lighbox display style?</param>
         public EditingCellBorderDecoration(bool useLightBox) : this()
         {
-            UseLightbox = useLightbox;
+            UseLightbox = useLightBox;
         }
 
         #endregion Life and death
