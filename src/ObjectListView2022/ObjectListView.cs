@@ -4156,7 +4156,7 @@ namespace BrightIdeasSoftware
         /// </remarks>
         public virtual void BuildList(bool shouldPreserveState)
         {
-            if (Frozen)
+            if (Frozen || IsDisposed || Disposing)
             {
                 return;
             }
@@ -5813,7 +5813,10 @@ namespace BrightIdeasSoftware
             }
             finally
             {
-                EndUpdate();
+                if (!IsDisposed && !Disposing)
+                {
+                    EndUpdate();
+                }
             }
         }
 
@@ -10933,12 +10936,28 @@ namespace BrightIdeasSoftware
         /// <summary>
         /// Force the hot item to be recalculated
         /// </summary>
-        public virtual void ClearHotItem() => UpdateHotItem(new Point(-1, -1));
+        public virtual void ClearHotItem()
+        {
+            if (IsDisposed || Disposing)
+            {
+                return;
+            }
+
+            UpdateHotItem(new Point(-1, -1));
+        }
 
         /// <summary>
         /// Force the hot item to be recalculated
         /// </summary>
-        public virtual void RefreshHotItem() => UpdateHotItem(PointToClient(Cursor.Position));
+        public virtual void RefreshHotItem()
+        {
+            if (IsDisposed || Disposing)
+            {
+                return;
+            }
+
+            UpdateHotItem(PointToClient(Cursor.Position));
+        }
 
         /// <summary>
         /// The mouse has moved to the given pt. See if the hot item needs to be updated
@@ -11707,6 +11726,11 @@ namespace BrightIdeasSoftware
         /// </summary>
         public virtual void UpdateColumnFiltering()
         {
+            if (IsDisposed || Disposing)
+            {
+                return;
+            }
+
             //List<IModelFilter> filters = new List<IModelFilter>();
             //IModelFilter columnFilter = this.CreateColumnFilter();
             //if (columnFilter != null)
