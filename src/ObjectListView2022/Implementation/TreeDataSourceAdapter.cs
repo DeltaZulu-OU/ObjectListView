@@ -162,7 +162,6 @@ namespace BrightIdeasSoftware.Implementation
         /// <returns></returns>
         protected override bool ShouldCreateColumn(PropertyDescriptor property)
         {
-            // If the property is a key column, and we aren't supposed to show keys, don't show it
             if (!ShowKeyColumns && (property.Name == KeyAspectName || property.Name == ParentKeyAspectName))
             {
                 return false;
@@ -177,11 +176,6 @@ namespace BrightIdeasSoftware.Implementation
         /// <param name="e"></param>
         protected override void HandleListChangedItemChanged(ListChangedEventArgs e)
         {
-            // If the id or the parent id of a row changes, we just rebuild everything.
-            // We can't do anything more specific. We don't know what the previous values, so we can't
-            // tell the previous parent to refresh itself. If the id itself has changed, things that used
-            // to be children will no longer be children. Just rebuild everything.
-            // It seems PropertyDescriptor is only filled in .NET 4 :(
             if (e.PropertyDescriptor != null &&
                 (e.PropertyDescriptor.Name == KeyAspectName ||
                  e.PropertyDescriptor.Name == ParentKeyAspectName))
@@ -194,6 +188,7 @@ namespace BrightIdeasSoftware.Implementation
             }
         }
 
+        /// <inheritdoc/>
         protected override void HandleCurrencyManagerPositionChanged(object sender, EventArgs e)
         {
             if (!DataSourceSelectionPolicy.ShouldApplyPositionChange(TreeListView, sender, e))
@@ -201,7 +196,13 @@ namespace BrightIdeasSoftware.Implementation
                 return;
             }
 
-            base.HandleCurrencyManagerPositionChanged(sender, e);
+            var index = CurrencyManager.Position;
+            if (index < 0 || index >= CurrencyManager.List.Count)
+            {
+                return;
+            }
+
+            ChangePosition(index);
         }
 
         /// <summary>
@@ -210,13 +211,6 @@ namespace BrightIdeasSoftware.Implementation
         /// <param name="index"></param>
         protected override void ChangePosition(int index)
         {
-            // We can't use our base method directly, since the normal position management
-            // doesn't know about our tree structure. They treat our dataset as a flat list
-            // but we have a collapsable structure. This means that the 5'th row to them
-            // may not even be visible to us
-
-            // To display the n'th row, we have to make sure that all its ancestors
-            // are expanded. Then we will be able to select it.
             var model = CurrencyManager.List[index];
             var parent = CalculateParent(model);
             while (parent != null && !TreeListView.IsExpanded(parent))
