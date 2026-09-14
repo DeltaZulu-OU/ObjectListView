@@ -212,9 +212,9 @@ namespace BrightIdeasSoftware.Implementation
         /// </summary>
         public bool HasAnyHyperlinks {
             get {
-                foreach (OLVListSubItem subItem in SubItems)
+                foreach (ListViewItem.ListViewSubItem subItem in SubItems)
                 {
-                    if (!string.IsNullOrEmpty(subItem.Url))
+                    if (subItem is OLVListSubItem olvSubItem && !string.IsNullOrEmpty(olvSubItem.Url))
                     {
                         return true;
                     }
