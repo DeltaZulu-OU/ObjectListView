@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - master
+      - "fix/**"
+      - "feat/**"
     paths-ignore: &documentation-only
       - "**/*.md"
       - "**/*.avif"
