@@ -25,6 +25,7 @@ All notable changes to this repository are documented here.
 
 ### Fixed
 
+- Prevented initial data binding from selecting the first row while preserving later `CurrencyManager` position-driven selection in data, fast-data, and tree-data lists.
 - Fixed `EditingCellBorderDecoration(bool useLightBox)` so the constructor honors its `useLightBox` argument.
 - Made `OLVListItem` hyperlink and subitem access safe when its WinForms subitem collection contains non-`OLVListSubItem` entries.
 - Fixed stale TreeListView object indexes after refreshing an expanded branch whose children changed.
