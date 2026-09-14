@@ -145,7 +145,7 @@ namespace BrightIdeasSoftware
         /// <returns>A DataSourceAdapter configured for this list</returns>
         /// <remarks>Subclasses should override this to create their
         /// own specialized adapters</remarks>
-        protected virtual DataSourceAdapter CreateDataSourceAdapter() => new DataSourceAdapter(this);
+        protected virtual DataSourceAdapter CreateDataSourceAdapter() => new InitialSelectionDataSourceAdapter(this);
 
         /// <summary>
         /// Change the Unfreeze behaviour
