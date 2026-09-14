@@ -291,7 +291,7 @@ namespace BrightIdeasSoftware.Implementation
         {
             if (index >= 0 && index < SubItems.Count)
             {
-                return (OLVListSubItem)SubItems[index];
+                return SubItems[index] as OLVListSubItem;
             }
 
             return null;
