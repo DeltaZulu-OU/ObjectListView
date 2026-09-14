@@ -34,6 +34,8 @@ All notable changes to this repository are documented here.
 - Restored cell-tooltip state only after a replacement native handle is created, avoiding teardown-time tooltip work against a destroyed handle.
 - Handled invalid `HDITEM` marshalling narrowly during header tracking and item-changing notifications without swallowing unrelated message-processing failures.
 
+- Preserved the relative order of rows with equal sort keys in normal, fast/virtual, and tree list sorting.
+
 ### Removed
 
 - Removed obsolete compatibility properties that were no longer needed.
