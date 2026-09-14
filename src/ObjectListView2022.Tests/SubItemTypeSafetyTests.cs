@@ -16,5 +16,15 @@ namespace ObjectListView2022.Tests
 
             Assert.IsFalse(item.HasAnyHyperlinks);
         }
+
+        [TestMethod]
+        public void GetSubItem_ReturnsNullForPlainListViewSubItem()
+        {
+            var item = new OLVListItem(new object());
+            item.SubItems.Clear();
+            item.SubItems.Add(new ListViewItem.ListViewSubItem(null, "plain"));
+
+            Assert.IsNull(item.GetSubItem(0));
+        }
     }
 }
