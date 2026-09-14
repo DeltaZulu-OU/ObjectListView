@@ -28,6 +28,24 @@ namespace ObjectListView2022.Tests
         }
 
         [TestMethod]
+        public void ColumnComparer_DescendingPreservesCurrentOrderWhenSortKeysAreEqual()
+        {
+            using var listView = new ObjectListView();
+            var column = new OLVColumn("Group", nameof(Model.Group));
+            listView.Columns.Add(column);
+
+            var first = new OLVListItem(new Model(1, "same"));
+            var second = new OLVListItem(new Model(2, "same"));
+            listView.Items.Add(first);
+            listView.Items.Add(second);
+
+            var comparer = new ColumnComparer(column, SortOrder.Descending);
+
+            Assert.IsLessThan(0, comparer.Compare(first, second));
+            Assert.IsGreaterThan(0, comparer.Compare(second, first));
+        }
+
+        [TestMethod]
         public void FastObjectListDataSource_SortPreservesOrderOfEqualKeys()
         {
             using var listView = new FastObjectListView();
