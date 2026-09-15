@@ -15,7 +15,6 @@ namespace ObjectListView2022.Tests
         public void HasAnyHyperlinks_IgnoresPlainListViewSubItems()
         {
             var item = new OLVListItem(new object());
-            item.SubItems.Clear();
             item.SubItems.Add(new ListViewItem.ListViewSubItem(null, "plain"));
 
             Assert.IsFalse(item.HasAnyHyperlinks);
@@ -26,7 +25,6 @@ namespace ObjectListView2022.Tests
         {
             var item = new OLVListItem(new object());
             var subItem = new OLVListSubItem(null, "link", null) { Url = "https://example.invalid/" };
-            item.SubItems.Clear();
             item.SubItems.Add(subItem);
 
             Assert.IsTrue(item.HasAnyHyperlinks);
@@ -36,10 +34,9 @@ namespace ObjectListView2022.Tests
         public void GetSubItem_ReturnsNullForPlainListViewSubItem()
         {
             var item = new OLVListItem(new object());
-            item.SubItems.Clear();
             item.SubItems.Add(new ListViewItem.ListViewSubItem(null, "plain"));
 
-            Assert.IsNull(item.GetSubItem(0));
+            Assert.IsNull(item.GetSubItem(1));
         }
 
         [TestMethod]
@@ -47,36 +44,20 @@ namespace ObjectListView2022.Tests
         {
             var item = new OLVListItem(new object());
             var subItem = new OLVListSubItem(null, "typed", null);
-            item.SubItems.Clear();
             item.SubItems.Add(subItem);
 
-            Assert.AreSame(subItem, item.GetSubItem(0));
+            Assert.AreSame(subItem, item.GetSubItem(1));
         }
 
         [TestMethod]
-        public void DrawAllDecorations_IgnoresPlainListViewSubItems()
-        {
-            using var listView = new DecorationProbeObjectListView();
-            var item = new OLVListItem(new object());
-            item.SubItems.Clear();
-            item.SubItems.Add(new ListViewItem.ListViewSubItem(null, "plain"));
-            using var bitmap = new Bitmap(16, 16);
-            using var graphics = Graphics.FromImage(bitmap);
-
-            listView.DrawDecorations(graphics, new List<OLVListItem> { item });
-
-            Assert.IsTrue(true);
-        }
-
-        [TestMethod]
-        public void DrawAllDecorations_DrawsOlvSubItemDecoration()
+        public void DrawAllDecorations_SkipsPlainSubItemsAndDrawsTypedDecoration()
         {
             using var listView = new DecorationProbeObjectListView();
             var item = new OLVListItem(new object());
             var subItem = new OLVListSubItem(null, "typed", null);
             var decoration = new RecordingDecoration();
             subItem.Decoration = decoration;
-            item.SubItems.Clear();
+            item.SubItems.Add(new ListViewItem.ListViewSubItem(null, "plain"));
             item.SubItems.Add(subItem);
             using var bitmap = new Bitmap(16, 16);
             using var graphics = Graphics.FromImage(bitmap);
