@@ -48,7 +48,7 @@ namespace ObjectListView2022.Tests
         [TestMethod]
         public void ObjectListView_SortPreservesEqualKeyOrderAmongUnequalKeys()
         {
-            using var listView = new ObjectListView();
+            using var listView = new ObjectListView { ShowGroups = false };
             var column = new OLVColumn("Group", nameof(Model.Group));
             listView.Columns.Add(column);
             var models = new[] {
