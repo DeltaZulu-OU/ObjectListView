@@ -1,5 +1,6 @@
 using System.Drawing;
 using BrightIdeasSoftware;
+using BrightIdeasSoftware.Implementation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace ObjectListView2022.Tests
@@ -41,6 +42,24 @@ namespace ObjectListView2022.Tests
         }
 
         [TestMethod]
+        public void RescaleConstantsForDpi_RefreshesOrdinaryItems()
+        {
+            using var listView = new DpiTestObjectListView();
+            listView.Columns.Add(new OLVColumn("Name", nameof(Model.Name)));
+            listView.SetObjects(new[] {
+                new Model("first"),
+                new Model("second"),
+                new Model("third")
+            });
+            listView.CreateControl();
+            listView.ResetRefreshItemCallCount();
+
+            listView.Rescale(96, 96);
+
+            Assert.AreEqual(3, listView.RefreshItemCallCount);
+        }
+
+        [TestMethod]
         public void RescaleConstantsForDpi_WorksWithVirtualLists()
         {
             using var font = new Font(SystemFonts.DefaultFont.FontFamily, 10.0f);
@@ -57,6 +76,23 @@ namespace ObjectListView2022.Tests
 
             Assert.AreEqual(15.0f, listView.Font.Size, 0.11f);
             Assert.AreEqual(3, listView.GetItemCount());
+        }
+
+        [TestMethod]
+        public void RescaleConstantsForDpi_ClearsVirtualItemCache()
+        {
+            using var listView = new DpiTestFastObjectListView();
+            listView.Columns.Add(new OLVColumn("Name", nameof(Model.Name)));
+            listView.SetObjects(new[] {
+                new Model("first"),
+                new Model("second")
+            });
+            listView.CreateControl();
+            listView.ResetClearCachedInfoCallCount();
+
+            listView.Rescale(96, 96);
+
+            Assert.AreEqual(1, listView.ClearCachedInfoCallCount);
         }
 
         [TestMethod]
@@ -77,12 +113,32 @@ namespace ObjectListView2022.Tests
 
         private sealed class DpiTestObjectListView : ObjectListView
         {
+            public int RefreshItemCallCount { get; private set; }
+
             public void Rescale(int oldDpi, int newDpi) => RescaleConstantsForDpi(oldDpi, newDpi);
+
+            public void ResetRefreshItemCallCount() => RefreshItemCallCount = 0;
+
+            public override void RefreshItem(OLVListItem olvi)
+            {
+                RefreshItemCallCount++;
+                base.RefreshItem(olvi);
+            }
         }
 
         private sealed class DpiTestFastObjectListView : FastObjectListView
         {
+            public int ClearCachedInfoCallCount { get; private set; }
+
             public void Rescale(int oldDpi, int newDpi) => RescaleConstantsForDpi(oldDpi, newDpi);
+
+            public void ResetClearCachedInfoCallCount() => ClearCachedInfoCallCount = 0;
+
+            public override void ClearCachedInfo()
+            {
+                ClearCachedInfoCallCount++;
+                base.ClearCachedInfo();
+            }
         }
 
         private sealed class Model
