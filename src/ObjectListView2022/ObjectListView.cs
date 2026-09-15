@@ -7446,6 +7446,12 @@ namespace BrightIdeasSoftware
             return m;
         }
 
+
+        /// <summary>
+        /// Show the column command menu for the given column at the specified screen location.
+        /// </summary>
+        /// <param name="columnIndex">The index of the column for which the menu should be shown.</param>
+        /// <param name="pt">The screen coordinates at which the menu should be displayed.</param>
         protected virtual void ShowColumnCommandMenu(int columnIndex, Point pt)
         {
             var m = MakeColumnCommandMenu(new ContextMenuStrip(), columnIndex);
