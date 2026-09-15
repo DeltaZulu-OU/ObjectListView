@@ -1,3 +1,5 @@
+using System.ComponentModel;
+using System.Windows.Forms;
 using BrightIdeasSoftware;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -54,6 +56,53 @@ namespace ObjectListView2022.Tests
         }
 
         [TestMethod]
+        public void DeferViewUpdates_NestedScopesCanBeDisposedOutOfOrder()
+        {
+            using var listView = CreateListView();
+            listView.SetObjects(new[] { new Model("first") });
+            var firstScope = listView.DeferViewUpdates();
+            var secondScope = listView.DeferViewUpdates();
+            listView.SetObjects(new[] {
+                new Model("first"),
+                new Model("second")
+            });
+
+            firstScope.Dispose();
+
+            Assert.IsTrue(listView.Frozen);
+            Assert.AreEqual(1, listView.GetItemCount());
+
+            secondScope.Dispose();
+
+            Assert.IsFalse(listView.Frozen);
+            Assert.AreEqual(2, listView.GetItemCount());
+        }
+
+        [TestMethod]
+        public void DeferViewUpdates_PreservesExistingFreezeUntilCallerUnfreezes()
+        {
+            using var listView = CreateListView();
+            listView.SetObjects(new[] { new Model("first") });
+            listView.Freeze();
+
+            using (listView.DeferViewUpdates())
+            {
+                listView.SetObjects(new[] {
+                    new Model("first"),
+                    new Model("second")
+                });
+            }
+
+            Assert.IsTrue(listView.Frozen);
+            Assert.AreEqual(1, listView.GetItemCount());
+
+            listView.Unfreeze();
+
+            Assert.IsFalse(listView.Frozen);
+            Assert.AreEqual(2, listView.GetItemCount());
+        }
+
+        [TestMethod]
         public void DeferViewUpdates_UnfreezesWhenScopeExitsThroughException()
         {
             using var listView = CreateListView();
@@ -99,9 +148,61 @@ namespace ObjectListView2022.Tests
             Assert.IsTrue(listView.IsDisposed);
         }
 
+        [TestMethod]
+        public void DataListView_DeferViewUpdatesDefersDataSourceRefreshUntilScopeIsDisposed()
+        {
+            using var listView = CreateDataListView<DataListView>();
+            var rows = new BindingList<Model> { new Model("first") };
+            listView.DataSource = rows;
+            Assert.AreEqual(1, listView.GetItemCount());
+
+            using (listView.DeferViewUpdates())
+            {
+                rows.Add(new Model("second"));
+
+                Assert.IsTrue(listView.Frozen);
+                Assert.AreEqual(1, listView.GetItemCount());
+            }
+
+            Assert.IsFalse(listView.Frozen);
+            Assert.AreEqual(2, listView.GetItemCount());
+        }
+
+        [TestMethod]
+        public void FastDataListView_DeferViewUpdatesDefersDataSourceRefreshUntilScopeIsDisposed()
+        {
+            using var listView = CreateDataListView<FastDataListView>();
+            var rows = new BindingList<Model> { new Model("first") };
+            listView.DataSource = rows;
+            Assert.AreEqual(1, listView.GetItemCount());
+
+            using (listView.DeferViewUpdates())
+            {
+                rows.Add(new Model("second"));
+
+                Assert.IsTrue(listView.Frozen);
+                Assert.AreEqual(1, listView.GetItemCount());
+            }
+
+            Assert.IsFalse(listView.Frozen);
+            Assert.AreEqual(2, listView.GetItemCount());
+        }
+
         private static ObjectListView CreateListView()
         {
             var listView = new ObjectListView();
+            listView.Columns.Add(new OLVColumn("Name", nameof(Model.Name)));
+            listView.CreateControl();
+            return listView;
+        }
+
+        private static T CreateDataListView<T>() where T : DataListView, new()
+        {
+            var listView = new T
+            {
+                BindingContext = new BindingContext(),
+                AutoGenerateColumns = false
+            };
             listView.Columns.Add(new OLVColumn("Name", nameof(Model.Name)));
             listView.CreateControl();
             return listView;
