@@ -46,6 +46,28 @@ namespace ObjectListView2022.Tests
         }
 
         [TestMethod]
+        public void ObjectListView_SortPreservesEqualKeyOrderAmongUnequalKeys()
+        {
+            using var listView = new ObjectListView();
+            var column = new OLVColumn("Group", nameof(Model.Group));
+            listView.Columns.Add(column);
+            var models = new[] {
+                new Model(1, "b"),
+                new Model(2, "a"),
+                new Model(3, "a"),
+                new Model(4, "c")
+            };
+            listView.SetObjects(models);
+            listView.CreateControl();
+
+            listView.Sort(column, SortOrder.Ascending);
+
+            CollectionAssert.AreEqual(
+                new[] { 2, 3, 1, 4 },
+                listView.Items.Cast<OLVListItem>().Select(x => ((Model)x.RowObject).Id).ToArray());
+        }
+
+        [TestMethod]
         public void FastObjectListDataSource_SortPreservesOrderOfEqualKeys()
         {
             using var listView = new FastObjectListView();
@@ -65,6 +87,28 @@ namespace ObjectListView2022.Tests
             CollectionAssert.AreEqual(
                 models.Select(x => x.Id).ToArray(),
                 source.FilteredObjectList.Cast<Model>().Select(x => x.Id).ToArray());
+        }
+
+        [TestMethod]
+        public void FastObjectListDataSource_SortPreservesEqualKeyOrderAmongUnequalKeys()
+        {
+            using var listView = new FastObjectListView();
+            var column = new OLVColumn("Group", nameof(Model.Group));
+            listView.Columns.Add(column);
+            var models = new[] {
+                new Model(1, "b"),
+                new Model(2, "a"),
+                new Model(3, "a"),
+                new Model(4, "c")
+            };
+            listView.SetObjects(models);
+
+            var source = (FastObjectListDataSource)listView.VirtualListDataSource;
+            source.Sort(column, SortOrder.Ascending);
+
+            CollectionAssert.AreEqual(
+                new[] { 2, 3, 1, 4 },
+                source.ObjectList.Cast<Model>().Select(x => x.Id).ToArray());
         }
 
         [TestMethod]
@@ -90,6 +134,35 @@ namespace ObjectListView2022.Tests
 
             CollectionAssert.AreEqual(
                 models.Select(x => x.Id).ToArray(),
+                parent.ChildBranches.Select(x => ((Model)x.Model).Id).ToArray());
+        }
+
+        [TestMethod]
+        public void TreeBranchSort_PreservesEqualKeyOrderAmongUnequalKeys()
+        {
+            using var listView = new TreeListView();
+            var tree = new TreeListView.Tree(listView);
+            var parent = new TreeListView.Branch(null, tree, new Model(-1, "parent"));
+            var models = new[] {
+                new Model(1, "b"),
+                new Model(2, "a"),
+                new Model(3, "a"),
+                new Model(4, "c")
+            };
+
+            foreach (var model in models)
+            {
+                parent.ChildBranches.Add(new TreeListView.Branch(parent, tree, model));
+            }
+
+            var column = new OLVColumn("Group", nameof(Model.Group));
+            var comparer = new TreeListView.BranchComparer(
+                new ModelObjectComparer(column, SortOrder.Ascending));
+
+            parent.Sort(comparer);
+
+            CollectionAssert.AreEqual(
+                new[] { 2, 3, 1, 4 },
                 parent.ChildBranches.Select(x => ((Model)x.Model).Id).ToArray());
         }
 
