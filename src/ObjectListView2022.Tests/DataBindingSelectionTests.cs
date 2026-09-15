@@ -44,6 +44,30 @@ namespace ObjectListView2022.Tests
         }
 
         [TestMethod]
+        public void DataListView_RebindingWithExistingSelectionAppliesNewCurrentPosition()
+        {
+            using var listView = new RecordingDataListView
+            {
+                BindingContext = new BindingContext(),
+                AutoGenerateColumns = false
+            };
+            var firstRows = CreateRows();
+            var secondRows = new BindingList<Row>
+            {
+                new Row { Name = "third" },
+                new Row { Name = "fourth" }
+            };
+            listView.DataSource = firstRows;
+            listView.SelectedObject = firstRows[1];
+            listView.ResetSelectionAssignmentCount();
+
+            listView.DataSource = secondRows;
+
+            Assert.IsTrue(listView.SelectionAssignmentCount >= 1);
+            Assert.AreSame(secondRows[0], listView.RecordedSelectedObject);
+        }
+
+        [TestMethod]
         public void FastDataListView_InitialBindingPreservesEmptySelection()
         {
             using var listView = new RecordingFastDataListView
@@ -105,6 +129,21 @@ namespace ObjectListView2022.Tests
             Assert.AreSame(rows[targetPosition], listView.RecordedSelectedObject);
         }
 
+        [TestMethod]
+        public void DataTreeListView_PositionChangeToCollapsedChildExpandsAncestor()
+        {
+            using var listView = CreateTreeListView();
+            var rows = CreateTreeRows();
+            listView.DataSource = rows;
+            var currencyManager = (CurrencyManager)listView.BindingContext[rows];
+
+            Assert.IsFalse(listView.IsExpanded(rows[0]));
+            currencyManager.Position = 1;
+
+            Assert.IsTrue(listView.IsExpanded(rows[0]));
+            Assert.AreSame(rows[1], listView.RecordedSelectedObject);
+        }
+
         private static RecordingDataTreeListView CreateTreeListView() => new RecordingDataTreeListView
         {
             BindingContext = new BindingContext(),
@@ -137,6 +176,8 @@ namespace ObjectListView2022.Tests
                     SelectionAssignmentCount++;
                 }
             }
+
+            public void ResetSelectionAssignmentCount() => SelectionAssignmentCount = 0;
         }
 
         private sealed class RecordingFastDataListView : FastDataListView
