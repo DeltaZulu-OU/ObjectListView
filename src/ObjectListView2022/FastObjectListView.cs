@@ -361,19 +361,21 @@ namespace BrightIdeasSoftware
                 return;
             }
 
-            var i = ObjectList.IndexOf(FilteredObjectList[index]);
+            var oldObject = FilteredObjectList[index];
+            var i = ObjectList.IndexOf(oldObject);
             if (i < 0)
             {
                 return;
             }
 
-            if (ReferenceEquals(ObjectList[i], modelObject))
+            if (ReferenceEquals(oldObject, modelObject))
             {
                 return;
             }
 
             ObjectList[i] = modelObject;
             FilteredObjectList[index] = modelObject;
+            objectsToIndexMap.Remove(oldObject);
             objectsToIndexMap[modelObject] = index;
         }
 
