@@ -21,6 +21,7 @@ All notable changes to this repository are documented here.
 - Restored design-time serialization and namespace compatibility metadata needed by existing WinForms designer integrations.
 - Updated dependencies and CI metadata.
 - Expanded and corrected XML documentation across the public surface.
+- Expanded CI branch coverage so pushes to `fix/**` and `feat/**` run the Debug and Release unit-test matrix.
 
 ### Fixed
 
@@ -29,6 +30,9 @@ All notable changes to this repository are documented here.
 - Corrected persistent check-state regression coverage so list rebuild behavior is exercised with an actual column.
 - Preserved mapped check states for filtered and virtual objects.
 - Corrected XML documentation warnings, including stale or missing parameter documentation and undocumented public members.
+- Guarded list rebuild, sort cleanup, hot-item refresh, and column filtering against operations during control disposal.
+- Restored cell-tooltip state only after a replacement native handle is created, avoiding teardown-time tooltip work against a destroyed handle.
+- Handled invalid `HDITEM` marshalling narrowly during header tracking and item-changing notifications without swallowing unrelated message-processing failures.
 
 ### Removed
 
