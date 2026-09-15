@@ -126,17 +126,16 @@ namespace BrightIdeasSoftware.Implementation
                 }
                 else
                 {
-                    result = xIsNull ? -1 : 1;
+                    result = xIsNull ? 1 : -1;
                 }
             }
             else
             {
                 result = CompareValues(x1, y1);
-            }
-
-            if (sortOrder == SortOrder.Descending)
-            {
-                result = 0 - result;
+                if (sortOrder == SortOrder.Descending)
+                {
+                    result = 0 - result;
+                }
             }
 
             // If the result was equality, use the secondary comparer to resolve it
