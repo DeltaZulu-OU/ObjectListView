@@ -17,6 +17,8 @@ namespace ObjectListView2022.Tests
 
             listView.DestroyHandleForTest();
             listView.InvokeHandleDestroyForTest();
+
+            Assert.AreEqual(0, listView.UpdateCellToolTipHandleCallCount);
         }
 
         [TestMethod]
@@ -33,6 +35,38 @@ namespace ObjectListView2022.Tests
             listView.RecreateHandleForTest();
 
             Assert.AreEqual(1, listView.UpdateCellToolTipHandleCallCount);
+        }
+
+        [TestMethod]
+        public void RecreateHandle_TwiceRestoresCellToolTipOncePerHandle()
+        {
+            using var form = new Form();
+            using var listView = new ToolTipProbeObjectListView();
+            form.Controls.Add(listView);
+            form.CreateControl();
+            listView.CreateControl();
+            _ = listView.CellToolTip;
+            listView.ResetUpdateCount();
+
+            listView.RecreateHandleForTest();
+            listView.RecreateHandleForTest();
+
+            Assert.AreEqual(2, listView.UpdateCellToolTipHandleCallCount);
+        }
+
+        [TestMethod]
+        public void RecreateHandle_WithoutCellToolTipDoesNotAttemptRestoration()
+        {
+            using var form = new Form();
+            using var listView = new ToolTipProbeObjectListView();
+            form.Controls.Add(listView);
+            form.CreateControl();
+            listView.CreateControl();
+            listView.ResetUpdateCount();
+
+            listView.RecreateHandleForTest();
+
+            Assert.AreEqual(0, listView.UpdateCellToolTipHandleCallCount);
         }
 
         [TestMethod]
