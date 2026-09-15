@@ -56,6 +56,29 @@ namespace ObjectListView2022.Tests
         }
 
         [TestMethod]
+        public void ColumnAndModelComparers_PlaceNullValuesLastRegardlessOfSortDirection()
+        {
+            var column = new OLVColumn("Value", nameof(Model.Value));
+            var nullModel = new Model { Value = null };
+            var dbNullModel = new Model { Value = DBNull.Value };
+            var valueModel = new Model { Value = 10 };
+
+            foreach (var order in new[] { SortOrder.Ascending, SortOrder.Descending })
+            {
+                var columnComparer = new ColumnComparer(column, order);
+                var modelComparer = new ModelObjectComparer(column, order);
+                var nullItem = new OLVListItem(nullModel);
+                var dbNullItem = new OLVListItem(dbNullModel);
+                var valueItem = new OLVListItem(valueModel);
+
+                Assert.IsGreaterThan(0, columnComparer.Compare(nullItem, valueItem), order.ToString());
+                Assert.IsGreaterThan(0, columnComparer.Compare(dbNullItem, valueItem), order.ToString());
+                Assert.IsGreaterThan(0, modelComparer.Compare(nullModel, valueModel), order.ToString());
+                Assert.IsGreaterThan(0, modelComparer.Compare(dbNullModel, valueModel), order.ToString());
+            }
+        }
+
+        [TestMethod]
         public void DescendingOrder_ReversesPrimaryComparison()
         {
             var column = new OLVColumn("Rank", nameof(Model.Rank));
