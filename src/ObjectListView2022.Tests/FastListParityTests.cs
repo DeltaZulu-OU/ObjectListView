@@ -73,6 +73,23 @@ namespace ObjectListView2022.Tests
         }
 
         [TestMethod]
+        public void UpdateObject_RemovesReplacedObjectFromIndexMapping()
+        {
+            using var listView = CreateList();
+            var alpha = new Model("alpha", 1);
+            var beta = new Model("beta", 2);
+            var replacement = new Model("replacement", 3);
+            listView.SetObjects(new[] { alpha, beta });
+
+            var source = (FastObjectListDataSource)listView.VirtualListDataSource;
+            source.UpdateObject(0, replacement);
+
+            Assert.AreEqual(-1, source.GetObjectIndex(alpha));
+            Assert.AreEqual(0, source.GetObjectIndex(replacement));
+            Assert.AreSame(replacement, source.GetNthObject(0));
+        }
+
+        [TestMethod]
         public void ApplyingListAndModelFilters_PreservesFilterOrder()
         {
             using var listView = CreateList();
