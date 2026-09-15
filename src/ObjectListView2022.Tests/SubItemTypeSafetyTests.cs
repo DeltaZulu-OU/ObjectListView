@@ -79,10 +79,7 @@ namespace ObjectListView2022.Tests
         {
             public int DrawCallCount { get; private set; }
 
-            public override void Draw(ObjectListView olv, Graphics g, Rectangle r)
-            {
-                DrawCallCount++;
-            }
+            public override void Draw(ObjectListView olv, Graphics g, Rectangle r) => DrawCallCount++;
         }
     }
 }

@@ -674,23 +674,19 @@ namespace BrightIdeasSoftware
         /// or will follow the alignment of the text in the column
         /// </summary>
         [Browsable(false)]
-        public HorizontalAlignment HeaderTextAlignOrDefault => HeaderTextAlign.HasValue ? HeaderTextAlign.Value : TextAlign;
+        public HorizontalAlignment HeaderTextAlignOrDefault => HeaderTextAlign ?? TextAlign;
 
         /// <summary>
         /// Gets the header alignment converted to a StringAlignment
         /// </summary>
         [Browsable(false)]
-        public StringAlignment HeaderTextAlignAsStringAlignment {
-            get {
-                return HeaderTextAlignOrDefault switch
-                {
-                    HorizontalAlignment.Left => StringAlignment.Near,
-                    HorizontalAlignment.Center => StringAlignment.Center,
-                    HorizontalAlignment.Right => StringAlignment.Far,
-                    _ => StringAlignment.Near,
-                };
-            }
-        }
+        public StringAlignment HeaderTextAlignAsStringAlignment => HeaderTextAlignOrDefault switch
+        {
+            HorizontalAlignment.Left => StringAlignment.Near,
+            HorizontalAlignment.Center => StringAlignment.Center,
+            HorizontalAlignment.Right => StringAlignment.Far,
+            _ => StringAlignment.Near,
+        };
 
         /// <summary>
         /// Gets whether or not this column has an image in the header
@@ -834,7 +830,7 @@ namespace BrightIdeasSoftware
                 isButton = value;
                 if (value)
                 {
-                    if (Renderer is not ColumnButtonRenderer buttonRenderer)
+                    if (Renderer is not ColumnButtonRenderer)
                     {
                         Renderer = CreateColumnButtonRenderer();
                         FillInColumnButtonRenderer();
@@ -1132,7 +1128,7 @@ namespace BrightIdeasSoftware
         /// to the left. We can't change the basic behaviour of the listview,
         /// but when owner drawn, column 0 can now have other alignments.</remarks>
         public new HorizontalAlignment TextAlign {
-            get => textAlign.HasValue ? textAlign.Value : base.TextAlign;
+            get => textAlign ?? base.TextAlign;
             set {
                 textAlign = value;
                 base.TextAlign = value;
@@ -1145,17 +1141,13 @@ namespace BrightIdeasSoftware
         /// Gets the StringAlignment equivilent of the column text alignment
         /// </summary>
         [Browsable(false)]
-        public StringAlignment TextStringAlign {
-            get {
-                return TextAlign switch
-                {
-                    HorizontalAlignment.Center => StringAlignment.Center,
-                    HorizontalAlignment.Left => StringAlignment.Near,
-                    HorizontalAlignment.Right => StringAlignment.Far,
-                    _ => StringAlignment.Near,
-                };
-            }
-        }
+        public StringAlignment TextStringAlign => TextAlign switch
+        {
+            HorizontalAlignment.Center => StringAlignment.Center,
+            HorizontalAlignment.Left => StringAlignment.Near,
+            HorizontalAlignment.Right => StringAlignment.Far,
+            _ => StringAlignment.Near,
+        };
 
         /// <summary>
         /// What string should be displayed when the mouse is hovered over the header of this column?

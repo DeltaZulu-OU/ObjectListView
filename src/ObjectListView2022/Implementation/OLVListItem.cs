@@ -232,13 +232,13 @@ namespace BrightIdeasSoftware.Implementation
             get => imageSelector;
             set {
                 imageSelector = value;
-                if (value is int)
+                if (value is int imageSelectorIndex)
                 {
-                    ImageIndex = (int)value;
+                    ImageIndex = imageSelectorIndex;
                 }
-                else if (value is string)
+                else if (value is string imageSelectorAsString)
                 {
-                    ImageKey = (string)value;
+                    ImageKey = imageSelectorAsString;
                 }
                 else
                 {

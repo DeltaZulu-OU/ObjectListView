@@ -1689,7 +1689,7 @@ namespace BrightIdeasSoftware.Rendering
         /// <param name="r">Bounds of the cell</param>
         protected virtual void DrawImageAndText(Graphics g, Rectangle r)
         {
-            var offset = 0;
+            int offset;
             if (ListView.CheckBoxes && ColumnIsPrimary)
             {
                 offset = DrawCheckBox(g, r) + 6;

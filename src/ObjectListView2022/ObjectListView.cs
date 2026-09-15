@@ -3977,13 +3977,7 @@ namespace BrightIdeasSoftware
                 return;
             }
 
-            // Getting the Count forces any internal cache of the ListView to be flushed. Without
-            // this, iterating over the Items will not work correctly if the ListView handle
-            // has not yet been created.
-            // ReSharper disable once UnusedVariable
-#pragma warning disable IDE0059 // Unnecessary assignment of a value
-            var dummy = Items.Count;
-#pragma warning restore IDE0059 // Unnecessary assignment of a value
+            FlushCountCache();
 
             // Collect all the information that governs the creation of groups
             var parms = CollectGroupingParameters(groupByColumn, groupByOrder,
@@ -7199,7 +7193,7 @@ namespace BrightIdeasSoftware
                     {
                         if (!TryMarshalStructure(
                             () => (NativeMethods.HDITEM)Marshal.PtrToStructure(nmheader.pHDITEM, typeof(NativeMethods.HDITEM)),
-                            out NativeMethods.HDITEM hditem))
+                            out var hditem))
                         {
                             break;
                         }
@@ -7225,7 +7219,7 @@ namespace BrightIdeasSoftware
                     {
                         if (!TryMarshalStructure(
                             () => (NativeMethods.HDITEM)Marshal.PtrToStructure(nmheader.pHDITEM, typeof(NativeMethods.HDITEM)),
-                            out NativeMethods.HDITEM hditem))
+                            out var hditem))
                         {
                             break;
                         }

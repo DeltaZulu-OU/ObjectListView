@@ -464,10 +464,7 @@ namespace BrightIdeasSoftware.SubControls
             Bounds = objectListView.RectangleToScreen(rect);
         }
 
-        internal void UpdateTransparency()
-        {
-                Opacity = (Overlay as ITransparentOverlay).Transparency / 255.0f;
-        }
+        internal void UpdateTransparency() => Opacity = (Overlay as ITransparentOverlay).Transparency / 255.0f;
 
         protected override void WndProc(ref Message m)
         {
