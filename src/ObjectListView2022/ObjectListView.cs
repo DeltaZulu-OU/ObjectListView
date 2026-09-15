@@ -2334,8 +2334,6 @@ namespace BrightIdeasSoftware
 
         private TextOverlay textOverlay;
 
-        private int overlayTransparency = 128;
-
         /// <summary>
         /// Gets the list of overlays that will be drawn on top of the ListView
         /// </summary>
