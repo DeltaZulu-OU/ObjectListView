@@ -98,10 +98,9 @@ namespace BrightIdeasSoftware
         [Browsable(false),
          DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public override IEnumerable Objects {
-            get {
-                // This is much faster than the base method.
-                return ((FastObjectListDataSource)VirtualListDataSource).ObjectList;
-            }
+            // This is much faster than the base method.
+            get =>
+                ((FastObjectListDataSource)VirtualListDataSource).ObjectList;
             set => base.Objects = value;
         }
 
@@ -207,9 +206,7 @@ namespace BrightIdeasSoftware
         /// <returns></returns>
         public override int GetObjectIndex(object model)
         {
-            int index;
-
-            if (model != null && objectsToIndexMap.TryGetValue(model, out index))
+            if (model != null && objectsToIndexMap.TryGetValue(model, out var index))
             {
                 return index;
             }

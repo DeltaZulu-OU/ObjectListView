@@ -111,13 +111,14 @@ namespace BrightIdeasSoftware.Implementation
                 return 0;
             }
 
-            var result = 0;
             var x1 = column.GetValue(x.RowObject);
             var y1 = column.GetValue(y.RowObject);
 
             // Handle nulls. Null values come last
             var xIsNull = x1 == null || x1 == DBNull.Value;
             var yIsNull = y1 == null || y1 == DBNull.Value;
+
+            int result;
             if (xIsNull || yIsNull)
             {
                 if (xIsNull && yIsNull)

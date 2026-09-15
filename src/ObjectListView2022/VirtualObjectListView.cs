@@ -946,11 +946,11 @@ namespace BrightIdeasSoftware
             //System.Diagnostics.Debug.WriteLine(err);
 
             const int LVM_ENABLEGROUPVIEW = 0x1000 + 157;
-            var x = NativeMethods.SendMessage(Handle, LVM_ENABLEGROUPVIEW, 0, 0);
+            _ = NativeMethods.SendMessage(Handle, LVM_ENABLEGROUPVIEW, 0, 0);
             //System.Diagnostics.Debug.WriteLine(x);
 
             const int LVM_SETOWNERDATACALLBACK = 0x10BB;
-            var x2 = NativeMethods.SendMessage(Handle, LVM_SETOWNERDATACALLBACK, 0, 0);
+            _ = NativeMethods.SendMessage(Handle, LVM_SETOWNERDATACALLBACK, 0, 0);
             //System.Diagnostics.Debug.WriteLine(x2);
         }
 
@@ -964,12 +964,12 @@ namespace BrightIdeasSoftware
 
             const int LVM_SETOWNERDATACALLBACK = 0x10BB;
             var ptr = Marshal.GetComInterfaceForObject(ownerDataCallbackImpl, typeof(IOwnerDataCallback));
-            var x = NativeMethods.SendMessage(Handle, LVM_SETOWNERDATACALLBACK, ptr, 0);
+            _ = NativeMethods.SendMessage(Handle, LVM_SETOWNERDATACALLBACK, ptr, 0);
             //System.Diagnostics.Debug.WriteLine(x);
             Marshal.Release(ptr);
 
             const int LVM_ENABLEGROUPVIEW = 0x1000 + 157;
-            x = NativeMethods.SendMessage(Handle, LVM_ENABLEGROUPVIEW, 1, 0);
+            _ = NativeMethods.SendMessage(Handle, LVM_ENABLEGROUPVIEW, 1, 0);
             //System.Diagnostics.Debug.WriteLine(x);
         }
 

@@ -319,7 +319,7 @@ namespace BrightIdeasSoftware.Filtering
                 return;
             }
 
-            if (column.ListView is not ObjectListView listView)
+            if (column.ListView is not ObjectListView)
             {
                 return;
             }

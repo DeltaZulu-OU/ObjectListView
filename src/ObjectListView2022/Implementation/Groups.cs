@@ -318,7 +318,7 @@ namespace BrightIdeasSoftware.Implementation
                 }
 
                 var groupId = groupIdPropInfo.GetValue(ListViewGroup, null) as int?;
-                return groupId.HasValue ? groupId.Value : -1;
+                return groupId ?? -1;
             }
         }
 
@@ -474,9 +474,9 @@ namespace BrightIdeasSoftware.Implementation
                 return -1;
             }
 
-            if (imageSelector is int)
+            if (imageSelector is int imageSelectorIndex)
             {
-                return (int)imageSelector;
+                return imageSelectorIndex;
             }
 
             if (imageSelector is string imageSelectorAsString)

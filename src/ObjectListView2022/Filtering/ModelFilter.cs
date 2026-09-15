@@ -59,6 +59,6 @@ namespace BrightIdeasSoftware.Filtering
         /// </summary>
         /// <param name="modelObject"></param>
         /// <returns></returns>
-        public virtual bool Filter(object modelObject) => Predicate == null ? true : Predicate(modelObject);
+        public virtual bool Filter(object modelObject) => Predicate == null || Predicate(modelObject);
     }
 }

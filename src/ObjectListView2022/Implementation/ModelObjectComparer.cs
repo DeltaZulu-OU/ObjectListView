@@ -91,7 +91,6 @@ namespace BrightIdeasSoftware.Implementation
         /// <returns></returns>
         public int Compare(object x, object y)
         {
-            var result = 0;
             var x1 = column.GetValue(x);
             var y1 = column.GetValue(y);
 
@@ -103,6 +102,8 @@ namespace BrightIdeasSoftware.Implementation
             // Handle nulls. Null values come last
             var xIsNull = x1 == null || x1 == DBNull.Value;
             var yIsNull = y1 == null || y1 == DBNull.Value;
+
+            int result;
             if (xIsNull || yIsNull)
             {
                 if (xIsNull && yIsNull)

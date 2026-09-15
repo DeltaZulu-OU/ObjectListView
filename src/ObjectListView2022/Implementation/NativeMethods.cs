@@ -713,9 +713,9 @@ namespace BrightIdeasSoftware.Implementation
                 // We don't know which type may already have been set, so we just clear both the watermark and the image.
                 ulFlags = LVBKIF_TYPE_WATERMARK
             };
-            var result = SendMessageLVBKIMAGE(lv.Handle, LVM_SETBKIMAGE, 0, ref lvbkimage);
+            _ = SendMessageLVBKIMAGE(lv.Handle, LVM_SETBKIMAGE, 0, ref lvbkimage);
             lvbkimage.ulFlags = LVBKIF_SOURCE_HBITMAP;
-            result = SendMessageLVBKIMAGE(lv.Handle, LVM_SETBKIMAGE, 0, ref lvbkimage);
+            var result = SendMessageLVBKIMAGE(lv.Handle, LVM_SETBKIMAGE, 0, ref lvbkimage);
 
             if (image is Bitmap bm)
             {
@@ -946,7 +946,7 @@ namespace BrightIdeasSoftware.Implementation
             {
                 mask = HDI_FORMAT
             };
-            var result = SendMessageHDItem(hdrCntl, HDM_GETITEM, columnIndex, ref item);
+            _ = SendMessageHDItem(hdrCntl, HDM_GETITEM, columnIndex, ref item);
 
             item.fmt &= ~(HDF_SORTUP | HDF_SORTDOWN | HDF_IMAGE | HDF_BITMAP_ON_RIGHT);
 
@@ -969,7 +969,7 @@ namespace BrightIdeasSoftware.Implementation
                 item.iImage = imageIndex;
             }
 
-            result = SendMessageHDItem(hdrCntl, HDM_SETITEM, columnIndex, ref item);
+            _ = SendMessageHDItem(hdrCntl, HDM_SETITEM, columnIndex, ref item);
         }
 
         /// <summary>
@@ -1061,7 +1061,7 @@ namespace BrightIdeasSoftware.Implementation
         /// -1 means that the sides could not be retrieved.</returns>
         public static Point GetColumnSides(ObjectListView lv, int columnIndex)
         {
-            var sides = new Point(-1, -1);
+            _ = new Point(-1, -1);
             var hdr = GetHeaderControl(lv);
             if (hdr == IntPtr.Zero)
             {
@@ -1089,7 +1089,7 @@ namespace BrightIdeasSoftware.Implementation
             }
 
             var r = new RECT();
-            var result = SendMessageRECT(hdr, HDM_GETITEMRECT, columnIndex, ref r);
+            _ = SendMessageRECT(hdr, HDM_GETITEMRECT, columnIndex, ref r);
             var scrollH = GetScrollPosition(lv, true);
             return new Point(r.left - scrollH, r.right - scrollH);
         }
@@ -1115,7 +1115,7 @@ namespace BrightIdeasSoftware.Implementation
                 pt_x = pt.X,
                 pt_y = pt.Y
             };
-            var result = SendMessageHDHITTESTINFO(handle, HDM_HITTEST, IntPtr.Zero, testInfo);
+            _ = SendMessageHDHITTESTINFO(handle, HDM_HITTEST, IntPtr.Zero, testInfo);
             if ((testInfo.flags & flag) != 0)
             {
                 return testInfo.iItem;

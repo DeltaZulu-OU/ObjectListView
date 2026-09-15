@@ -442,7 +442,7 @@ namespace BrightIdeasSoftware.Utilities
         {
             foreach (var pinfo in type.GetProperties())
             {
-                if (Attribute.GetCustomAttribute(pinfo, typeof(OLVChildrenAttribute)) is OLVChildrenAttribute attr)
+                if (Attribute.GetCustomAttribute(pinfo, typeof(OLVChildrenAttribute)) is OLVChildrenAttribute)
                 {
                     GenerateChildrenDelegates(tlv, pinfo);
                     return;

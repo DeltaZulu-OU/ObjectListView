@@ -1573,8 +1573,7 @@ namespace BrightIdeasSoftware
                     return null;
                 }
 
-                Branch br;
-                mapObjectToBranch.TryGetValue(model, out br);
+                mapObjectToBranch.TryGetValue(model, out var br);
                 return br;
             }
 
@@ -1649,8 +1648,7 @@ namespace BrightIdeasSoftware
                     return true;
                 }
 
-                bool isExpanded;
-                mapObjectToExpanded.TryGetValue(model, out isExpanded);
+                mapObjectToExpanded.TryGetValue(model, out var isExpanded);
                 return isExpanded;
             }
 
@@ -1764,8 +1762,7 @@ namespace BrightIdeasSoftware
             /// <returns></returns>
             public virtual int GetObjectIndex(object model)
             {
-                int index;
-                if (model != null && mapObjectToIndex.TryGetValue(model, out index))
+                if (model != null && mapObjectToIndex.TryGetValue(model, out var index))
                 {
                     return index;
                 }

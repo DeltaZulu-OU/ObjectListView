@@ -202,8 +202,7 @@ namespace BrightIdeasSoftware.CellEditing
         /// <returns>True if the key was completely handled.</returns>
         public virtual bool HandleKey(ObjectListView olv, Keys keyData)
         {
-            CellEditCharacterBehaviour behaviour;
-            if (!CellEditKeyMap.TryGetValue(keyData, out behaviour))
+            if (!CellEditKeyMap.TryGetValue(keyData, out var behaviour))
             {
                 return false;
             }
@@ -380,8 +379,7 @@ namespace BrightIdeasSoftware.CellEditing
             }
 
             // There is no adjacent row in the direction we want, so we must be on an edge.
-            CellEditAtEdgeBehaviour atEdgeBehaviour;
-            if (!CellEditKeyAtEdgeBehaviourMap.TryGetValue(keyData, out atEdgeBehaviour))
+            if (!CellEditKeyAtEdgeBehaviourMap.TryGetValue(keyData, out var atEdgeBehaviour))
             {
                 atEdgeBehaviour = CellEditAtEdgeBehaviour.Wrap;
             }
@@ -452,8 +450,7 @@ namespace BrightIdeasSoftware.CellEditing
                 !isGoingLeft && displayIndex == editableColumns.Count - 1)
             {
                 // Yes, so figure out our at edge behaviour
-                CellEditAtEdgeBehaviour atEdgeBehaviour;
-                if (!CellEditKeyAtEdgeBehaviourMap.TryGetValue(keyData, out atEdgeBehaviour))
+                if (!CellEditKeyAtEdgeBehaviourMap.TryGetValue(keyData, out var atEdgeBehaviour))
                 {
                     atEdgeBehaviour = CellEditAtEdgeBehaviour.Wrap;
                 }
