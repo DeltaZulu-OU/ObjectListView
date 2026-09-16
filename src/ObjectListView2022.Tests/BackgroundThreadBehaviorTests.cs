@@ -110,6 +110,7 @@ namespace ObjectListView2022.Tests
             var third = new Model("third", 2);
             OLVColumn rankColumn = null;
             host.Invoke(listView => {
+                listView.ShowGroups = false;
                 listView.SetObjects(new[] { first, second, third });
                 rankColumn = listView.GetColumn(1);
                 listView.ResetThreadRecords();
