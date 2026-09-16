@@ -556,8 +556,6 @@ namespace BrightIdeasSoftware.Utilities
 
         private Type GeneratePart(ILGenerator il, Type type, string pathPart, bool isLastPart)
         {
-            // TODO: Generate check for null
-
             // Find the first member with the given nam that is a field, property, or parameter-less method
             var infos = new List<MemberInfo>(type.GetMember(pathPart));
             var info = infos.Find(delegate (MemberInfo x) {
@@ -622,6 +620,17 @@ namespace BrightIdeasSoftware.Utilities
                     il.Emit(OpCodes.Ldfld, fi);
                     resultType = fi.FieldType;
                     break;
+            }
+
+            if (!isLastPart && !resultType.IsValueType)
+            {
+                var notNull = il.DefineLabel();
+                il.Emit(OpCodes.Dup);
+                il.Emit(OpCodes.Brtrue_S, notNull);
+                il.Emit(OpCodes.Pop);
+                il.Emit(OpCodes.Ldnull);
+                il.Emit(OpCodes.Ret);
+                il.MarkLabel(notNull);
             }
 
             // If the method returned a value type, and something is going to call a method on that value,
