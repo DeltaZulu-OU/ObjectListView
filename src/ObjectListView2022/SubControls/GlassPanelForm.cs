@@ -466,10 +466,9 @@ namespace BrightIdeasSoftware.SubControls
 
         internal void UpdateTransparency()
         {
-            const int defaultTransparency = 128;
             var transparency = Overlay is ITransparentOverlay transparentOverlay
                 ? transparentOverlay.Transparency
-                : defaultTransparency;
+                : objectListView.OverlayTransparency;
 
             Opacity = transparency / 255.0f;
         }
