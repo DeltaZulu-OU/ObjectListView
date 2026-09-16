@@ -42,7 +42,9 @@ using System;
 using System.ComponentModel;
 using System.Drawing;
 
-namespace BrightIdeasSoftware.Rendering
+#pragma warning disable IDE0130 // Namespace does not match folder structure
+namespace BrightIdeasSoftware
+#pragma warning restore IDE0130 // Namespace does not match folder structure
 {
     /// <summary>
     /// An overlay that will draw an image over the top of the ObjectListView

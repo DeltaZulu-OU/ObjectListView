@@ -40,7 +40,9 @@
 
 using System.Drawing;
 
-namespace BrightIdeasSoftware.Rendering
+#pragma warning disable IDE0130 // Namespace does not match folder structure
+namespace BrightIdeasSoftware
+#pragma warning restore IDE0130 // Namespace does not match folder structure
 {
     /// <summary>
     /// The interface for an object which can draw itself over the top of

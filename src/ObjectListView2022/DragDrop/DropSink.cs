@@ -49,7 +49,6 @@ using System.Collections;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
-using BrightIdeasSoftware.Rendering;
 
 namespace BrightIdeasSoftware.DragDrop
 {

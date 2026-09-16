@@ -86,11 +86,8 @@ namespace BrightIdeasSoftware.Rendering
                     return;
                 }
 
-                if (tintBrush != null)
-                {
-                    tintBrush.Dispose();
-                    tintBrush = null;
-                }
+                tintBrush?.Dispose();
+                tintBrush = null;
 
                 tint = value;
                 tintBrush = new SolidBrush(tint);

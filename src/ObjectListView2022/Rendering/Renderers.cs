@@ -115,7 +115,9 @@ using System.Windows.Forms.VisualStyles;
 using BrightIdeasSoftware.Filtering;
 using Timer = System.Threading.Timer;
 
-namespace BrightIdeasSoftware.Rendering
+#pragma warning disable IDE0130 // Namespace does not match folder structure
+namespace BrightIdeasSoftware
+#pragma warning restore IDE0130 // Namespace does not match folder structure
 {
     /// <summary>
     /// Renderers are the mechanism used for owner drawing cells. As such, they can also handle
@@ -2670,10 +2672,7 @@ namespace BrightIdeasSoftware.Rendering
             }
 
             // Cache the image so we don't repeat this dreary process
-            if (OLVSubItem != null)
-            {
-                OLVSubItem.ImageSelector = image;
-            }
+            OLVSubItem?.ImageSelector = image;
 
             return image;
         }

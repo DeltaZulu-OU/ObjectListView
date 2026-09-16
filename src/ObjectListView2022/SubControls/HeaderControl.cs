@@ -59,7 +59,6 @@ using System.Security.Permissions;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 using BrightIdeasSoftware.Properties;
-using BrightIdeasSoftware.Rendering;
 
 namespace BrightIdeasSoftware.SubControls
 {

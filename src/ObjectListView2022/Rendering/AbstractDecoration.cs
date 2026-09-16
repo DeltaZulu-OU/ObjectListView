@@ -35,7 +35,9 @@
 
 using System.Drawing;
 
-namespace BrightIdeasSoftware.Rendering
+#pragma warning disable IDE0130 // Namespace does not match folder structure
+namespace BrightIdeasSoftware
+#pragma warning restore IDE0130 // Namespace does not match folder structure
 {
     /// <summary>
     /// An AbstractDecoration is a safe do-nothing implementation of the IDecoration interface
