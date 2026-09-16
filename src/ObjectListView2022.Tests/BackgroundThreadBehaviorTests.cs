@@ -3,6 +3,7 @@ using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.Windows.Forms;
 using BrightIdeasSoftware;
+using BrightIdeasSoftware.Implementation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace ObjectListView2022.Tests
@@ -142,15 +143,12 @@ namespace ObjectListView2022.Tests
             Assert.AreEqual(0, host.Read(listView => listView.GetItemCount()));
         }
 
-        private static WinFormsHost<T> CreateHost<T>(Func<T> factory) where T : ObjectListView
-        {
-            return new WinFormsHost<T>(() => {
-                var listView = factory();
-                listView.Columns.Add(new OLVColumn("Name", nameof(Model.Name)));
-                listView.Columns.Add(new OLVColumn("Rank", nameof(Model.Rank)));
-                return listView;
-            });
-        }
+        private static WinFormsHost<T> CreateHost<T>(Func<T> factory) where T : ObjectListView => new WinFormsHost<T>(() => {
+            var listView = factory();
+            listView.Columns.Add(new OLVColumn("Name", nameof(Model.Name)));
+            listView.Columns.Add(new OLVColumn("Rank", nameof(Model.Rank)));
+            return listView;
+        });
 
         private sealed class WinFormsHost<T> : IDisposable where T : ObjectListView
         {
@@ -220,10 +218,7 @@ namespace ObjectListView2022.Tests
                 }
             }
 
-            public void Invoke(Action<T> action)
-            {
-                ListView.Invoke((MethodInvoker)(() => action(ListView)));
-            }
+            public void Invoke(Action<T> action) => ListView.Invoke((MethodInvoker)(() => action(ListView)));
 
             public TResult Read<TResult>(Func<T, TResult> func)
             {
