@@ -39,7 +39,7 @@ namespace ObjectListView2022.Tests
             var effects = source.GetAllowedEffects(new object());
 
             Assert.AreEqual(DragDropEffects.All | DragDropEffects.Link, effects);
-            Assert.IsTrue((effects & DragDropEffects.Link) == DragDropEffects.Link);
+            Assert.AreEqual(DragDropEffects.Link, effects & DragDropEffects.Link);
         }
 
         [TestMethod]
@@ -59,9 +59,10 @@ namespace ObjectListView2022.Tests
         [TestMethod]
         public void SimpleDropSink_StandardDropActionFollowsModifierKeys()
         {
-            var sink = new SimpleDropSink();
-
-            sink.KeyState = 0;
+            var sink = new SimpleDropSink
+            {
+                KeyState = 0
+            };
             Assert.AreEqual(DragDropEffects.Move, sink.CalculateStandardDropActionFromKeys());
 
             sink.KeyState = 8; // MK_CONTROL
@@ -80,7 +81,11 @@ namespace ObjectListView2022.Tests
             using var sourceList = CreateList(new Model("source"));
             using var targetList = CreateList(new Model("target"));
             using var form = Host(sourceList, targetList);
-            var sink = new SimpleDropSink { ListView = targetList };
+            var sink = new SimpleDropSink
+            {
+                ListView = targetList,
+                AutoScroll = false
+            };
             var order = new List<string>();
             ModelDropEventArgs modelArgs = null;
 
@@ -111,7 +116,11 @@ namespace ObjectListView2022.Tests
             using var sourceList = CreateList(new Model("source"));
             using var targetList = CreateList(new Model("target"));
             using var form = Host(sourceList, targetList);
-            var sink = new SimpleDropSink { ListView = targetList };
+            var sink = new SimpleDropSink
+            {
+                ListView = targetList,
+                AutoScroll = false
+            };
             var genericCount = 0;
 
             sink.ModelCanDrop += (sender, args) =>
@@ -177,7 +186,8 @@ namespace ObjectListView2022.Tests
             var sink = new SimpleDropSink
             {
                 ListView = targetList,
-                AcceptExternal = false
+                AcceptExternal = false,
+                AutoScroll = false
             };
             var modelEventCount = 0;
             var genericEventCount = 0;

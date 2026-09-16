@@ -23,7 +23,7 @@ namespace ObjectListView2022.Tests
             Assert.IsTrue(handled);
             Assert.AreEqual("changed", model.Name);
             Assert.IsTrue(listView.IsCellEditing);
-            Assert.AreEqual(2, startedCells.Count);
+            Assert.HasCount(2, startedCells);
             Assert.AreSame(model, startedCells[1].Model);
             Assert.AreEqual(1, startedCells[1].ColumnIndex);
 
@@ -46,7 +46,7 @@ namespace ObjectListView2022.Tests
             Assert.IsTrue(handled);
             Assert.AreEqual("changed", first.Code);
             Assert.IsTrue(listView.IsCellEditing);
-            Assert.AreEqual(2, startedCells.Count);
+            Assert.HasCount(2, startedCells);
             Assert.AreSame(second, startedCells[1].Model);
             Assert.AreEqual(0, startedCells[1].ColumnIndex);
 
@@ -67,7 +67,7 @@ namespace ObjectListView2022.Tests
 
             Assert.IsTrue(handled);
             Assert.IsTrue(listView.IsCellEditing);
-            Assert.AreEqual(2, startedCells.Count);
+            Assert.HasCount(2, startedCells);
             Assert.AreSame(first, startedCells[1].Model);
             Assert.AreEqual(1, startedCells[1].ColumnIndex);
 
@@ -92,7 +92,7 @@ namespace ObjectListView2022.Tests
             Assert.IsTrue(handled);
             Assert.AreEqual("changed", first.Name);
             Assert.IsTrue(listView.IsCellEditing);
-            Assert.AreEqual(2, startedCells.Count);
+            Assert.HasCount(2, startedCells);
             Assert.AreSame(third, startedCells[1].Model);
             Assert.AreEqual(0, startedCells[1].ColumnIndex);
 
@@ -115,7 +115,7 @@ namespace ObjectListView2022.Tests
             Assert.IsTrue(listView.IsCellEditing);
             Assert.AreSame(editor, listView.CellEditor);
             Assert.AreEqual("first", model.Name);
-            Assert.AreEqual(1, startedCells.Count);
+            Assert.HasCount(1, startedCells);
             Assert.AreSame(model, startedCells[0].Model);
             Assert.AreEqual(0, startedCells[0].ColumnIndex);
 
