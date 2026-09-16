@@ -41,6 +41,7 @@ All notable changes to this repository are documented here.
 - Handled invalid `HDITEM` marshalling narrowly during header tracking and item-changing notifications without swallowing unrelated message-processing failures.
 - Preserved the relative order of rows with equal sort keys in normal, fast/virtual, and tree list sorting.
 - Restored custom overlay compatibility for implementations of the original [`IOverlay` contract](https://objectlistview.sourceforge.net/cs/overlays.html) that do not also implement `ITransparentOverlay`; these overlays now fall back to the historical default overlay alpha (`128`) instead of throwing `NullReferenceException` while binding their glass panel.
+- Restored `OverlayTransparency` for plain `IOverlay` implementations, including its `0`-to-`255` clamping behavior, while preserving per-overlay transparency for `ITransparentOverlay`; the original project's [overlay implementation notes](https://objectlistview.sourceforge.net/cs/blog1.html) document the global transparency behavior.
 
 ### Removed
 
@@ -51,5 +52,5 @@ All notable changes to this repository are documented here.
 ### Compatibility notes
 
 - State saved by the previous BinaryFormatter implementation is not migrated and is rejected by the XML-based `RestoreState()` implementation.
-- Applications that still reference the removed obsolete compatibility properties must update to the supported replacements.
+- Applications that still reference other removed obsolete compatibility properties must update to the supported replacements.
 - The library continues to target .NET Framework 4.8.1 and remains strongly named.
