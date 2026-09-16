@@ -38,6 +38,7 @@ All notable changes to this repository are documented here.
 - Restored cell-tooltip state only after a replacement native handle is created, avoiding teardown-time tooltip work against a destroyed handle.
 - Handled invalid `HDITEM` marshalling narrowly during header tracking and item-changing notifications without swallowing unrelated message-processing failures.
 - Preserved the relative order of rows with equal sort keys in normal, fast/virtual, and tree list sorting.
+- Restored custom overlay compatibility for implementations of the original [`IOverlay` contract](https://objectlistview.sourceforge.net/cs/overlays.html) that do not also implement `ITransparentOverlay`; these overlays now fall back to the historical default overlay alpha (`128`) instead of throwing `NullReferenceException` while binding their glass panel.
 
 ### Removed
 
