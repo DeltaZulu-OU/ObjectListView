@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.Windows.Forms;
@@ -14,7 +13,7 @@ namespace ObjectListView2022.Tests
         [TestMethod]
         public void WinFormsHost_UsesStaUiThreadAndDistinctMtaWorker()
         {
-            using var host = CreateHost<ThreadRecordingObjectListView>();
+            using var host = CreateHost(() => new ThreadRecordingObjectListView());
             var invokeRequired = false;
 
             host.RunFromWorker(listView => invokeRequired = listView.InvokeRequired);
@@ -28,7 +27,7 @@ namespace ObjectListView2022.Tests
         [TestMethod]
         public void ObjectListView_PrimaryCollectionCommandsCanBeCalledFromBackgroundThread()
         {
-            using var host = CreateHost<ThreadRecordingObjectListView>();
+            using var host = CreateHost(() => new ThreadRecordingObjectListView());
             var first = new Model("first", 1);
             var second = new Model("second", 2);
 
@@ -88,7 +87,7 @@ namespace ObjectListView2022.Tests
         [TestMethod]
         public void ObjectListView_BuildListCanBeCalledFromBackgroundThread()
         {
-            using var host = CreateHost<ThreadRecordingObjectListView>();
+            using var host = CreateHost(() => new ThreadRecordingObjectListView());
             var model = new Model("before", 1);
             host.Invoke(listView => {
                 listView.SetObjects(new[] { model });
@@ -105,7 +104,7 @@ namespace ObjectListView2022.Tests
         [TestMethod]
         public void ObjectListView_SortCanBeCalledFromBackgroundThread()
         {
-            using var host = CreateHost<ThreadRecordingObjectListView>();
+            using var host = CreateHost(() => new ThreadRecordingObjectListView());
             var first = new Model("first", 1);
             var second = new Model("second", 3);
             var third = new Model("third", 2);
@@ -127,7 +126,7 @@ namespace ObjectListView2022.Tests
         [TestMethod]
         public void FastObjectListView_SetAndClearCanBeCalledFromBackgroundThread()
         {
-            using var host = CreateHost<ThreadRecordingFastObjectListView>();
+            using var host = CreateHost(() => new ThreadRecordingFastObjectListView());
             var first = new Model("first", 1);
             var second = new Model("second", 2);
 
@@ -142,10 +141,10 @@ namespace ObjectListView2022.Tests
             Assert.AreEqual(0, host.Read(listView => listView.GetItemCount()));
         }
 
-        private static WinFormsHost<T> CreateHost<T>() where T : ObjectListView, new()
+        private static WinFormsHost<T> CreateHost<T>(Func<T> factory) where T : ObjectListView
         {
             return new WinFormsHost<T>(() => {
-                var listView = new T();
+                var listView = factory();
                 listView.Columns.Add(new OLVColumn("Name", nameof(Model.Name)));
                 listView.Columns.Add(new OLVColumn("Rank", nameof(Model.Rank)));
                 return listView;
