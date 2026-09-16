@@ -1,4 +1,4 @@
-﻿/*
+/*
  * GlassPanelForm - A transparent form that is placed over an ObjectListView
  * to allow flicker-free overlay images during scrolling.
  *
@@ -464,7 +464,15 @@ namespace BrightIdeasSoftware.SubControls
             Bounds = objectListView.RectangleToScreen(rect);
         }
 
-        internal void UpdateTransparency() => Opacity = (Overlay as ITransparentOverlay).Transparency / 255.0f;
+        internal void UpdateTransparency()
+        {
+            const int defaultTransparency = 128;
+            var transparency = Overlay is ITransparentOverlay transparentOverlay
+                ? transparentOverlay.Transparency
+                : defaultTransparency;
+
+            Opacity = transparency / 255.0f;
+        }
 
         protected override void WndProc(ref Message m)
         {
