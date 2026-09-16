@@ -1,7 +1,6 @@
 using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms;
-using BrightIdeasSoftware.Implementation;
 
 namespace BrightIdeasSoftware
 {

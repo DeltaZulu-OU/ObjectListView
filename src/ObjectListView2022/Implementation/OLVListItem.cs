@@ -35,9 +35,10 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
-using BrightIdeasSoftware.Rendering;
 
-namespace BrightIdeasSoftware.Implementation
+#pragma warning disable IDE0130 // Namespace does not match folder structure
+namespace BrightIdeasSoftware
+#pragma warning restore IDE0130 // Namespace does not match folder structure
 {
     /// <summary>
     /// OLVListItems are specialized ListViewItems that know which row object they came from,

@@ -32,7 +32,6 @@
  */
 
 using System.Collections;
-using BrightIdeasSoftware.Implementation;
 
 namespace BrightIdeasSoftware.Filtering
 {

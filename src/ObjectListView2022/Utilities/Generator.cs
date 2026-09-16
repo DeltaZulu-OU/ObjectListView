@@ -48,7 +48,6 @@ using System.Globalization;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using BrightIdeasSoftware.Implementation;
 
 namespace BrightIdeasSoftware.Utilities
 {

@@ -2,7 +2,9 @@ using System;
 using System.Collections;
 using System.ComponentModel;
 
-namespace BrightIdeasSoftware.Implementation
+#pragma warning disable IDE0130 // Namespace does not match folder structure
+namespace BrightIdeasSoftware
+#pragma warning restore IDE0130 // Namespace does not match folder structure
 {
     /// <summary>
     /// A TreeDataSourceAdapter knows how to build a tree structure from a binding list.

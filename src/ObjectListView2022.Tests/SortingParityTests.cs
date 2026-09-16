@@ -1,7 +1,6 @@
 using System;
 using System.Windows.Forms;
 using BrightIdeasSoftware;
-using BrightIdeasSoftware.Implementation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace ObjectListView2022.Tests

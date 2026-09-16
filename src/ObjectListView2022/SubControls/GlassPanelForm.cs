@@ -46,7 +46,6 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
-using BrightIdeasSoftware.Implementation;
 using BrightIdeasSoftware.Rendering;
 
 namespace BrightIdeasSoftware.SubControls

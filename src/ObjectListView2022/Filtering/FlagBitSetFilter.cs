@@ -34,7 +34,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using BrightIdeasSoftware.Implementation;
 
 namespace BrightIdeasSoftware.Filtering
 {

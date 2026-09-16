@@ -37,7 +37,9 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using BrightIdeasSoftware.SubControls;
 
-namespace BrightIdeasSoftware.Implementation
+#pragma warning disable IDE0130 // Namespace does not match folder structure
+namespace BrightIdeasSoftware
+#pragma warning restore IDE0130 // Namespace does not match folder structure
 {
     /// <summary>
     /// Wrapper for all native method calls on ListView controls

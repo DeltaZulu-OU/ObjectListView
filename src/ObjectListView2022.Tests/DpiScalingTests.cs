@@ -1,6 +1,5 @@
 using System.Drawing;
 using BrightIdeasSoftware;
-using BrightIdeasSoftware.Implementation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace ObjectListView2022.Tests

@@ -34,7 +34,6 @@
  */
 
 using System.Drawing;
-using BrightIdeasSoftware.Implementation;
 
 namespace BrightIdeasSoftware.Rendering
 {

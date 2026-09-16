@@ -35,7 +35,6 @@
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using BrightIdeasSoftware.Implementation;
 
 namespace BrightIdeasSoftware.CellEditing
 {

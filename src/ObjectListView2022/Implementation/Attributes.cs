@@ -38,7 +38,9 @@
 using System;
 using System.Windows.Forms;
 
-namespace BrightIdeasSoftware.Implementation
+#pragma warning disable IDE0130 // Namespace does not match folder structure
+namespace BrightIdeasSoftware
+#pragma warning restore IDE0130 // Namespace does not match folder structure
 {
     /// <summary>
     /// This attribute is used to mark a property of a model

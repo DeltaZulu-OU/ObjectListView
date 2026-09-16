@@ -58,7 +58,6 @@ using System.Runtime.InteropServices;
 using System.Security.Permissions;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
-using BrightIdeasSoftware.Implementation;
 using BrightIdeasSoftware.Properties;
 using BrightIdeasSoftware.Rendering;
 

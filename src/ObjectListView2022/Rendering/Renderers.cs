@@ -113,7 +113,6 @@ using System.Threading;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 using BrightIdeasSoftware.Filtering;
-using BrightIdeasSoftware.Implementation;
 using Timer = System.Threading.Timer;
 
 namespace BrightIdeasSoftware.Rendering

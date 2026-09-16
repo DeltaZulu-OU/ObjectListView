@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using BrightIdeasSoftware;
-using BrightIdeasSoftware.Implementation;
 using BrightIdeasSoftware.Rendering;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

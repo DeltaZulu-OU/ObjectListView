@@ -3,7 +3,6 @@ using System.Linq;
 using System.Windows.Forms;
 using BrightIdeasSoftware;
 using BrightIdeasSoftware.Filtering;
-using BrightIdeasSoftware.Implementation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace ObjectListView2022.Tests
@@ -95,7 +94,7 @@ namespace ObjectListView2022.Tests
             Assert.AreSequenceEqual(
                 new object[] { "A" },
                 listView.CapturedGroups.Select(x => x.Key).ToArray());
-            Assert.AreEqual(2, listView.CapturedGroups[0].Items.Count);
+            Assert.HasCount(2, listView.CapturedGroups[0].Items);
 
             listView.ModelFilter = new ModelFilter(_ => true);
             listView.BuildGroups(categoryColumn, SortOrder.Ascending);
@@ -118,7 +117,7 @@ namespace ObjectListView2022.Tests
 
             listView.BuildGroups(categoryColumn, SortOrder.Ascending);
 
-            Assert.AreEqual(1, listView.CapturedGroups.Count);
+            Assert.HasCount(1, listView.CapturedGroups);
             Assert.AreEqual("Injected", listView.CapturedGroups[0].Header);
             Assert.AreEqual("injected", listView.CapturedGroups[0].Key);
         }
@@ -275,20 +274,14 @@ namespace ObjectListView2022.Tests
         {
             public IList<OLVGroup> CapturedGroups { get; private set; } = new List<OLVGroup>();
 
-            protected override void CreateGroups(IEnumerable<OLVGroup> groups)
-            {
-                CapturedGroups = groups.ToList();
-            }
+            protected override void CreateGroups(IEnumerable<OLVGroup> groups) => CapturedGroups = groups.ToList();
         }
 
         private sealed class RecordingFastObjectListView : FastObjectListView
         {
             public IList<OLVGroup> CapturedGroups { get; private set; } = new List<OLVGroup>();
 
-            protected override void CreateGroups(IEnumerable<OLVGroup> groups)
-            {
-                CapturedGroups = groups.ToList();
-            }
+            protected override void CreateGroups(IEnumerable<OLVGroup> groups) => CapturedGroups = groups.ToList();
         }
 
         private sealed class Model

@@ -37,7 +37,6 @@ using System.Drawing;
 using System.Drawing.Design;
 using System.Windows.Forms;
 using BrightIdeasSoftware.Filtering;
-using BrightIdeasSoftware.Implementation;
 using BrightIdeasSoftware.Rendering;
 
 namespace BrightIdeasSoftware

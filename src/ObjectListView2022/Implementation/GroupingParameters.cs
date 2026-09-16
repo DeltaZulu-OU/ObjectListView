@@ -28,7 +28,9 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 
-namespace BrightIdeasSoftware.Implementation
+#pragma warning disable IDE0130 // Namespace does not match folder structure
+namespace BrightIdeasSoftware
+#pragma warning restore IDE0130 // Namespace does not match folder structure
 {
     /// <summary>
     /// This class contains all the settings used when groups are created

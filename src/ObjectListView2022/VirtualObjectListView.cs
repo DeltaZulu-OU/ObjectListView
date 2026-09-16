@@ -78,7 +78,6 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using BrightIdeasSoftware.Implementation;
 
 namespace BrightIdeasSoftware
 {

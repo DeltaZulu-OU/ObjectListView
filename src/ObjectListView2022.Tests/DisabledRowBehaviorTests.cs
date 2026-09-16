@@ -2,7 +2,6 @@ using System.Linq;
 using System.Reflection;
 using BrightIdeasSoftware;
 using BrightIdeasSoftware.Filtering;
-using BrightIdeasSoftware.Implementation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace ObjectListView2022.Tests

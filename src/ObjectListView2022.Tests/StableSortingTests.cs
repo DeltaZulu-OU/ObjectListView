@@ -1,7 +1,6 @@
 using System.Linq;
 using System.Windows.Forms;
 using BrightIdeasSoftware;
-using BrightIdeasSoftware.Implementation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace ObjectListView2022.Tests
@@ -62,9 +61,8 @@ namespace ObjectListView2022.Tests
 
             listView.Sort(column, SortOrder.Ascending);
 
-            CollectionAssert.AreEqual(
-                new[] { 2, 3, 1, 4 },
-                listView.Items.Cast<OLVListItem>().Select(x => ((Model)x.RowObject).Id).ToArray());
+            Assert.AreSequenceEqual(
+                new[] { 2, 3, 1, 4 }, listView.Items.Cast<OLVListItem>().Select(x => ((Model)x.RowObject).Id).ToArray());
         }
 
         [TestMethod]
@@ -81,12 +79,10 @@ namespace ObjectListView2022.Tests
             var source = (FastObjectListDataSource)listView.VirtualListDataSource;
             source.Sort(column, SortOrder.Ascending);
 
-            CollectionAssert.AreEqual(
-                models.Select(x => x.Id).ToArray(),
-                source.ObjectList.Cast<Model>().Select(x => x.Id).ToArray());
-            CollectionAssert.AreEqual(
-                models.Select(x => x.Id).ToArray(),
-                source.FilteredObjectList.Cast<Model>().Select(x => x.Id).ToArray());
+            Assert.AreSequenceEqual(
+                models.Select(x => x.Id).ToArray(), source.ObjectList.Cast<Model>().Select(x => x.Id).ToArray());
+            Assert.AreSequenceEqual(
+                models.Select(x => x.Id).ToArray(), source.FilteredObjectList.Cast<Model>().Select(x => x.Id).ToArray());
         }
 
         [TestMethod]
@@ -106,9 +102,8 @@ namespace ObjectListView2022.Tests
             var source = (FastObjectListDataSource)listView.VirtualListDataSource;
             source.Sort(column, SortOrder.Ascending);
 
-            CollectionAssert.AreEqual(
-                new[] { 2, 3, 1, 4 },
-                source.ObjectList.Cast<Model>().Select(x => x.Id).ToArray());
+            Assert.AreSequenceEqual(
+                new[] { 2, 3, 1, 4 }, source.ObjectList.Cast<Model>().Select(x => x.Id).ToArray());
         }
 
         [TestMethod]
@@ -132,9 +127,8 @@ namespace ObjectListView2022.Tests
 
             parent.Sort(comparer);
 
-            CollectionAssert.AreEqual(
-                models.Select(x => x.Id).ToArray(),
-                parent.ChildBranches.Select(x => ((Model)x.Model).Id).ToArray());
+            Assert.AreSequenceEqual(
+                models.Select(x => x.Id).ToArray(), parent.ChildBranches.Select(x => ((Model)x.Model).Id).ToArray());
         }
 
         [TestMethod]
@@ -161,9 +155,8 @@ namespace ObjectListView2022.Tests
 
             parent.Sort(comparer);
 
-            CollectionAssert.AreEqual(
-                new[] { 2, 3, 1, 4 },
-                parent.ChildBranches.Select(x => ((Model)x.Model).Id).ToArray());
+            Assert.AreSequenceEqual(
+                new[] { 2, 3, 1, 4 }, parent.ChildBranches.Select(x => ((Model)x.Model).Id).ToArray());
         }
 
         private sealed class Model

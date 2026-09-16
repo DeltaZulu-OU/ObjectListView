@@ -41,7 +41,6 @@ using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Security.Permissions;
 using System.Windows.Forms;
-using BrightIdeasSoftware.Implementation;
 
 namespace BrightIdeasSoftware.SubControls
 {

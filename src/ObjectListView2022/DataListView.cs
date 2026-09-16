@@ -42,7 +42,6 @@ using System.Data;
 using System.Diagnostics;
 using System.Drawing.Design;
 using System.Windows.Forms;
-using BrightIdeasSoftware.Implementation;
 
 namespace BrightIdeasSoftware
 {

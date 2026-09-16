@@ -1,5 +1,4 @@
 using BrightIdeasSoftware;
-using BrightIdeasSoftware.Implementation;
 using BrightIdeasSoftware.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

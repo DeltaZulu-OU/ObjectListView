@@ -35,7 +35,9 @@ using System.Collections;
 using System.Windows.Forms;
 using BrightIdeasSoftware.Filtering;
 
-namespace BrightIdeasSoftware.Implementation
+#pragma warning disable IDE0130 // Namespace does not match folder structure
+namespace BrightIdeasSoftware
+#pragma warning restore IDE0130 // Namespace does not match folder structure
 {
     /// <summary>
     /// A VirtualListDataSource is a complete manner to provide functionality to a virtual list.

@@ -38,7 +38,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
-namespace BrightIdeasSoftware.Implementation
+#pragma warning disable IDE0130 // Namespace does not match folder structure
+namespace BrightIdeasSoftware
+#pragma warning restore IDE0130 // Namespace does not match folder structure
 {
     /// <summary>
     /// This comparer can be used to sort a collection of model objects by a given column

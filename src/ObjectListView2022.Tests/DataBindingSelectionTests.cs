@@ -63,7 +63,7 @@ namespace ObjectListView2022.Tests
 
             listView.DataSource = secondRows;
 
-            Assert.IsTrue(listView.SelectionAssignmentCount >= 1);
+            Assert.IsGreaterThanOrEqualTo(1, listView.SelectionAssignmentCount);
             Assert.AreSame(secondRows[0], listView.RecordedSelectedObject);
         }
 

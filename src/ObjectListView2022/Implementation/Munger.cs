@@ -44,7 +44,9 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace BrightIdeasSoftware.Implementation
+#pragma warning disable IDE0130 // Namespace does not match folder structure
+namespace BrightIdeasSoftware
+#pragma warning restore IDE0130 // Namespace does not match folder structure
 {
     /// <summary>
     /// An instance of Munger gets a value from or puts a value into a target object. The property

@@ -128,7 +128,6 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows.Forms;
 using BrightIdeasSoftware.Filtering;
-using BrightIdeasSoftware.Implementation;
 
 namespace BrightIdeasSoftware
 {
