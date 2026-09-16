@@ -13,10 +13,7 @@ namespace BrightIdeasSoftware
         private const long MaximumStateSize = 1024 * 1024;
         private static readonly XmlSerializer StateSerializer = new XmlSerializer(typeof(SerializedObjectListViewState));
 
-        private static void SerializeState(Stream stream, ObjectListViewState state)
-        {
-            StateSerializer.Serialize(stream, SerializedObjectListViewState.FromState(state));
-        }
+        private static void SerializeState(Stream stream, ObjectListViewState state) => StateSerializer.Serialize(stream, SerializedObjectListViewState.FromState(state));
 
         private static ObjectListViewState DeserializeState(Stream stream)
         {

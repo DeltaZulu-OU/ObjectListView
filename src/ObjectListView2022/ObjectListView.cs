@@ -1233,7 +1233,7 @@ namespace BrightIdeasSoftware
         /// a specialised editor with it.
         /// </summary>
         [Editor("BrightIdeasSoftware.Design.OLVColumnCollectionEditor", "System.Drawing.Design.UITypeEditor")]
-        public new ListView.ColumnHeaderCollection Columns => base.Columns;
+        public new ColumnHeaderCollection Columns => base.Columns;
 
         /// <summary>
         /// Return the visible columns in the order they are displayed to the user
@@ -1338,7 +1338,7 @@ namespace BrightIdeasSoftware
         /// <summary>
         /// Gets or sets the style that will be applied to disabled items.
         /// </summary>
-        /// <remarks>If this is not set explicitly, <see cref="ObjectListView.DefaultDisabledItemStyle"/>  will be used.</remarks>
+        /// <remarks>If this is not set explicitly, <see cref="DefaultDisabledItemStyle"/>  will be used.</remarks>
         [Category("ObjectListView"),
         Description("The style that will be applied to disabled items"),
         DefaultValue(null)]
@@ -5180,7 +5180,7 @@ namespace BrightIdeasSoftware
         /// <remarks>
         /// <para>This has the same limitations as described in <see cref="SetNativeBackgroundWatermark"/>. Make sure those limitations
         /// are understood before using the method.</para>
-        /// <para>This is very similar to setting the <see cref="System.Windows.Forms.Control.BackgroundImage"/> property of the standard .NET ListView, except that the standard
+        /// <para>This is very similar to setting the <see cref="Control.BackgroundImage"/> property of the standard .NET ListView, except that the standard
         /// BackgroundImage does not handle images with transparent areas properly -- it renders transparent areas as black. This
         /// method does not have that problem.</para>
         /// <para>Setting this clears any background watermark.</para>

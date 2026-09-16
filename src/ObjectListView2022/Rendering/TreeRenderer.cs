@@ -83,7 +83,7 @@ namespace BrightIdeasSoftware
             /// </summary>
             /// <param name="g"></param>
             /// <param name="r"></param>
-            public override void Render(System.Drawing.Graphics g, System.Drawing.Rectangle r)
+            public override void Render(Graphics g, Rectangle r)
             {
                 DrawBackground(g, r);
 

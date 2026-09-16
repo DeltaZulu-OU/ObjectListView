@@ -138,6 +138,17 @@ namespace BrightIdeasSoftware
         }
 
         /// <summary>
+        /// Make a HTML representation of our model objects.
+        /// </summary>
+        /// <returns>The exported HTML fragment.</returns>
+        [Obsolete("Use OLVExporter directly instead", false)]
+        public string CreateHtml()
+        {
+            var exporter = CreateExporter();
+            return exporter.ExportTo(OLVExporter.ExportFormat.HTML);
+        }
+
+        /// <summary>
         /// Convert the fragment of HTML into the Clipboards HTML format.
         /// </summary>
         /// <remarks>The HTML format is found here http://msdn2.microsoft.com/en-us/library/aa767917.aspx

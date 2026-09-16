@@ -88,6 +88,18 @@ namespace BrightIdeasSoftware
 
         private int insetY = 20;
 
+        /// <summary>
+        /// Gets or sets whether the border is drawn with rounded corners.
+        /// </summary>
+        [Browsable(false),
+         Obsolete("Use CornerRounding instead", false),
+         DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public bool RoundCorneredBorder
+        {
+            get => CornerRounding > 0;
+            set => CornerRounding = value ? 16.0f : 0.0f;
+        }
+
         #endregion Public properties
 
         #region Commands

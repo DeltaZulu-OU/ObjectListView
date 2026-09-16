@@ -10,13 +10,24 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.9.0" />
     <PackageReference Include="MSTest.TestAdapter" Version="4.4.0" />
     <PackageReference Include="MSTest.TestFramework" Version="4.4.0" />
+    <PackageReference Include="Mono.Cecil" Version="0.11.6" PrivateAssets="all" />
+    <PackageReference Include="ObjectListView.Official" Version="2.9.1" GeneratePathProperty="true" PrivateAssets="all" ExcludeAssets="all" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\ObjectListView2022\ObjectListView2022.csproj" />
+    <ProjectReference Include="..\ObjectListView2022.ConsumerCompatibility\ObjectListView2022.ConsumerCompatibility.Current.csproj" ReferenceOutputAssembly="false" />
   </ItemGroup>
 
   <ItemGroup>
     <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="$(PkgObjectListView_Official)\lib\net20\ObjectListView.dll">
+      <Link>Baseline\ObjectListView.2.9.1.dll</Link>
+      <TargetPath>Baseline\ObjectListView.2.9.1.dll</TargetPath>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>

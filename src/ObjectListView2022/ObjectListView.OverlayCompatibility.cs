@@ -7,11 +7,11 @@ namespace BrightIdeasSoftware
     {
         /// <summary>
         /// Gets or sets the transparency used for overlays that do not implement
-        /// <see cref="BrightIdeasSoftware.ITransparentOverlay"/>.
+        /// <see cref="ITransparentOverlay"/>.
         /// </summary>
         /// <remarks>
         /// This property is retained for compatibility with the original ObjectListView behavior.
-        /// New overlay implementations should implement <see cref="BrightIdeasSoftware.ITransparentOverlay"/>
+        /// New overlay implementations should implement <see cref="ITransparentOverlay"/>
         /// and set transparency on the overlay itself.
         /// </remarks>
         [Browsable(false),

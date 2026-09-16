@@ -921,6 +921,13 @@ namespace BrightIdeasSoftware
         }
 
         /// <summary>
+        /// Return the Color that is the background color for this item's text
+        /// </summary>
+        /// <returns>The background color of the subitem's text</returns>
+        [Obsolete("Use GetBackgroundColor() instead")]
+        protected virtual Color GetTextBackgroundColor() => Color.Red; // just so it shows up if it is used
+
+        /// <summary>
         /// Return the color of the background color when the item is selected
         /// </summary>
         /// <returns>The background color of the subitem</returns>
@@ -1909,6 +1916,14 @@ namespace BrightIdeasSoftware
             Filter = filter;
         }
 
+        /// <summary>
+        /// Create a HighlightTextRenderer
+        /// </summary>
+        /// <param name="text"></param>
+        [Obsolete("Use HighlightTextRenderer(TextMatchFilter) instead", true)]
+        public HighlightTextRenderer(string text)
+        { }
+
         #endregion Life and death
 
         #region Configuration properties
@@ -1977,6 +1992,27 @@ namespace BrightIdeasSoftware
          DefaultValue(true),
          Description("Will the frame around a text match will have rounded corners?")]
         public bool UseRoundedRectangle { get; set; } = true;
+
+        /// <summary>
+        /// Gets or set the text that will be highlighted
+        /// </summary>
+        [Obsolete("Set the Filter directly rather than just the text", true)]
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public string TextToHighlight {
+            get => string.Empty;
+            set { }
+        }
+
+        /// <summary>
+        /// Gets or sets how substring matches should compare strings.
+        /// </summary>
+        /// <remarks>Use this to control if substring matches are case sensitive or insensitive.</remarks>
+        [Obsolete("Set the Filter directly rather than just this setting", true)]
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public StringComparison StringComparison {
+            get => StringComparison.CurrentCultureIgnoreCase;
+            set { }
+        }
 
         #endregion Configuration properties
 
