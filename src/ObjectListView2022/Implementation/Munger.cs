@@ -348,7 +348,6 @@ namespace BrightIdeasSoftware.Implementation
 
         private void ReportPutValueException(MungerException ex)
         {
-            //TODO: How should we report this error?
             System.Diagnostics.Debug.WriteLine("PutValue failed");
             System.Diagnostics.Debug.WriteLine(string.Format("- Culprit aspect: {0}", ex.Munger.AspectName));
             System.Diagnostics.Debug.WriteLine(string.Format("- Target: {0} of type {1}", ex.Target, ex.Target.GetType()));
