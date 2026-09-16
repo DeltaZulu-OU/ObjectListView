@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Reflection;
 using BrightIdeasSoftware;
 using BrightIdeasSoftware.Filtering;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -11,7 +12,7 @@ namespace ObjectListView2022.Tests
         [TestMethod]
         public void DisableObject_ExistingRowBecomesDisabledAndDeselected()
         {
-            using var listView = CreateList<ObjectListView>();
+            using var listView = CreateList(new ObjectListView());
             var first = new Model("first");
             var second = new Model("second");
             listView.SetObjects(new[] { first, second });
@@ -28,7 +29,7 @@ namespace ObjectListView2022.Tests
         [TestMethod]
         public void EnableObject_DisabledRowBecomesEnabledAgain()
         {
-            using var listView = CreateList<ObjectListView>();
+            using var listView = CreateList(new ObjectListView());
             var model = new Model("model");
             listView.SetObjects(new[] { model });
             listView.DisableObject(model);
@@ -42,7 +43,7 @@ namespace ObjectListView2022.Tests
         [TestMethod]
         public void SelectObject_DoesNotSelectDisabledOrdinaryRow()
         {
-            using var listView = CreateList<ObjectListView>();
+            using var listView = CreateList(new ObjectListView());
             var first = new Model("first");
             var second = new Model("second");
             listView.SetObjects(new[] { first, second });
@@ -55,9 +56,26 @@ namespace ObjectListView2022.Tests
         }
 
         [TestMethod]
+        public void DisabledRow_CanBeFocusedWithoutBeingSelected()
+        {
+            using var listView = CreateList(new ObjectListView());
+            var first = new Model("first");
+            var second = new Model("second");
+            listView.SetObjects(new[] { first, second });
+            listView.DisableObject(second);
+            _ = listView.Handle;
+            var item = GetItem(listView, second);
+
+            item.Focused = true;
+
+            Assert.IsTrue(item.Focused);
+            Assert.IsFalse(item.Selected);
+        }
+
+        [TestMethod]
         public void EditSubItem_DoesNotStartEditingDisabledRow()
         {
-            using var listView = CreateList<RecordingObjectListView>();
+            using var listView = CreateList(new RecordingObjectListView());
             var model = new Model("model");
             listView.SetObjects(new[] { model });
             listView.DisableObject(model);
@@ -70,7 +88,7 @@ namespace ObjectListView2022.Tests
         [TestMethod]
         public void DisabledState_SurvivesBuildListAndFiltering()
         {
-            using var listView = CreateList<ObjectListView>();
+            using var listView = CreateList(new ObjectListView());
             var first = new Model("first");
             var second = new Model("second");
             listView.SetObjects(new[] { first, second });
@@ -92,7 +110,7 @@ namespace ObjectListView2022.Tests
         [TestMethod]
         public void FastObjectListView_DisabledRowRemainsDisabledAfterRebuild()
         {
-            using var listView = CreateList<FastObjectListView>();
+            using var listView = CreateList(new FastObjectListView());
             var first = new Model("first");
             var second = new Model("second");
             listView.SetObjects(new[] { first, second });
@@ -102,6 +120,24 @@ namespace ObjectListView2022.Tests
 
             Assert.IsTrue(listView.IsDisabled(second));
             Assert.IsFalse(GetItem(listView, second).Enabled);
+        }
+
+        [TestMethod]
+        public void FastObjectListView_NativeSelectAllLeavesDisabledRowUnselected()
+        {
+            using var listView = CreateList(new FastObjectListView());
+            var first = new Model("first");
+            var second = new Model("second");
+            var third = new Model("third");
+            listView.SetObjects(new[] { first, second, third });
+            listView.DisableObject(second);
+            _ = listView.Handle;
+
+            InvokeNativeSelectAll(listView);
+
+            Assert.IsTrue(listView.SelectedIndices.Contains(0));
+            Assert.IsFalse(listView.SelectedIndices.Contains(1));
+            Assert.IsTrue(listView.SelectedIndices.Contains(2));
         }
 
         [TestMethod]
@@ -129,7 +165,7 @@ namespace ObjectListView2022.Tests
         [TestMethod]
         public void Reset_ClearsDisabledObjectState()
         {
-            using var listView = CreateList<ObjectListView>();
+            using var listView = CreateList(new ObjectListView());
             var model = new Model("model");
             listView.SetObjects(new[] { model });
             listView.DisableObject(model);
@@ -140,9 +176,8 @@ namespace ObjectListView2022.Tests
             Assert.AreEqual(0, listView.DisabledObjects.Cast<object>().Count());
         }
 
-        private static T CreateList<T>() where T : ObjectListView, new()
+        private static T CreateList<T>(T listView) where T : ObjectListView
         {
-            var listView = new T();
             listView.Columns.Add(new OLVColumn("Name", nameof(Model.Name)));
             return listView;
         }
@@ -154,6 +189,19 @@ namespace ObjectListView2022.Tests
             var item = listView.GetItem(index);
             Assert.IsNotNull(item);
             return item;
+        }
+
+        private static void InvokeNativeSelectAll(ObjectListView listView)
+        {
+            var nativeMethods = typeof(ObjectListView).Assembly.GetType(
+                "BrightIdeasSoftware.Implementation.NativeMethods",
+                true);
+            var method = nativeMethods.GetMethod(
+                "SelectAllItems",
+                BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+
+            Assert.IsNotNull(method);
+            method.Invoke(null, new object[] { listView });
         }
 
         private sealed class RecordingObjectListView : ObjectListView
