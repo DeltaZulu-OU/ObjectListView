@@ -12,6 +12,11 @@ namespace ObjectListView2022.Tests
     [TestClass]
     public class BackgroundThreadVirtualFamilyTests
     {
+        // ObjectListView 2.9.1 already allowed the VirtualObjectListView overrides of
+        // AddObjects(), InsertObjects(), and RemoveObjects() to run on the caller thread.
+        // These tests cover the marshaled entry points without treating that historical
+        // FAQ/implementation mismatch as a regression introduced by this fork.
+
         [TestMethod]
         public void FastObjectListView_SingularAndInheritedCommandsCanBeCalledFromBackgroundThread()
         {
