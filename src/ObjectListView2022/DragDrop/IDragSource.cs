@@ -33,7 +33,9 @@
 
 using System.Windows.Forms;
 
-namespace BrightIdeasSoftware.DragDrop
+#pragma warning disable IDE0130 // Namespace does not match folder structure
+namespace BrightIdeasSoftware
+#pragma warning restore IDE0130 // Namespace does not match folder structure
 {
     /// <summary>
     /// An IDragSource controls how drag out from the ObjectListView will behave

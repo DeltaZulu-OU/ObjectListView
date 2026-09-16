@@ -36,7 +36,9 @@ using System.Collections;
 using System.Windows.Forms;
 using BrightIdeasSoftware.Utilities;
 
-namespace BrightIdeasSoftware.DragDrop
+#pragma warning disable IDE0130 // Namespace does not match folder structure
+namespace BrightIdeasSoftware
+#pragma warning restore IDE0130 // Namespace does not match folder structure
 {
     /// <summary>
     /// A data transfer object that knows how to transform a list of model
