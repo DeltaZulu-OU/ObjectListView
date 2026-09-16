@@ -37,7 +37,9 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace BrightIdeasSoftware.CellEditing
+#pragma warning disable IDE0130 // Namespace does not match folder structure
+namespace BrightIdeasSoftware
+#pragma warning restore IDE0130 // Namespace does not match folder structure
 {
     /// <summary>
     /// This editor simply shows and edits boolean values using a checkbox

@@ -33,7 +33,9 @@
  * If you wish to use this code in a closed source application, please contact phillip.piper@gmail.com.
  */
 
-namespace BrightIdeasSoftware.CellEditing
+#pragma warning disable IDE0130 // Namespace does not match folder structure
+namespace BrightIdeasSoftware
+#pragma warning restore IDE0130 // Namespace does not match folder structure
 {
     /// <summary>
     /// These items allow combo boxes to remember a value and its description.
