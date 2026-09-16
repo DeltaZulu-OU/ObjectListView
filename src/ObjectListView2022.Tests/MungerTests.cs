@@ -1,4 +1,6 @@
+using BrightIdeasSoftware;
 using BrightIdeasSoftware.Implementation;
+using BrightIdeasSoftware.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace ObjectListView2022.Tests
@@ -58,6 +60,20 @@ namespace ObjectListView2022.Tests
             var munger = new Munger("Child.Value");
 
             Assert.IsNull(munger.GetValue(model));
+        }
+
+        [TestMethod]
+        public void GeneratedTypedAspectGetter_ReturnsNullWhenIntermediateAspectIsNull()
+        {
+            var column = new OLVColumn("Value", "Child.Value");
+            var typedColumn = new TypedColumn<RootModel>(column);
+            typedColumn.GenerateAspectGetter();
+
+            Assert.IsNull(column.GetValue(new RootModel()));
+            Assert.AreEqual("nested", column.GetValue(new RootModel
+            {
+                Child = new ChildModel { Value = "nested" }
+            }));
         }
 
         [TestMethod]
