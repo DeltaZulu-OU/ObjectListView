@@ -2,6 +2,7 @@ using System.Linq;
 using System.Reflection;
 using BrightIdeasSoftware;
 using BrightIdeasSoftware.Filtering;
+using BrightIdeasSoftware.Implementation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace ObjectListView2022.Tests
@@ -135,9 +136,9 @@ namespace ObjectListView2022.Tests
 
             InvokeNativeSelectAll(listView);
 
-            Assert.IsTrue(listView.SelectedIndices.Contains(0));
-            Assert.IsFalse(listView.SelectedIndices.Contains(1));
-            Assert.IsTrue(listView.SelectedIndices.Contains(2));
+            Assert.Contains(0, listView.SelectedIndices);
+            Assert.DoesNotContain(1, listView.SelectedIndices);
+            Assert.Contains(2, listView.SelectedIndices);
         }
 
         [TestMethod]
@@ -173,7 +174,7 @@ namespace ObjectListView2022.Tests
             listView.Reset();
 
             Assert.IsFalse(listView.IsDisabled(model));
-            Assert.AreEqual(0, listView.DisabledObjects.Cast<object>().Count());
+            Assert.IsEmpty(listView.DisabledObjects.Cast<object>());
         }
 
         private static T CreateList<T>(T listView) where T : ObjectListView
@@ -208,10 +209,7 @@ namespace ObjectListView2022.Tests
         {
             public int StartCellEditCount { get; private set; }
 
-            public override void StartCellEdit(OLVListItem item, int subItemIndex)
-            {
-                StartCellEditCount++;
-            }
+            public override void StartCellEdit(OLVListItem item, int subItemIndex) => StartCellEditCount++;
         }
 
         private sealed class Model
