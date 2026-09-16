@@ -162,7 +162,6 @@ namespace BrightIdeasSoftware.Implementation
             }
 
             // Sort the items within each group
-            // TODO: Give parameters a ModelComparer property
             var primarySortColumn = parmameters.SortItemsByPrimaryColumn ? parmameters.ListView.GetColumn(0) : parmameters.PrimarySort;
             var sorter = new ModelObjectComparer(primarySortColumn, parmameters.PrimarySortOrder,
                 parmameters.SecondarySort, parmameters.SecondarySortOrder);
