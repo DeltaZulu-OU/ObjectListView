@@ -270,18 +270,18 @@ namespace BrightIdeasSoftware
             public int vkDirection;
         }
 
-        [StructLayout(LayoutKind.Sequential)]
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
         public struct LVGROUP
         {
             public uint cbSize;
             public uint mask;
 
-            [MarshalAs(UnmanagedType.LPTStr)]
+            [MarshalAs(UnmanagedType.LPWStr)]
             public string pszHeader;
 
             public int cchHeader;
 
-            [MarshalAs(UnmanagedType.LPTStr)]
+            [MarshalAs(UnmanagedType.LPWStr)]
             public string pszFooter;
 
             public int cchFooter;
@@ -291,18 +291,18 @@ namespace BrightIdeasSoftware
             public uint uAlign;
         }
 
-        [StructLayout(LayoutKind.Sequential)]
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
         public struct LVGROUP2
         {
             public uint cbSize;
             public uint mask;
 
-            [MarshalAs(UnmanagedType.LPTStr)]
+            [MarshalAs(UnmanagedType.LPWStr)]
             public string pszHeader;
 
             public uint cchHeader;
 
-            [MarshalAs(UnmanagedType.LPTStr)]
+            [MarshalAs(UnmanagedType.LPWStr)]
             public string pszFooter;
 
             public int cchFooter;
