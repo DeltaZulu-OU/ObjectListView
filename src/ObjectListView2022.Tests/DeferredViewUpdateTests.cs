@@ -73,6 +73,32 @@ namespace ObjectListView2022.Tests
             Assert.IsFalse(listView.Frozen);
         }
 
+        [TestMethod]
+        public void DeferViewUpdates_ScopeDisposeIsIdempotent()
+        {
+            using var listView = CreateListView();
+            var scope = listView.DeferViewUpdates();
+
+            scope.Dispose();
+            Assert.IsFalse(listView.Frozen);
+
+            scope.Dispose();
+            Assert.IsFalse(listView.Frozen);
+        }
+
+        [TestMethod]
+        public void DeferViewUpdates_DisposingOwnerBeforeScopeDoesNotUnfreezeDisposedControl()
+        {
+            var listView = CreateListView();
+            var scope = listView.DeferViewUpdates();
+            Assert.IsTrue(listView.Frozen);
+
+            listView.Dispose();
+            scope.Dispose();
+
+            Assert.IsTrue(listView.IsDisposed);
+        }
+
         private static ObjectListView CreateListView()
         {
             var listView = new ObjectListView();
