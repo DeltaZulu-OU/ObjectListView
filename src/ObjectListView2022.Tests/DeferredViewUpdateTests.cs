@@ -151,7 +151,7 @@ namespace ObjectListView2022.Tests
         [TestMethod]
         public void DataListView_DeferViewUpdatesDefersDataSourceRefreshUntilScopeIsDisposed()
         {
-            using var listView = CreateDataListView<DataListView>();
+            using var listView = CreateDataListView();
             var rows = new BindingList<Model> { new Model("first") };
             listView.DataSource = rows;
             Assert.AreEqual(1, listView.GetItemCount());
@@ -171,7 +171,7 @@ namespace ObjectListView2022.Tests
         [TestMethod]
         public void FastDataListView_DeferViewUpdatesDefersDataSourceRefreshUntilScopeIsDisposed()
         {
-            using var listView = CreateDataListView<FastDataListView>();
+            using var listView = CreateFastDataListView();
             var rows = new BindingList<Model> { new Model("first") };
             listView.DataSource = rows;
             Assert.AreEqual(1, listView.GetItemCount());
@@ -196,9 +196,21 @@ namespace ObjectListView2022.Tests
             return listView;
         }
 
-        private static T CreateDataListView<T>() where T : DataListView, new()
+        private static DataListView CreateDataListView()
         {
-            var listView = new T
+            var listView = new DataListView
+            {
+                BindingContext = new BindingContext(),
+                AutoGenerateColumns = false
+            };
+            listView.Columns.Add(new OLVColumn("Name", nameof(Model.Name)));
+            listView.CreateControl();
+            return listView;
+        }
+
+        private static FastDataListView CreateFastDataListView()
+        {
+            var listView = new FastDataListView
             {
                 BindingContext = new BindingContext(),
                 AutoGenerateColumns = false
