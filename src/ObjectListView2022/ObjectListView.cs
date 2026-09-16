@@ -584,9 +584,7 @@ using System.Runtime.Serialization.Formatters;
 using System.Threading;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
-using BrightIdeasSoftware.DragDrop;
 using BrightIdeasSoftware.Filtering;
-using BrightIdeasSoftware.Rendering;
 using BrightIdeasSoftware.SubControls;
 using BrightIdeasSoftware.Utilities;
 
@@ -1493,10 +1491,7 @@ namespace BrightIdeasSoftware
 
                 dropSink = value;
                 AllowDrop = (value != null);
-                if (dropSink != null)
-                {
-                    dropSink.ListView = this;
-                }
+                dropSink?.ListView = this;
 
                 // Start listening for events on the new sink
                 if (value is SimpleDropSink newSink)
@@ -1645,10 +1640,7 @@ namespace BrightIdeasSoftware
             get => FocusedItem == null ? null : ((OLVListItem)FocusedItem).RowObject;
             set {
                 var item = ModelToItem(value);
-                if (item != null)
-                {
-                    item.Focused = true;
-                }
+                item?.Focused = true;
             }
         }
 
@@ -1841,10 +1833,7 @@ namespace BrightIdeasSoftware
             get => headerWordWrap;
             set {
                 headerWordWrap = value;
-                if (headerControl != null)
-                {
-                    headerControl.WordWrap = value;
-                }
+                headerControl?.WordWrap = value;
             }
         }
 
@@ -11807,10 +11796,7 @@ namespace BrightIdeasSoftware
             foreach (var column in AllColumns)
             {
                 filterAware = column.Renderer as IFilterAwareRenderer;
-                if (filterAware != null)
-                {
-                    filterAware.Filter = ModelFilter;
-                }
+                filterAware?.Filter = ModelFilter;
             }
         }
 

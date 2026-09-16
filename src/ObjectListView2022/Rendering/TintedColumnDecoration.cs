@@ -36,7 +36,9 @@
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace BrightIdeasSoftware.Rendering
+#pragma warning disable IDE0130 // Namespace does not match folder structure
+namespace BrightIdeasSoftware
+#pragma warning restore IDE0130 // Namespace does not match folder structure
 {
     /// <summary>
     /// This decoration draws a slight tint over a column of the
