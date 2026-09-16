@@ -165,8 +165,9 @@ namespace BrightIdeasSoftware
         /// <summary>
         /// Get or set if the style of the tooltip control
         /// </summary>
-        internal int WindowStyle {
-            get => NativeMethods.GetWindowLong(Handle, GWL_STYLE); set => NativeMethods.SetWindowLong(Handle, GWL_STYLE, value);
+        internal long WindowStyle {
+            get => (long)NativeMethods.GetWindowLong(Handle, GWL_STYLE);
+            set => NativeMethods.SetWindowLong(Handle, GWL_STYLE, new IntPtr(value));
         }
 
         /// <summary>

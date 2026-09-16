@@ -78,6 +78,44 @@ namespace ObjectListView2022.Tests
             Assert.AreEqual("SetWindowLongPtr", import.EntryPoint);
         }
 
+        [TestMethod]
+        public void WindowLongWrappers_PreservePointerSizedValues()
+        {
+            var nativeMethods = GetNativeMethodsType();
+
+            var getMethod = nativeMethods.GetMethod(
+                "GetWindowLong",
+                BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
+            Assert.IsNotNull(getMethod);
+            Assert.AreEqual(
+                typeof(IntPtr),
+                getMethod.ReturnType,
+                "GetWindowLong must not truncate LONG_PTR values on 64-bit Windows.");
+
+            var getParameters = getMethod.GetParameters();
+            Assert.HasCount(2, getParameters);
+            Assert.AreEqual(typeof(IntPtr), getParameters[0].ParameterType);
+            Assert.AreEqual(typeof(int), getParameters[1].ParameterType);
+
+            var setMethod = nativeMethods.GetMethod(
+                "SetWindowLong",
+                BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
+            Assert.IsNotNull(setMethod);
+            Assert.AreEqual(
+                typeof(IntPtr),
+                setMethod.ReturnType,
+                "SetWindowLong must preserve the pointer-sized previous value returned by Win32.");
+
+            var setParameters = setMethod.GetParameters();
+            Assert.HasCount(3, setParameters);
+            Assert.AreEqual(typeof(IntPtr), setParameters[0].ParameterType);
+            Assert.AreEqual(typeof(int), setParameters[1].ParameterType);
+            Assert.AreEqual(
+                typeof(IntPtr),
+                setParameters[2].ParameterType,
+                "SetWindowLong must accept a pointer-sized LONG_PTR value.");
+        }
+
         private static void AssertFieldType(string structureName, string fieldName, Type expectedType)
         {
             var field = GetNativeType(structureName).GetField(

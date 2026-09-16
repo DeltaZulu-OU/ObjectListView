@@ -664,10 +664,10 @@ namespace BrightIdeasSoftware
         public static extern IntPtr GetWindowLongPtr64(IntPtr hWnd, int nIndex);
 
         [DllImport("user32.dll", EntryPoint = "SetWindowLong", CharSet = CharSet.Auto)]
-        public static extern IntPtr SetWindowLongPtr32(IntPtr hWnd, int nIndex, int dwNewLong);
+        public static extern IntPtr SetWindowLongPtr32(IntPtr hWnd, int nIndex, IntPtr dwNewLong);
 
         [DllImport("user32.dll", EntryPoint = "SetWindowLongPtr", CharSet = CharSet.Auto)]
-        public static extern IntPtr SetWindowLongPtr64(IntPtr hWnd, int nIndex, int dwNewLong);
+        public static extern IntPtr SetWindowLongPtr64(IntPtr hWnd, int nIndex, IntPtr dwNewLong);
 
         [DllImport("user32.dll")]
         public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
@@ -1224,30 +1224,30 @@ namespace BrightIdeasSoftware
             const int GWL_STYLE = -16;
             const int WS_HSCROLL = 0x00100000;
 
-            return (GetWindowLong(lv.Handle, GWL_STYLE) & WS_HSCROLL) != 0;
+            return ((long)GetWindowLong(lv.Handle, GWL_STYLE) & WS_HSCROLL) != 0;
         }
 
-        public static int GetWindowLong(IntPtr hWnd, int nIndex)
+        public static IntPtr GetWindowLong(IntPtr hWnd, int nIndex)
         {
             if (IntPtr.Size == 4)
             {
-                return (int)GetWindowLong32(hWnd, nIndex);
+                return GetWindowLong32(hWnd, nIndex);
             }
             else
             {
-                return (int)(long)GetWindowLongPtr64(hWnd, nIndex);
+                return GetWindowLongPtr64(hWnd, nIndex);
             }
         }
 
-        public static int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong)
+        public static IntPtr SetWindowLong(IntPtr hWnd, int nIndex, IntPtr dwNewLong)
         {
             if (IntPtr.Size == 4)
             {
-                return (int)SetWindowLongPtr32(hWnd, nIndex, dwNewLong);
+                return SetWindowLongPtr32(hWnd, nIndex, dwNewLong);
             }
             else
             {
-                return (int)(long)SetWindowLongPtr64(hWnd, nIndex, dwNewLong);
+                return SetWindowLongPtr64(hWnd, nIndex, dwNewLong);
             }
         }
 
