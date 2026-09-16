@@ -203,12 +203,17 @@ namespace BrightIdeasSoftware
         /// <returns>True if the key was completely handled.</returns>
         public virtual bool HandleKey(ObjectListView olv, Keys keyData)
         {
+            if (olv == null)
+            {
+                throw new ArgumentNullException(nameof(olv));
+            }
+
             if (!CellEditKeyMap.TryGetValue(keyData, out var behaviour))
             {
                 return false;
             }
 
-            ListView = olv ?? throw new ArgumentNullException("olv");
+            ListView = olv;
 
             switch (behaviour)
             {
