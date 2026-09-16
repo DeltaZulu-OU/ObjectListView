@@ -115,6 +115,17 @@ namespace ObjectListView2022.Tests
             Assert.IsFalse(listView.RestoreState(state));
         }
 
+        [TestMethod]
+        public void RestoreState_RejectsOversizedXml()
+        {
+            var state = Encoding.UTF8.GetBytes(
+                "<ObjectListViewState>" + new string(' ', 1024 * 1024) + "</ObjectListViewState>");
+
+            using var listView = CreateList();
+
+            Assert.IsFalse(listView.RestoreState(state));
+        }
+
         private static ObjectListView CreateList()
         {
             var listView = new ObjectListView { View = View.Details };
