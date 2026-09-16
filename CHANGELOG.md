@@ -14,6 +14,7 @@ All notable changes to this repository are documented here.
 
 ### Changed
 
+- Removed obsolete source TODOs and abandoned design sketches after reviewing their continued relevance.
 - Replaced BinaryFormatter-based ObjectListView state persistence with XML serialization while preserving the existing `SaveState()` and `RestoreState()` byte-array API.
 - Improved checked-object handling for ordinary lists by avoiding unnecessary timing overhead and reducing sparse-selection allocation cost.
 - Restored the optimized non-virtual checked-object retrieval path while preserving virtual-list behavior.
@@ -26,6 +27,7 @@ All notable changes to this repository are documented here.
 
 ### Fixed
 
+- Generated typed aspect getters now return null when an intermediate member is null.
 - Prevented initial data binding from selecting the first row while preserving later `CurrencyManager` position-driven selection in data, fast-data, and tree-data lists.
 - Fixed `EditingCellBorderDecoration(bool useLightBox)` so the constructor honors its `useLightBox` argument.
 - Made `OLVListItem` hyperlink and subitem access safe when its WinForms subitem collection contains non-`OLVListSubItem` entries.
