@@ -76,14 +76,15 @@ namespace ObjectListView2022.Tests
                     using (var form = new Form())
                     using (var objectListView = new ObjectListView { Dock = DockStyle.Fill })
                     {
+                        var overlay = new PlainOverlay();
                         objectListView.OverlayTransparency = 64;
                         form.Controls.Add(objectListView);
                         form.Show();
 
-                        objectListView.AddOverlay(new PlainOverlay());
+                        objectListView.AddOverlay(overlay);
                         objectListView.ShowOverlays();
 
-                        actualOpacity = GetFirstOverlayOpacity(objectListView);
+                        actualOpacity = GetOverlayOpacity(objectListView, overlay);
                         form.Close();
                     }
                 }
@@ -113,14 +114,15 @@ namespace ObjectListView2022.Tests
                     using (var form = new Form())
                     using (var objectListView = new ObjectListView { Dock = DockStyle.Fill })
                     {
+                        var overlay = new TransparentOverlay { Transparency = 192 };
                         objectListView.OverlayTransparency = 64;
                         form.Controls.Add(objectListView);
                         form.Show();
 
-                        objectListView.AddOverlay(new TransparentOverlay { Transparency = 192 });
+                        objectListView.AddOverlay(overlay);
                         objectListView.ShowOverlays();
 
-                        actualOpacity = GetFirstOverlayOpacity(objectListView);
+                        actualOpacity = GetOverlayOpacity(objectListView, overlay);
                         form.Close();
                     }
                 }
@@ -151,17 +153,28 @@ namespace ObjectListView2022.Tests
             }
         }
 
-        private static double GetFirstOverlayOpacity(ObjectListView objectListView)
+        private static double GetOverlayOpacity(ObjectListView objectListView, IOverlay overlay)
         {
             var glassPanelsField = typeof(ObjectListView).GetField(
                 "glassPanels",
                 BindingFlags.Instance | BindingFlags.NonPublic);
+            Assert.IsNotNull(glassPanelsField);
+
             var glassPanels = (IEnumerable)glassPanelsField.GetValue(objectListView);
             foreach (var glassPanel in glassPanels)
             {
-                return ((Form)glassPanel).Opacity;
+                var overlayField = glassPanel.GetType().GetField(
+                    "Overlay",
+                    BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
+                Assert.IsNotNull(overlayField);
+
+                if (ReferenceEquals(overlayField.GetValue(glassPanel), overlay))
+                {
+                    return ((Form)glassPanel).Opacity;
+                }
             }
 
+            Assert.Fail("No glass panel was created for the requested overlay.");
             return -1;
         }
 
