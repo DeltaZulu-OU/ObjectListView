@@ -77,6 +77,27 @@ namespace ObjectListView2022.Tests
         }
 
         [TestMethod]
+        public void GeneratedTypedAspectGetter_ReturnsNullAtAnyIntermediateDepth()
+        {
+            var column = new OLVColumn("Value", "Child.GrandChild.Value");
+            var typedColumn = new TypedColumn<RootModel>(column);
+            typedColumn.GenerateAspectGetter();
+
+            Assert.IsNull(column.GetValue(new RootModel()));
+            Assert.IsNull(column.GetValue(new RootModel
+            {
+                Child = new ChildModel()
+            }));
+            Assert.AreEqual("nested", column.GetValue(new RootModel
+            {
+                Child = new ChildModel
+                {
+                    GrandChild = new GrandChildModel { Value = "nested" }
+                }
+            }));
+        }
+
+        [TestMethod]
         public void GetValue_ReturnsNullForMissingAspectWhenIgnored()
         {
             var previous = Munger.IgnoreMissingAspects;
@@ -216,6 +237,12 @@ namespace ObjectListView2022.Tests
         }
 
         private sealed class ChildModel
+        {
+            public string Value { get; set; }
+            public GrandChildModel GrandChild { get; set; }
+        }
+
+        private sealed class GrandChildModel
         {
             public string Value { get; set; }
         }
