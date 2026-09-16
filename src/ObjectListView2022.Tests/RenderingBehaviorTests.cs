@@ -83,16 +83,7 @@ namespace ObjectListView2022.Tests
                         objectListView.AddOverlay(new PlainOverlay());
                         objectListView.ShowOverlays();
 
-                        var glassPanelsField = typeof(ObjectListView).GetField(
-                            "glassPanels",
-                            BindingFlags.Instance | BindingFlags.NonPublic);
-                        var glassPanels = (IEnumerable)glassPanelsField.GetValue(objectListView);
-                        foreach (var glassPanel in glassPanels)
-                        {
-                            actualOpacity = ((Form)glassPanel).Opacity;
-                            break;
-                        }
-
+                        actualOpacity = GetFirstOverlayOpacity(objectListView);
                         form.Close();
                     }
                 }
@@ -111,6 +102,43 @@ namespace ObjectListView2022.Tests
         }
 
         [TestMethod]
+        public void ObjectListView_TransparentOverlay_UsesItsOwnTransparency()
+        {
+            Exception failure = null;
+            double actualOpacity = -1;
+            var thread = new Thread(() =>
+            {
+                try
+                {
+                    using (var form = new Form())
+                    using (var objectListView = new ObjectListView { Dock = DockStyle.Fill })
+                    {
+                        objectListView.OverlayTransparency = 64;
+                        form.Controls.Add(objectListView);
+                        form.Show();
+
+                        objectListView.AddOverlay(new TransparentOverlay { Transparency = 192 });
+                        objectListView.ShowOverlays();
+
+                        actualOpacity = GetFirstOverlayOpacity(objectListView);
+                        form.Close();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    failure = ex;
+                }
+            });
+
+            thread.SetApartmentState(ApartmentState.STA);
+            thread.Start();
+            thread.Join();
+
+            Assert.IsNull(failure, failure?.ToString());
+            Assert.AreEqual(192 / 255.0, actualOpacity, 0.0001);
+        }
+
+        [TestMethod]
         public void ObjectListView_OverlayTransparency_ClampsToByteRange()
         {
             using (var objectListView = new ObjectListView())
@@ -123,8 +151,31 @@ namespace ObjectListView2022.Tests
             }
         }
 
+        private static double GetFirstOverlayOpacity(ObjectListView objectListView)
+        {
+            var glassPanelsField = typeof(ObjectListView).GetField(
+                "glassPanels",
+                BindingFlags.Instance | BindingFlags.NonPublic);
+            var glassPanels = (IEnumerable)glassPanelsField.GetValue(objectListView);
+            foreach (var glassPanel in glassPanels)
+            {
+                return ((Form)glassPanel).Opacity;
+            }
+
+            return -1;
+        }
+
         private sealed class PlainOverlay : IOverlay
         {
+            public void Draw(ObjectListView olv, Graphics g, Rectangle r)
+            {
+            }
+        }
+
+        private sealed class TransparentOverlay : ITransparentOverlay
+        {
+            public int Transparency { get; set; }
+
             public void Draw(ObjectListView olv, Graphics g, Rectangle r)
             {
             }
