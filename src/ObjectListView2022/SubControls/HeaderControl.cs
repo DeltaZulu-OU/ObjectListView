@@ -60,7 +60,9 @@ using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 using BrightIdeasSoftware.Properties;
 
+#pragma warning disable IDE0130 // Namespace does not match folder structure
 namespace BrightIdeasSoftware
+#pragma warning restore IDE0130 // Namespace does not match folder structure
 {
     /// <summary>
     /// Class used to capture window messages for the header of the list view
@@ -406,7 +408,7 @@ namespace BrightIdeasSoftware
             ToolTip = new ToolTipControl();
             ToolTip.Create(Handle);
             ToolTip.AddTool(this);
-            ToolTip.Showing += new EventHandler<ToolTipShowingEventArgs>(ListView.HeaderToolTipShowingCallback);
+            ToolTip.Showing += ListView.HeaderToolTipShowingCallback;
         }
 
         #endregion Tooltip
@@ -788,7 +790,7 @@ namespace BrightIdeasSoftware
         {
             if (toolTip != null)
             {
-                toolTip.Showing -= new EventHandler<ToolTipShowingEventArgs>(ListView.HeaderToolTipShowingCallback);
+                toolTip.Showing -= ListView.HeaderToolTipShowingCallback;
             }
             return false;
         }
@@ -827,7 +829,7 @@ namespace BrightIdeasSoftware
                     HasFilterIndicator(column) ||
                     HasCheckBox(column) ||
                     column.TextAlign != column.HeaderTextAlignOrDefault ||
-                    column.Index == 0 && column.HeaderTextAlignOrDefault != HorizontalAlignment.Left ||
+                    (column.Index == 0 && column.HeaderTextAlignOrDefault != HorizontalAlignment.Left) ||
                     NeedsCustomDraw(column.HeaderFormatStyle))
                 {
                     return true;
@@ -1121,7 +1123,7 @@ namespace BrightIdeasSoftware
                 // GetPoint() should work, but if it doesn't, put the arrow in the top middle
                 if (pt.X == 0 && pt.Y == 0)
                 {
-                    pt = new Point(r.X + r.Width / 2 - sz.Width / 2, r.Y);
+                    pt = new Point(r.X + (r.Width / 2) - (sz.Width / 2), r.Y);
                 }
 
                 renderer2.DrawBackground(g, new Rectangle(pt, sz));
@@ -1141,11 +1143,11 @@ namespace BrightIdeasSoftware
             const int triangleHeight = 16;
             const int triangleWidth = 16;
             const int midX = triangleWidth / 2;
-            const int midY = triangleHeight / 2 - 1;
+            const int midY = (triangleHeight / 2) - 1;
             const int deltaX = midX - 2;
             const int deltaY = deltaX / 2;
 
-            var triangleLocation = new Point(r.Right - triangleWidth - 2, r.Top + (r.Height - triangleHeight) / 2);
+            var triangleLocation = new Point(r.Right - triangleWidth - 2, r.Top + ((r.Height - triangleHeight) / 2));
             var pts = new Point[] { triangleLocation, triangleLocation, triangleLocation };
 
             if (ListView.LastSortOrder == SortOrder.Ascending)
@@ -1182,7 +1184,7 @@ namespace BrightIdeasSoftware
 
             Image indicator = Resources.ColumnFilterIndicator;
             var x = r.Right - width;
-            var y = r.Top + (r.Height - indicator.Height) / 2;
+            var y = r.Top + ((r.Height - indicator.Height) / 2);
             g.DrawImageUnscaled(indicator, x, y);
 
             r.Width -= width;
@@ -1268,11 +1270,11 @@ namespace BrightIdeasSoftware
                 textSize = TextRenderer.MeasureText(g, column.Text, f, textRect.Size, flags);
             }
 
-            var imageY = r.Top + (r.Height - column.ImageList.ImageSize.Height) / 2;
+            var imageY = r.Top + ((r.Height - column.ImageList.ImageSize.Height) / 2);
             var imageX = textRect.Left;
             if (column.HeaderTextAlignOrDefault == HorizontalAlignment.Center)
             {
-                imageX = textRect.Left + (textRect.Width - textSize.Width) / 2;
+                imageX = textRect.Left + ((textRect.Width - textSize.Width) / 2);
             }
 
             if (column.HeaderTextAlignOrDefault == HorizontalAlignment.Right)

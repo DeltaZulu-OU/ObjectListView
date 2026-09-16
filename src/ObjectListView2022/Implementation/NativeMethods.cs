@@ -542,6 +542,82 @@ namespace BrightIdeasSoftware
             public int top;
             public int right;
             public int bottom;
+
+            public RECT(int left, int top, int right, int bottom)
+            {
+                this.left = left;
+                this.top = top;
+                this.right = right;
+                this.bottom = bottom;
+            }
+
+            public RECT(Rectangle r) : this(r.Left, r.Top, r.Right, r.Bottom) { }
+
+            public int X {
+                readonly get => left;
+                set { right -= (left - value); left = value; }
+            }
+
+            public int Y {
+                readonly get => top;
+                set { bottom -= (top - value); top = value; }
+            }
+
+            public int Height { readonly get => bottom - top; set => bottom = value + top;
+            }
+
+            public int Width { readonly get => right - left; set => right = value + left;
+            }
+
+            public Point Location {
+                readonly get => new Point(left, top);
+                set { X = value.X; Y = value.Y; }
+            }
+
+            public Size Size {
+                readonly get => new Size(Width, Height);
+                set { Width = value.Width; Height = value.Height; }
+            }
+
+            public static implicit operator Rectangle(RECT r)
+            {
+                return new Rectangle(r.left, r.top, r.Width, r.Height);
+            }
+
+            public static implicit operator RECT(Rectangle r)
+            {
+                return new RECT(r);
+            }
+
+            public static bool operator ==(RECT r1, RECT r2)
+            {
+                return r1.Equals(r2);
+            }
+
+            public static bool operator !=(RECT r1, RECT r2)
+            {
+                return !r1.Equals(r2);
+            }
+
+            public readonly bool Equals(RECT r) => r.left == left && r.top == top && r.right == right && r.bottom == bottom;
+
+            public readonly override bool Equals(object obj)
+            {
+                if (obj is RECT customRect)
+                {
+                    return Equals(customRect);
+                }
+                else if (obj is Rectangle drawingRectangle)
+                {
+                    return Equals(new RECT(drawingRectangle));
+                }
+
+                return false;
+            }
+
+            public readonly override int GetHashCode() => ((Rectangle)this).GetHashCode();
+
+            public readonly override string ToString() => string.Format(System.Globalization.CultureInfo.CurrentCulture, "{{Left={0},Top={1},Right={2},Bottom={3}}}", left, top, right, bottom);
         }
 
         [StructLayout(LayoutKind.Sequential)]
@@ -655,7 +731,7 @@ namespace BrightIdeasSoftware
         public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
 
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
-        public static extern bool GetWindowRect(IntPtr hWnd, ref Rectangle r);
+        public static extern bool GetWindowRect(IntPtr hWnd, ref RECT r);
 
         [DllImport("user32.dll", EntryPoint = "GetWindowLong", CharSet = CharSet.Auto)]
         public static extern IntPtr GetWindowLong32(IntPtr hWnd, int nIndex);
@@ -673,19 +749,9 @@ namespace BrightIdeasSoftware
         public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
 
         [DllImport("user32.dll", EntryPoint = "ValidateRect", CharSet = CharSet.Auto)]
-        private static extern IntPtr ValidatedRectInternal(IntPtr hWnd, ref Rectangle r);
+        private static extern bool ValidatedRectInternal(IntPtr hWnd, ref RECT r);
 
         #endregion Entry points
-
-        //[DllImport("user32.dll", EntryPoint = "LockWindowUpdate", CharSet = CharSet.Auto)]
-        //private static extern int LockWindowUpdateInternal(IntPtr hWnd);
-
-        //public static void LockWindowUpdate(IWin32Window window) {
-        //    if (window == null)
-        //        NativeMethods.LockWindowUpdateInternal(IntPtr.Zero);
-        //    else
-        //        NativeMethods.LockWindowUpdateInternal(window.Handle);
-        //}
 
         /// <summary>
         /// Put an image under the ListView.
@@ -999,7 +1065,7 @@ namespace BrightIdeasSoftware
         /// </summary>
         /// <param name="cntl">The control to be validated</param>
         /// <param name="r">The area of the control to be validated</param>
-        public static void ValidateRect(Control cntl, Rectangle r) => ValidatedRectInternal(cntl.Handle, ref r);
+        public static void ValidateRect(Control cntl, RECT r) => _ = ValidatedRectInternal(cntl.Handle, ref r);
 
         /// <summary>
         /// Select all rows on the given listview
@@ -1261,7 +1327,7 @@ namespace BrightIdeasSoftware
         public static extern IntPtr SelectObject(IntPtr hdc, IntPtr obj);
 
         [DllImport("uxtheme.dll", CharSet = CharSet.Auto, SetLastError = true, ExactSpelling = true)]
-        public static extern IntPtr SetWindowTheme(IntPtr hWnd, string subApp, string subIdList);
+        public static extern int SetWindowTheme(IntPtr hWnd, string subApp, string subIdList);
 
         [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
         public static extern bool InvalidateRect(IntPtr hWnd, int ignored, bool erase);

@@ -887,9 +887,9 @@ namespace BrightIdeasSoftware
         public static SimpleItemStyle DefaultDisabledItemStyle {
             get {
                 sDefaultDisabledItemStyle ??= new SimpleItemStyle
-                    {
-                        ForeColor = Color.DarkGray
-                    };
+                {
+                    ForeColor = Color.DarkGray
+                };
                 return sDefaultDisabledItemStyle;
             }
         }
@@ -902,9 +902,9 @@ namespace BrightIdeasSoftware
         public static HotItemStyle DefaultHotItemStyle {
             get {
                 sDefaultHotItemStyle ??= new HotItemStyle
-                    {
-                        BackColor = Color.FromArgb(224, 235, 253)
-                    };
+                {
+                    BackColor = Color.FromArgb(224, 235, 253)
+                };
                 return sDefaultHotItemStyle;
             }
         }
@@ -3243,7 +3243,11 @@ namespace BrightIdeasSoftware
                 useExplorerTheme = value;
                 if (Created)
                 {
-                    NativeMethods.SetWindowTheme(Handle, value ? "explorer" : "", null);
+                    var hresult = NativeMethods.SetWindowTheme(Handle, value ? "explorer" : "", null);
+                    if (hresult < 0)
+                    {
+                        Marshal.ThrowExceptionForHR(hresult);
+                    }
                 }
 
                 OwnerDraw = !value;
@@ -8962,10 +8966,10 @@ namespace BrightIdeasSoftware
 
             var il = SmallImageList;
             il ??= new ImageList
-                {
-                    ImageSize = new Size(16, 16),
-                    ColorDepth = ColorDepth.Depth32Bit
-                };
+            {
+                ImageSize = new Size(16, 16),
+                ColorDepth = ColorDepth.Depth32Bit
+            };
 
             // This arrangement of points works well with (16,16) images, and OK with others
             var midX = il.ImageSize.Width / 2;
@@ -9637,10 +9641,10 @@ namespace BrightIdeasSoftware
             }
 
             StateImageList ??= new ImageList
-                {
-                    ImageSize = new Size(16, RowHeight == -1 ? 16 : RowHeight),
-                    ColorDepth = ColorDepth.Depth32Bit
-                };
+            {
+                ImageSize = new Size(16, RowHeight == -1 ? 16 : RowHeight),
+                ColorDepth = ColorDepth.Depth32Bit
+            };
 
             if (RowHeight != -1 &&
                 View == View.Details &&
@@ -9734,10 +9738,10 @@ namespace BrightIdeasSoftware
 
             var il = SmallImageList;
             il ??= new ImageList
-                {
-                    ImageSize = new Size(16, 16),
-                    ColorDepth = ColorDepth.Depth32Bit
-                };
+            {
+                ImageSize = new Size(16, 16),
+                ColorDepth = ColorDepth.Depth32Bit
+            };
 
             AddCheckStateBitmap(il, CHECKED_KEY, CheckBoxState.CheckedNormal);
             AddCheckStateBitmap(il, UNCHECKED_KEY, CheckBoxState.UncheckedNormal);
