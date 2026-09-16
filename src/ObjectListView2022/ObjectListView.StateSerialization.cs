@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.IO;
 using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Serialization;
@@ -11,51 +10,35 @@ namespace BrightIdeasSoftware
 {
     public partial class ObjectListView
     {
-        /// <summary>
-        /// XmlSerializer-backed compatibility adapter for the legacy SaveState()/RestoreState()
-        /// implementation. The nested type shadows BinaryFormatter only inside ObjectListView,
-        /// preserving the public state-persistence API while avoiding object-graph deserialization.
-        /// </summary>
-        private sealed class BinaryFormatter
+        private const long MaximumStateSize = 1024 * 1024;
+        private static readonly XmlSerializer StateSerializer = new XmlSerializer(typeof(SerializedObjectListViewState));
+
+        private static void SerializeState(Stream stream, ObjectListViewState state)
         {
-            private const long MaximumStateSize = 1024 * 1024;
-            private static readonly XmlSerializer Serializer = new XmlSerializer(typeof(SerializedObjectListViewState));
+            StateSerializer.Serialize(stream, SerializedObjectListViewState.FromState(state));
+        }
 
-            // Retained because SaveState() initializes this property on the legacy formatter.
-            public FormatterAssemblyStyle AssemblyFormat { get; set; }
-
-            public void Serialize(Stream stream, object graph)
+        private static ObjectListViewState DeserializeState(Stream stream)
+        {
+            try
             {
-                if (graph is not ObjectListViewState state)
+                using var reader = XmlReader.Create(stream, new XmlReaderSettings
                 {
-                    throw new SerializationException("Only ObjectListViewState can be serialized.");
-                }
+                    DtdProcessing = DtdProcessing.Prohibit,
+                    XmlResolver = null,
+                    MaxCharactersInDocument = MaximumStateSize
+                });
 
-                Serializer.Serialize(stream, SerializedObjectListViewState.FromState(state));
+                var state = StateSerializer.Deserialize(reader) as SerializedObjectListViewState;
+                return state?.ToState();
             }
-
-            public object Deserialize(Stream stream)
+            catch (InvalidOperationException ex)
             {
-                try
-                {
-                    using var reader = XmlReader.Create(stream, new XmlReaderSettings
-                    {
-                        DtdProcessing = DtdProcessing.Prohibit,
-                        XmlResolver = null,
-                        MaxCharactersInDocument = MaximumStateSize
-                    });
-
-                    var state = Serializer.Deserialize(reader) as SerializedObjectListViewState;
-                    return state?.ToState();
-                }
-                catch (InvalidOperationException ex)
-                {
-                    throw new SerializationException("Invalid ObjectListView state.", ex);
-                }
-                catch (XmlException ex)
-                {
-                    throw new SerializationException("Invalid ObjectListView state.", ex);
-                }
+                throw new SerializationException("Invalid ObjectListView state.", ex);
+            }
+            catch (XmlException ex)
+            {
+                throw new SerializationException("Invalid ObjectListView state.", ex);
             }
         }
 

@@ -580,7 +580,6 @@ using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Runtime.Serialization.Formatters;
 using System.Threading;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
@@ -5512,11 +5511,7 @@ namespace BrightIdeasSoftware
 
             // Now that we have stored our state, convert it to a byte array
             using var ms = new MemoryStream();
-            var serializer = new BinaryFormatter
-            {
-                AssemblyFormat = FormatterAssemblyStyle.Simple
-            };
-            serializer.Serialize(ms, olvState);
+            SerializeState(ms, olvState);
             return ms.ToArray();
         }
 
@@ -5529,11 +5524,10 @@ namespace BrightIdeasSoftware
         public virtual bool RestoreState(byte[] state)
         {
             using var ms = new MemoryStream(state);
-            var deserializer = new BinaryFormatter();
             ObjectListViewState olvState;
             try
             {
-                olvState = deserializer.Deserialize(ms) as ObjectListViewState;
+                olvState = DeserializeState(ms);
             }
             catch (System.Runtime.Serialization.SerializationException)
             {
