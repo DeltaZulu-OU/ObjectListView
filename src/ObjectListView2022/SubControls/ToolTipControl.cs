@@ -42,7 +42,7 @@ using System.Runtime.InteropServices;
 using System.Security.Permissions;
 using System.Windows.Forms;
 
-namespace BrightIdeasSoftware.SubControls
+namespace BrightIdeasSoftware
 {
     /// <summary>
     /// A limited wrapper around a Windows tooltip window.

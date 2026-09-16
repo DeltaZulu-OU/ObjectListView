@@ -47,7 +47,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace BrightIdeasSoftware.SubControls
+namespace BrightIdeasSoftware
 {
     /// <summary>
     /// A GlassPanelForm sits transparently over an ObjectListView to show overlays.

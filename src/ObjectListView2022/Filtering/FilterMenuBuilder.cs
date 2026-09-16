@@ -37,7 +37,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
-using BrightIdeasSoftware.SubControls;
 
 #pragma warning disable IDE0130 // Namespace does not match folder structure
 namespace BrightIdeasSoftware

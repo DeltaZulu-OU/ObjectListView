@@ -28,7 +28,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace BrightIdeasSoftware.SubControls
+namespace BrightIdeasSoftware
 {
     /// <summary>
     /// Instances of this class put a CheckedListBox into a tool strip menu item.

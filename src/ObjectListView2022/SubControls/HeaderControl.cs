@@ -60,7 +60,7 @@ using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 using BrightIdeasSoftware.Properties;
 
-namespace BrightIdeasSoftware.SubControls
+namespace BrightIdeasSoftware
 {
     /// <summary>
     /// Class used to capture window messages for the header of the list view

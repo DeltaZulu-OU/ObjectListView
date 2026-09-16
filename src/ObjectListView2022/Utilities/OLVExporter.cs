@@ -31,7 +31,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 
-namespace BrightIdeasSoftware.Utilities
+namespace BrightIdeasSoftware
 {
     /// <summary>
     /// An OLVExporter converts a collection of rows from an ObjectListView

@@ -40,7 +40,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 using System.Windows.Forms;
 
-namespace BrightIdeasSoftware.Utilities
+namespace BrightIdeasSoftware
 {
     /// <summary>
     /// A TypedObjectListView is a type-safe wrapper around an ObjectListView.

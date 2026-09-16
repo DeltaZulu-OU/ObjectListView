@@ -1,5 +1,4 @@
 using BrightIdeasSoftware;
-using BrightIdeasSoftware.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace ObjectListView2022.Tests

@@ -49,7 +49,7 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
-namespace BrightIdeasSoftware.Utilities
+namespace BrightIdeasSoftware
 {
     /// <summary>
     /// An object that implements the IGenerator interface provides the ability

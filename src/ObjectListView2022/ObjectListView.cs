@@ -584,8 +584,6 @@ using System.Runtime.Serialization.Formatters;
 using System.Threading;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
-using BrightIdeasSoftware.SubControls;
-using BrightIdeasSoftware.Utilities;
 
 namespace BrightIdeasSoftware
 {
