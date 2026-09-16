@@ -1,7 +1,6 @@
 using System.Linq;
 using System.Reflection;
 using BrightIdeasSoftware;
-using BrightIdeasSoftware.Filtering;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace ObjectListView2022.Tests
@@ -194,7 +193,7 @@ namespace ObjectListView2022.Tests
         private static void InvokeNativeSelectAll(ObjectListView listView)
         {
             var nativeMethods = typeof(ObjectListView).Assembly.GetType(
-                "BrightIdeasSoftware.Implementation.NativeMethods",
+                "BrightIdeasSoftware.NativeMethods",
                 true);
             var method = nativeMethods.GetMethod(
                 "SelectAllItems",

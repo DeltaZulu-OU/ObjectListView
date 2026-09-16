@@ -44,7 +44,9 @@ namespace ObjectListView2022.Tests
             }
             catch (TargetInvocationException exception)
             {
+#pragma warning disable MSTEST0058 // Do not use asserts in catch blocks
                 Assert.IsInstanceOfType(exception.InnerException, typeof(InvalidOperationException));
+#pragma warning restore MSTEST0058 // Do not use asserts in catch blocks
             }
         }
 
@@ -114,9 +116,9 @@ namespace ObjectListView2022.Tests
             public NativeHeaderMessage(int code, int itemIndex, int width, int mask, bool allocateHeaderItem = true)
             {
                 var assembly = typeof(ObjectListView).Assembly;
-                var nmhdrType = assembly.GetType("BrightIdeasSoftware.Implementation.NativeMethods+NMHDR", true);
-                var nmheaderType = assembly.GetType("BrightIdeasSoftware.Implementation.NativeMethods+NMHEADER", true);
-                hdItemType = assembly.GetType("BrightIdeasSoftware.Implementation.NativeMethods+HDITEM", true);
+                var nmhdrType = assembly.GetType("BrightIdeasSoftware.NativeMethods+NMHDR", true);
+                var nmheaderType = assembly.GetType("BrightIdeasSoftware.NativeMethods+NMHEADER", true);
+                hdItemType = assembly.GetType("BrightIdeasSoftware.NativeMethods+HDITEM", true);
 
                 if (allocateHeaderItem)
                 {

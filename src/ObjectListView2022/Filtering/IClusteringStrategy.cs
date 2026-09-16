@@ -30,7 +30,9 @@
 
 using System.Collections;
 
-namespace BrightIdeasSoftware.Filtering
+#pragma warning disable IDE0130 // Namespace does not match folder structure
+namespace BrightIdeasSoftware
+#pragma warning restore IDE0130 // Namespace does not match folder structure
 {
     /// <summary>
     /// Implementation of this interface control the selecting of cluster keys

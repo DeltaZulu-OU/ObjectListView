@@ -127,7 +127,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows.Forms;
-using BrightIdeasSoftware.Filtering;
 
 namespace BrightIdeasSoftware
 {

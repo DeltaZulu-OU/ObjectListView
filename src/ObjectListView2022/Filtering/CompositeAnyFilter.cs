@@ -33,7 +33,9 @@
 
 using System.Collections.Generic;
 
-namespace BrightIdeasSoftware.Filtering
+#pragma warning disable IDE0130 // Namespace does not match folder structure
+namespace BrightIdeasSoftware
+#pragma warning restore IDE0130 // Namespace does not match folder structure
 {
     /// <summary>
     /// A CompositeAllFilter joins several other filters together.

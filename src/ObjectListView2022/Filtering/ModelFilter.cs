@@ -33,7 +33,9 @@
 
 using System;
 
-namespace BrightIdeasSoftware.Filtering
+#pragma warning disable IDE0130 // Namespace does not match folder structure
+namespace BrightIdeasSoftware
+#pragma warning restore IDE0130 // Namespace does not match folder structure
 {
     /// <summary>
     /// This filter calls a given Predicate to decide if a model object should be included

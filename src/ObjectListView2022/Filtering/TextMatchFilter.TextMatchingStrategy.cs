@@ -36,7 +36,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 
-namespace BrightIdeasSoftware.Filtering
+namespace BrightIdeasSoftware
 {
 public partial class TextMatchFilter
     {

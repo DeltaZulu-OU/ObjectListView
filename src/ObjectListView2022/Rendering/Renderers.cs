@@ -112,7 +112,6 @@ using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
-using BrightIdeasSoftware.Filtering;
 using Timer = System.Threading.Timer;
 
 #pragma warning disable IDE0130 // Namespace does not match folder structure

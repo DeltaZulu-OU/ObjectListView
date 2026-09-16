@@ -79,7 +79,7 @@ namespace ObjectListView2022.Tests
                 base.ApplyExtendedStyles();
             }
 
-            public override BrightIdeasSoftware.Filtering.IModelFilter CreateColumnFilter()
+            public override IModelFilter CreateColumnFilter()
             {
                 CreateColumnFilterCalled = true;
                 return base.CreateColumnFilter();

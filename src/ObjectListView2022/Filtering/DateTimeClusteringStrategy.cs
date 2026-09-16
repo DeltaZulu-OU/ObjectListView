@@ -28,7 +28,9 @@
 using System;
 using System.Globalization;
 
-namespace BrightIdeasSoftware.Filtering
+#pragma warning disable IDE0130 // Namespace does not match folder structure
+namespace BrightIdeasSoftware
+#pragma warning restore IDE0130 // Namespace does not match folder structure
 {
     /// <summary>
     /// This enum is used to indicate various portions of a datetime

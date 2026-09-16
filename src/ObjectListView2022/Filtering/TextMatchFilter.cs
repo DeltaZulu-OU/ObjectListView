@@ -37,7 +37,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Text.RegularExpressions;
 
-namespace BrightIdeasSoftware.Filtering
+namespace BrightIdeasSoftware
 {
     /// <summary>
     /// Instances of this class include only those rows of the listview

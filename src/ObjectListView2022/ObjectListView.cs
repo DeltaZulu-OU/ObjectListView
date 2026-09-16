@@ -584,7 +584,6 @@ using System.Runtime.Serialization.Formatters;
 using System.Threading;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
-using BrightIdeasSoftware.Filtering;
 using BrightIdeasSoftware.SubControls;
 using BrightIdeasSoftware.Utilities;
 

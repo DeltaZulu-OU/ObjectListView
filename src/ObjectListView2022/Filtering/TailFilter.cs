@@ -33,7 +33,9 @@
 
 using System.Collections;
 
-namespace BrightIdeasSoftware.Filtering
+#pragma warning disable IDE0130 // Namespace does not match folder structure
+namespace BrightIdeasSoftware
+#pragma warning restore IDE0130 // Namespace does not match folder structure
 {
     /// <summary>
     /// Filter the list so only the last N entries are displayed

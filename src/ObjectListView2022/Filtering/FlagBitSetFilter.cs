@@ -35,7 +35,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace BrightIdeasSoftware.Filtering
+#pragma warning disable IDE0130 // Namespace does not match folder structure
+namespace BrightIdeasSoftware
+#pragma warning restore IDE0130 // Namespace does not match folder structure
 {
     /// <summary>
     /// Instances of this class match a property of a model objects against

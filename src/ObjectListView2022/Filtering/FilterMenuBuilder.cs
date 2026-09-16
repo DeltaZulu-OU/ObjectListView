@@ -39,7 +39,9 @@ using System.Drawing;
 using System.Windows.Forms;
 using BrightIdeasSoftware.SubControls;
 
-namespace BrightIdeasSoftware.Filtering
+#pragma warning disable IDE0130 // Namespace does not match folder structure
+namespace BrightIdeasSoftware
+#pragma warning restore IDE0130 // Namespace does not match folder structure
 {
     /// <summary>
     /// Instances of this class know how to build a Filter menu.

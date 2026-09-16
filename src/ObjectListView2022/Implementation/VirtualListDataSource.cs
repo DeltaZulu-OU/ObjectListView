@@ -33,7 +33,6 @@
 using System;
 using System.Collections;
 using System.Windows.Forms;
-using BrightIdeasSoftware.Filtering;
 
 #pragma warning disable IDE0130 // Namespace does not match folder structure
 namespace BrightIdeasSoftware
