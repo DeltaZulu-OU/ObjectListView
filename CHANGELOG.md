@@ -6,7 +6,7 @@ All notable changes to this repository are documented here.
 
 ### Added
 
-- Added `DeferViewUpdates()` for nested, exception-safe view update batching.
+- Added `DeferViewUpdates()` for nested, exception-safe view update batching across standard and data-bound list variants.
 - Added per-monitor DPI font rescaling with non-compounding transitions, virtual-list safety, and preservation of explicit column widths.
 - Added a dedicated MSTest regression suite for `ObjectListView2022`, targeting .NET Framework 4.8.1.
 - Added behavioral coverage for filtering, sorting, grouping, fast/virtual lists, tree lists, check-state handling, Munger access, hot-item behavior, context-menu handling, state persistence, and performance-sensitive paths.
