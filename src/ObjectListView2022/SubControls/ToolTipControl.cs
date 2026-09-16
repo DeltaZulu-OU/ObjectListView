@@ -335,13 +335,22 @@ namespace BrightIdeasSoftware
                     return;
                 }
 
+                var newFontHandle = newFont.ToHfont();
+                NativeMethods.SendMessage(Handle, WM_SETFONT, newFontHandle, 0);
+
+                var oldFontHandle = fontHandle;
                 font = newFont;
-                var hfont = font.ToHfont(); // THINK: When should we delete this hfont?
-                NativeMethods.SendMessage(Handle, WM_SETFONT, hfont, 0);
+                fontHandle = newFontHandle;
+
+                if (oldFontHandle != IntPtr.Zero)
+                {
+                    NativeMethods.DeleteObject(oldFontHandle);
+                }
             }
         }
 
         private Font font;
+        private IntPtr fontHandle;
 
         /// <summary>
         /// Gets or sets how many milliseconds the tooltip will remain visible while the mouse
