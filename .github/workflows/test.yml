@@ -3,9 +3,7 @@ name: Unit tests
 on:
   push:
     branches:
-      - master
-      - "fix/**"
-      - "feat/**"
+      - "**"
     paths-ignore: &documentation-only
       - "**/*.md"
       - "**/*.avif"
@@ -30,6 +28,12 @@ permissions:
 jobs:
   test:
     runs-on: windows-latest
+    # Approval gate configuration:
+    # Pushes to the master branch automatically target the 'production' environment.
+    # Pushes to any other branch dynamically target the 'approval-gate' environment,
+    # which requires manual review and approval in GitHub repository settings before execution.
+    environment:
+      name: ${{ github.ref_name == 'master' && 'production' || 'approval-gate' }}
     strategy:
       fail-fast: false
       matrix:
