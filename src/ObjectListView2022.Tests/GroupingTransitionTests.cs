@@ -29,30 +29,41 @@ namespace ObjectListView2022.Tests
         }
 
         [TestMethod]
-        public void ObjectListView_CollapsedGroupsCanBeRestoredByKeyAfterRebuild()
+        public void ObjectListView_CollapsedGroupsSetterRestoresByKeyAfterRebuild()
         {
             using var listView = CreateObjectList(out var categoryColumn);
             listView.HasCollapsibleGroups = true;
-            _ = listView.Handle;
             listView.SetObjects(CreateModels());
             listView.ShowGroups = true;
             listView.BuildGroups(categoryColumn, SortOrder.Ascending);
             var originalGroupA = listView.OLVGroups.Single(x => Equals(x.Key, "A"));
+            var originalGroupB = listView.OLVGroups.Single(x => Equals(x.Key, "B"));
+            var savedCollapsedGroups = new[] { originalGroupA };
 
-            listView.CollapsedGroups = new[] { originalGroupA };
+            listView.CollapsedGroups = savedCollapsedGroups;
 
-            var savedCollapsedGroups = listView.CollapsedGroups.ToArray();
-            Assert.AreSequenceEqual(
-                new object[] { "A" },
-                savedCollapsedGroups.Select(x => x.Key).ToArray());
+            Assert.IsTrue(HasState(originalGroupA, GroupState.LVGS_COLLAPSED));
+            Assert.IsFalse(HasState(originalGroupB, GroupState.LVGS_COLLAPSED));
 
             listView.BuildGroups(categoryColumn, SortOrder.Ascending);
             var rebuiltGroupA = listView.OLVGroups.Single(x => Equals(x.Key, "A"));
+            var rebuiltGroupB = listView.OLVGroups.Single(x => Equals(x.Key, "B"));
             Assert.AreNotSame(originalGroupA, rebuiltGroupA);
 
             listView.CollapsedGroups = savedCollapsedGroups;
 
-            Assert.IsTrue(rebuiltGroupA.Collapsed);
+            Assert.IsTrue(HasState(rebuiltGroupA, GroupState.LVGS_COLLAPSED));
+            Assert.IsFalse(HasState(rebuiltGroupB, GroupState.LVGS_COLLAPSED));
+        }
+
+        [TestMethod]
+        public void ObjectListView_CollapsedGroupsGetterReturnsManagedCollapsedState()
+        {
+            using var listView = new ObjectListView();
+            var groupA = new OLVGroup("A") { Key = "A", Collapsed = true };
+            var groupB = new OLVGroup("B") { Key = "B" };
+            listView.OLVGroups = new[] { groupA, groupB };
+
             Assert.AreSequenceEqual(
                 new object[] { "A" },
                 listView.CollapsedGroups.Select(x => x.Key).ToArray());
@@ -131,7 +142,7 @@ namespace ObjectListView2022.Tests
         }
 
         [TestMethod]
-        public void FastObjectListView_GeneratedGroupsHonorCollapsibleSetting()
+        public void FastObjectListView_GeneratedGroupsCarryCollapsibleState()
         {
             using var listView = CreateFastList(out var categoryColumn);
             listView.HasCollapsibleGroups = true;
@@ -140,7 +151,8 @@ namespace ObjectListView2022.Tests
 
             listView.BuildGroups(categoryColumn, SortOrder.Ascending);
 
-            Assert.IsTrue(listView.OLVGroups.All(x => x.Collapsible));
+            Assert.IsTrue(listView.OLVGroups.All(x => HasState(x, GroupState.LVGS_COLLAPSIBLE)));
+            Assert.IsTrue(listView.OLVGroups.All(x => HasStateMask(x, GroupState.LVGS_COLLAPSIBLE)));
         }
 
         private static ObjectListView CreateObjectList(out OLVColumn categoryColumn)
@@ -173,6 +185,12 @@ namespace ObjectListView2022.Tests
             listView.Columns.Add(categoryColumn);
             listView.Columns.Add(new OLVColumn("Rank", nameof(Model.Rank)));
         }
+
+        private static bool HasState(OLVGroup group, GroupState state) =>
+            (group.State & state) == state;
+
+        private static bool HasStateMask(OLVGroup group, GroupState state) =>
+            (group.StateMask & state) == state;
 
         private static Model[] CreateModels() => new[] {
             new Model("a-low", "A", 1),
